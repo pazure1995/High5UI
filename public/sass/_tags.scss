@@ -1,0 +1,133 @@
+.tag{
+    font-size: 12px;
+    padding: 1px 5px;
+    display: inline-flex;
+    align-items:center;
+    background: $gray3;
+    @include border-radius(4px);
+    position: relative;
+    .jewel {
+        background: $brand_coral;
+        @include border-radius(250px);
+        @include box-shadow(0px 0px 0px 2px white);
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        z-index: 2;
+        display: block;
+    }
+    &.tag-lg{
+        font-size: 14px;
+    }
+    &.tag-xl{
+        font-size: 16px;
+    }
+
+    &.tag-font_accent{
+        color: white;
+        background: $font_accent;
+    }
+    &.tag-blue_primary{
+        color: white;
+        background: $blue_primary;
+    }
+    &.tag-blue1{
+        color: white;
+        background: $blue1;
+    }
+    &.tag-blue2{
+        color: $font_primary;
+        background: $blue2;
+    }
+    &.tag-blue3{
+        color: $font_primary !important;
+        background: $blue3;
+    }
+    &.tag-blue4{
+        color: white;
+        background: $blue5;
+    }
+    &.tag-purple1{
+        color: white;
+        background: $purple1;
+    }
+    &.tag-purple2{
+        color: $purple1;
+        background: $purple3;
+    }
+    &.tag-red_access{
+        color: white !important;
+        background: $red_accessibility;
+    }
+    &.tag-coral{
+        color: white;
+        background: $brand_coral;
+    }
+    &.tag-red1{
+        color: white !important;
+        background: $red1;
+    }
+    &.tag-red2{
+        color: $red_accessibility !important;
+        background: $red2;
+    }
+    &.tag-orange_access{
+        color: white;
+        background: $orange_accessibility;
+    }
+    &.tag-orange1{
+        color: $orange_accessibility !important;
+        background: $orange3;
+    }
+    &.tag-green1{
+        color: white;
+        background: $green3;
+    }
+    &.tag-green2{
+        color: $green_accessibility;
+        background: $green2;
+    }
+    &.tag-green3{
+        color: white !important;
+        background: $green1;
+    }
+    &.tag-green_access{
+        color: white;
+        background: $green_accessibility;
+    }
+    &.tag-transparent{
+        background-color: transparent;
+    }
+    &.tag-brandblue{
+        color: $white;
+        background: $brand_blue;
+    }
+}
+.tag-vertical-status{
+    height: 100%;
+    width: 5px;
+    padding: 0;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: -1px;
+    @include border-radius(6px 0px 0px 6px);
+    z-index: 3;
+}
+.tag-horizontal-status{
+    justify-content: flex-end;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include border-radius(6px 6px 0 0);
+}
+table{
+    .tag-vertical-status{
+        @include border-radius(0);
+        width: 3px;
+        padding: 0;
+    }
+}

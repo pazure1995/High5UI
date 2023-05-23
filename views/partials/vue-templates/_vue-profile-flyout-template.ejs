@@ -1,0 +1,2581 @@
+<script type="text/x-template" id="profile-flyout-template">
+    <div class="view-panel" v-bind:class="{ show: showFlyout}">
+        <div class="view-panel-header">
+            <div class="px-3 py-2">
+                <button type="button" v-on:click="close" class="btn btn-icon"><i class="fal fa-times"></i></button>
+            </div>
+            <div class="px-3">
+                <div class="">
+                    <div class="d-flex" v-if="isMultipleRequestView">
+                        <span v-html="candidate.avatarSm"></span>        
+                        <div class="ml-3">
+                            <h6 class=" mb-1 mr-2">{{candidate.name}} <span v-if="candidate.vetted == true" class="tag tag-lg tag-coral ml-2"><img width="14px" src="/images/high5-mark-circle-dark.svg"/><span class="mx-2">VETTED</span></span></h6>
+                            <div class="d-flex align-items-center">
+                                <span class="mr-2">{{candidate.candidateDesignation}}</span>
+                            </div>
+                        </div>                    
+                    </div>
+                    <div v-else class="d-flex">       
+                        <span class="avatar-lg" v-html="avatar"></span>        
+                        <div class="ml-3">
+                            <h6 class=" mb-1">{{name}}</h6>
+                            <div class="d-flex align-items-start">
+                                <span v-if="candidate.isVetted" class="tag tag-lg tag-coral mr-1"><img width="14px" src="/images/high5-mark-circle-dark.svg"/><span class="mx-2">VETTED</span></span>
+                                <span class="tag tag-lg" v-bind:class="{ 'tag-red1': isDisqualified,'tag-green1': isHired,'tag-orange1': candidate.isOffered }">
+                                    <span v-if="candidate.isAutomatched">{{candidate.candidateDesignation}}</span>
+                                    <span v-if="candidate.isQualified">{{candidate.candidateDesignation}}</span>
+                                    <span v-if="candidate.isSourced">Sourced</span>
+                                    <span v-if="candidate.isSubmitted">Submitted</span>
+                                    <span v-if="candidate.isShortlisted">Shortlisted</span>
+                                    <span v-if="candidate.isInterviewed">Interviewed</span>
+                                    <span v-if="candidate.isOffered">Offer Pending</span>
+                                    <span v-if="candidate.isHired">Hired</span>
+                                    <span v-if="candidate.isDisqualified">Disqualified</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-auto d-flex align-items-center mt-2">
+
+                        <div class="mr-1">
+                            <div 
+                            v-if="isRecruiter"
+                            class="mr-1 d-inline-block" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="top" 
+                            title="" 
+                            data-original-title="Assign Assessment">
+                                <button v-on:click="assignAssessment(candidate)" type="button" class="btn btn-sm btn-gray">
+                                    <i class="fas fa-fw fa-spell-check"></i>
+                                    <span class="d-none-600 ml-1">Assign</span>
+                                </button>
+                            </div>
+                            <div data-bs-toggle="tooltip" data-bs-placement="left" title="" class="d-inline-block" data-original-title="Download Resume">
+                                <button type="button" class="btn btn-sm btn-gray">
+                                    <i class="fas fa-file-download"></i>
+                                    <span class="d-none-600 ml-1">Download</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div v-if="isSubmitted" class="btn-group btn-group-sm btn-split">
+                            <button type="button" v-on:click="shortlist" class="btn btn-sm">Shortlist</button>
+                            <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button type="button" v-on:click="offer" class="dropdown-item">Make An Offer</button>
+                                <button type="button" v-on:click="onDisqualifyClick(name)" class="dropdown-item">Disqualify</button>
+                            </div>
+                        </div>   
+                        <div v-if="isShortlisted" class="btn-group btn-group-sm btn-split">
+                            <button type="button" v-on:click="offer" class="btn btn-sm">Make An Offer</button>
+                            <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <button type="button" v-on:click="onDisqualifyClick(name)" class="dropdown-item">Disqualify</button>
+                            </div>              
+                        </div>
+                        <div v-if="isDisqualified">
+                            <div class="btn-group btn-group-sm btn-split">
+                                <button type="button" v-on:click="shortlist" class="btn btn-sm">Shortlist</button>
+                                <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <button type="button" v-on:click="offer" class="dropdown-item">Make An Offer</button>
+                                </div>
+                            </div>  
+                        </div> 
+                        <div v-if="candidate.showSubmitTalentBtn">
+                            <a href="/recruiter/submit/131232-2" type="button" class="btn btn-sm">Submit</a>
+                        </div>
+                        <div v-if="candidate.isAutomatched">
+                            <button type="button" v-on:click="sourceTalent(candidate)" class="btn btn-sm">Source</button>
+                        </div>
+                        <div v-if="candidate.isQualified">
+                            <button type="button" v-on:click="sourceTalent(candidate)" class="btn btn-sm">Source</button>
+                        </div>
+                        
+                        <div v-if="candidate.isSourced">
+                            <button type="button" v-on:click="resendRTR(candidate)" class="btn btn-sm">Resend RTR</button>
+                        </div>
+                    </div>
+                </div>
+                <ul class="nav nav-tabs mt-3">
+                    <li class="nav-item">
+                        <button 
+                        v-bind:class="{active: tabs.overview}"
+                        v-on:click="onTabClick('tabs','overview')"                           
+                        type="button" class="nav-link pb-3">
+                        Profile
+                        </button>
+                    </li>
+                    <li v-if="isMultipleRequestView" class="nav-item">
+                        <button 
+                        v-bind:class="{active: tabs.assessments}"
+                        v-on:click="onTabClick('tabs','assessments')"                           
+                        type="button" class="nav-link pb-3">
+                        Assessments
+                        </button>
+                    </li>
+                    <li v-if="isMultipleRequestView" class="nav-item">
+                        <button 
+                        v-bind:class="{active: tabs.requests}"
+                        v-on:click="onTabClick('tabs','requests')"                           
+                        type="button" class="nav-link pb-3">
+                            Requests
+                        </button>
+                    </li>
+                    <li v-if="!isMultipleRequestView" class="nav-item">
+                        <button 
+                        v-bind:class="{active: tabs.screenings}"
+                        v-on:click="onTabClick('tabs','screenings')"                           
+                        type="button" class="nav-link pb-3">
+                            Screenings
+                        </button>
+                    </li>
+                    <li v-if="!isMultipleRequestView" class="nav-item">
+                        <button 
+                        v-bind:class="{active: tabs.resumes}"
+                        v-on:click="onTabClick('tabs','resumes')"                           
+                        type="button" class="nav-link pb-3">
+                            Resumes
+                        </button>
+                    </li>
+                    <li v-if="!isMultipleRequestView" class="nav-item">
+                        <button 
+                        v-bind:class="{active: tabs.interviews}"
+                        v-on:click="onTabClick('tabs','interviews')"                          
+                        type="button" class="nav-link pb-3">
+                            Interviews
+                        </button>
+                    </li>
+                    <li v-if="!isMultipleRequestView" class="nav-item">
+                        <button 
+                        v-bind:class="{active: tabs.history}"
+                        v-on:click="onTabClick('tabs','history')"                          
+                        type="button" class="nav-link pb-3">
+                            History
+                        </button>
+                    </li>
+                </ul>
+             </div>
+        </div>
+        <div class="view-panel-body">
+            <div v-if="tabs.overview">
+                <div class="mb-2">
+                    <button
+                    v-on:click="onCollapsibleClick('general')"
+                    type="button" class="btn btn-collapsible">
+                        <i v-if="!collapsible.general" class="fal fa-angle-down fa-fw"></i>
+                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                        <span><small>General</small></span>
+                    </button>
+                </div>
+                <div class="ml-4 mb-4" v-bind:class="{'d-none': collapsible.general}">
+                    <div v-if="candidate.supplier" class="d-flex mb-2 pl-1">
+                        <div>
+                            <img class="avatar avatar-sm" src="https://logo.clearbit.com/talentlyft.com">
+                        </div>
+                        <div class="ml-2">
+                            <p class=" mb-0">{{candidate.supplier}}</p>
+                            <p class="mb-0"><small>Submitted By</small></p>
+                        </div>                                   
+                    </div>
+                    <div class="d-flex mb-2 pl-1">
+                        <div class="avatar avatar-sm">
+                            <i class="fad fa-fw fa-map-marked-alt"></i>
+                        </div>
+                        <div class="ml-2">
+                            <p class=" mb-0">Jacksonville Fl USA</p>
+                            <p class="mb-0"><small>Location</small></p>
+                        </div>                                   
+                    </div>
+                    <div class="d-flex mb-2 pl-1">
+                        <div class="avatar avatar-sm">
+                            <i class="fad fa-fw fa-piggy-bank"></i>
+                        </div>
+                        <div class="ml-2">
+                            <p class=" mb-0">Contract/Full Time</p>
+                            <p class="mb-0"><small>Work Types</small></p>
+                        </div>                                   
+                    </div>
+                    <div class="d-flex mb-2 pl-1">
+                        <div class="avatar avatar-sm">
+                            <i class="fad fa-fw fa-compass"></i>
+                        </div>
+                        <div class="ml-2">
+                            <p class=" mb-0">20%-30%</p>
+                            <p class="mb-0"><small>Willing To Travel</small></p>
+                        </div>                                   
+                    </div>
+                </div>
+        
+                <div class="mb-2">
+                    <button 
+                    v-on:click="onCollapsibleClick('preferredLocations')"
+                    type="button" class="btn btn-collapsible">
+                        <i  v-if="!collapsible.preferredLocations"  class="fal fa-angle-down fa-fw"></i>
+                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                        <span><small>Preferred Locations</small></span>
+                    </button>
+                </div>
+                <div v-bind:class="{'d-none': collapsible.preferredLocations}"  class="mb-4 ml-4 pl-1">
+                    <span class="tag tag-blue3 mb-1 mr-1">Jacksoville Fl.</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">Remote</span>
+                </div>
+
+                <div class="mb-2">
+                    <button 
+                    v-on:click="onCollapsibleClick('preferredIndustries')"
+                    type="button" class="btn btn-collapsible">
+                        <i  v-if="!collapsible.preferredIndustries"  class="fal fa-angle-down fa-fw"></i>
+                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                        <span><small>Industry Experience</small></span>
+                    </button>
+                </div>
+                <div v-bind:class="{'d-none': collapsible.preferredIndustries}"  class="mb-4 ml-4 pl-1">
+                    <span class="tag tag-blue3 mb-1 mr-1">Telecom</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">Pharmacuticals</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">Aviation</span>
+                </div>
+        
+                <div class="mb-2">
+                    <button 
+                    v-on:click="onCollapsibleClick('skills')"
+                    type="button" class="btn btn-collapsible">
+                        <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                        <span><small>Top <span v-if="!isMultipleRequestView">10</span> Skills</small></span>
+                    </button>
+                </div>
+                <div v-bind:class="{'d-none': collapsible.skills}"  class="mb-4 ml-4 pl-1">
+                    <span class="tag tag-green2 mr-1 mb-1"><i class="fas fa-star mr-2"></i>Java</span>
+                    <span class="tag tag-green2 mr-1 mb-1"><i class="fas fa-star mr-2"></i>Apache Tomcat</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">Mongo</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">MVC</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">Kubernetes</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">Hadoop</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">UX</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">User Centered Design</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">Node</span>
+                    <span class="tag tag-blue3 mb-1 mr-1">VueJs</span>
+                    <span v-if="viewAllSkills">
+                        <span class="tag  mb-1 mr-1">Spring MVC</span>
+                        <span class="tag  mb-1 mr-1">MYSQL</span>
+                        <span class="tag  mb-1 mr-1">PostGres</span>
+                        <span class="tag  mb-1 mr-1">Cassandra</span>
+                        <span class="tag  mb-1 mr-1">Docker</span>
+                        <span class="tag  mb-1 mr-1">Oracle</span>
+                        <span class="tag  mb-1 mr-1">Agile Methodologies</span>
+                        <span class="tag  mb-1 mr-1">Communications</span>
+                        <span class="tag  mb-1 mr-1">JQuery</span>
+                        <span class="tag  mb-1 mr-1">Javascript</span>
+                        <span class="tag  mb-1 mr-1">TypeScript</span>
+                        <span class="tag  mb-1 mr-1">EmberJs</span>
+                        <span class="tag  mb-1 mr-1">GWT</span>
+                        <span class="tag  mb-1 mr-1">HTML</span>
+                        <span class="tag  mb-1 mr-1">CSS3</span>
+                        <span class="tag  mb-1 mr-1">SASS</span>
+                    </span>
+                    <div v-if="isMultipleRequestView" class="mt-2">
+                        <button v-on:click="toggleAllSkills"type="button" class="btn btn-text">
+                            <span v-if="!viewAllSkills">View All Skills</span>
+                            <span v-else>View Top 10 Skills</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <button 
+                    v-on:click="onCollapsibleClick('history')"
+                    type="button" class="btn btn-collapsible">
+                        <i  v-if="!collapsible.history"  class="fal fa-angle-down fa-fw"></i>
+                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                        <span><small>Work History</small></span>
+                    </button>
+                </div>
+                <div v-bind:class="{'d-none': collapsible.history}"  class="mb-4 ml-4 pl-1">
+                    <div class="d-flex">
+                        <div class="mr-3 d-flex flex-column align-items-center">
+                            <i class="fad fa-fw fa-briefcase mt-1"></i>
+                            <div class="view-panel-spacer mt-1"></div>
+                        </div>
+                        <div class="pb-3">
+                            <p class="mb-1"><strong>Hammock Creative Inc. <span class="font-regular">(Creative Services)</span></strong></p>
+                            <p class="mb-0"><small><strong>Full Stack Engineer</strong></small></p>
+                            <p><small>January 2017 - 2020 (3 Years)</small></p>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="mr-3 d-flex flex-column align-items-center">
+                            <i class="fad fa-fw fa-briefcase mt-1"></i>
+                            <div class="view-panel-spacer mt-1"></div>
+                        </div>
+                        <div class="pb-3">
+                            <p class="mb-1"><strong>Eteam <span class="font-regular">(Talent Acquisition)</span></strong></p>
+                            <p class="mb-0"><small><strong>Junior Developer</strong></small></p>
+                            <p><small>January 2016 - 2017 (1 Year)</small></p>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="mb-2">
+                    <button 
+                    v-on:click="onCollapsibleClick('certifications')"
+                    type="button" class="btn btn-collapsible">
+                        <i  v-if="!collapsible.certifications"  class="fal fa-angle-down fa-fw"></i>
+                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                        <span><small>Certifications</small></span>
+                    </button>
+                </div>
+                <div v-bind:class="{'d-none': collapsible.certifications}"  class="mb-4 ml-4 pl-1">
+                    <div class="d-flex">
+                        <div class="mr-3 d-flex flex-column align-items-center">
+                            <i class="fad fa-award fa-fw mt-1"></i>
+                        </div>
+                        <div>
+                            <p class="mb-1"><strong>AWS</strong></p>
+                            <p><small>January 2020</small></p>
+                        </div>
+                    </div>           
+                </div>
+        
+                <div class="mb-2">
+                    <button 
+                    v-on:click="onCollapsibleClick('education')"
+                    type="button" class="btn btn-collapsible">
+                        <i  v-if="!collapsible.education"  class="fal fa-angle-down fa-fw"></i>
+                        <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                        <span><small>Education</small></span>
+                    </button>
+                </div>
+                <div v-bind:class="{'d-none': collapsible.education}"  class="mb-4 ml-4 pl-1">
+                    <div class="d-flex">
+                        <div class="mr-3 d-flex flex-column align-items-center">
+                            <i class="fad fa-graduation-cap fa-fw mt-1"></i>
+                        </div>
+                        <div>
+                            <p class="mb-1"><strong>Jacksonville University</strong></p>
+                            <p><small>BA Computer Science</small></p>
+                        </div>
+                    </div> 
+                </div>
+                <div class="mb-2">
+                    <button 
+                    v-on:click="onCollapsibleClick('resumes')"
+                    type="button" class="btn btn-collapsible">
+                        <i  v-if="!collapsible.resumes"  class="fal fa-angle-down fa-fw"></i>
+                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                        <span><small>Resumes</small></span>
+                    </button>
+                </div>
+                <div v-bind:class="{'d-none': collapsible.resumes}"  class="mb-4 ml-4 pl-1">
+                    <ul class="list-unstyled">
+                        <li class="py-1"><a href="#">Resume_2020.docx</a></li>
+                        <li class="py-1"><a href="#">Resume_2020.pdf</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div v-if="tabs.assessments">
+                <div class="py-3">
+                    <div>
+                       <div class="mb-2">
+                           <button 
+                           v-on:click="onCollapsibleClick('assessment1')"
+                           type="button" class="btn btn-collapsible">
+                            <i  v-if="!collapsible.assessment1"  class="fal fa-angle-down fa-fw"></i>
+                            <i v-else class="fal fa-angle-up fa-fw"></i> 
+                           <span><small>1 Way Video</small></span>
+                            </button>
+                        </div>
+                       <div v-bind:class="{'d-none': collapsible.assessment1}" 
+                       class="card ml-4 mb-4">
+                          <div class="card-body"><img src="/images/video_player_placeholder.gif" class="img-fluid"></div>
+                       </div>
+                    </div>
+                 </div>
+            </div>
+            <div v-if="tabs.requests">
+                    <div class="d-flex justify-content-end mb-2">
+                    <sort :categories="sortCategories" :right="sortRight"></sort>
+                    <filters class="ml-1" v-bind:categories="filterCategories"></filters>
+                </div>
+
+                <div class="card card-flat mb-2">
+                    <div class="card-body">
+                        <div>
+                            <button 
+                            v-on:click="onCollapsibleClick('request_1')"
+                            type="button" 
+                            class="btn btn-collapsible d-flex align-items-center">
+                                <div class="d-flex align-items-center d-block-600">
+                                    <div class="mr-2">
+                                        <span><small class="font-primary">Director of User Experience</small></span>
+                                    </div>
+                                    <div class="d-none d-block-600 mb-1"></div>
+                                    <div v-if="!isRecruiter">
+                                        <span class="tag tag-green3 font-white">New! Submitted</span>
+                                        <span class="ml-1"><small>ID: 1231223</small></span>
+                                    </div>
+                                    <div v-else>
+                                        <span class="tag tag-green3 font-white">Automatched</span>
+                                        <span class="ml-1"><small>ID: 1231223</small></span>
+                                    </div>
+                                </div>
+                                <div class="ml-auto">
+                                    <i v-if="!collapsible.request_1"  class="fal fa-fw fa-chevron-square-down"></i>
+                                    <i v-else aria-hidden="true" class="fal fa-fw fa-chevron-square-up"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div v-bind:class="{'d-none': collapsible.request_1}"  class="mb-4 pl-1 mt-4">
+                            <div class="card card-flat card-borderless bg-brand_blue">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <a href="/hiringmanager/request/123" class="btn btn-link btn-white"><strong>View Request: 1231223</strong></a>         
+                                    <div v-if="!isRecruiter" class="btn-group btn-group-sm btn-split">
+                                        <button type="button" v-on:click="shortlist" class="btn btn-sm">Shortlist</button>
+                                        <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <button type="button" v-on:click="offer" class="dropdown-item">Make An Offer</button>
+                                            <button type="button" v-on:click="onDisqualifyClick(name)" class="dropdown-item">Disqualify</button>
+                                        </div>
+                                    </div> 
+                                    <div v-if="isRecruiter">
+                                        <button type="button" v-on:click="sourceTalent(candidate)" class="btn btn-sm">Source</button>
+                                    </div>                                
+                                </div>
+                            </div>   
+                            <!-- request candidate tabs-->  
+                            <ul class="nav nav-tabs mt-3">
+                                <li 
+                                v-on:click="onTabClick('requestTabs1','request_1_details')"    
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs1.request_1_details}"
+                                type="button" class="nav-link pb-3">
+                                    Request Details
+                                    </button>
+                                 </li>
+                                <li 
+                                v-on:click="onTabClick('requestTabs1','request_1_screenings')"
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs1.request_1_screenings}"
+                                type="button" class="nav-link pb-3">
+                                   Screenings
+                                   </button>
+                                </li>
+                                <li 
+                                v-bind:class="{active: requestTabs1.request_1_resumes}"
+                                v-on:click="onTabClick('requestTabs1','request_1_resumes')"
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs1.request_1_resumes}"
+                                type="button" class="nav-link pb-3">
+                                   Resumes
+                                   </button>
+                                </li>
+                                <li 
+                                v-bind:class="{active: requestTabs1.request_1_interviews}"
+                                v-on:click="onTabClick('requestTabs1','request_1_interviews')"                                
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs1.request_1_interviews}"
+                                type="button" class="nav-link pb-3">
+                                   Interviews
+                                   </button>
+                                </li>
+                                <li 
+                                v-on:click="onTabClick('requestTabs1','request_1_history')"                                
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs1.request_1_history}"
+                                type="button" class="nav-link pb-3">
+                                   History
+                                   </button>
+                                </li>
+                             </ul>                            
+                            <hr class="m-0"/>
+                            <div v-if="requestTabs1.request_1_details">
+                                <div class="mb-2 mt-3">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_1_general')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.requst_1_general"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>General</small></span>
+                                    </button>
+                                </div>
+                                <div v-bind:class="{'d-none': collapsible.request_1_general}" class="mb-4 mt-4 ml-4">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-piggy-bank"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">Full Time</p>
+                                                    <p class="mb-0"><small>Job Type</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-calendar-day"></i></div>
+                                                <div class="ml-2">
+                                                    <p class="mb-0">6/1/2021</p>
+                                                    <p class="mb-0"><small>Target Start</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-map-marked-alt"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">Jacksonville Fl USA</p>
+                                                    <p class="mb-0"><small>Location</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-piggy-bank"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">$85,000</p>
+                                                    <p class="mb-0"><small>Maximum Annual Salary</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-users fa-fw"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">
+                                                        <span class="tag tag-font_accent d-inline-flex">
+                                                            <img width="16px" src="/images/high5-mark-circle.svg">
+                                                            <span class="mx-2">Hired 2 of 4</span>
+                                                        </span>
+                                                    </p>
+                                                    <p class="mb-0"><small>Total Number of Positions</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div>
+                                                    <img class="avatar avatar-sm" src="https://logo.clearbit.com/talentlyft.com">
+                                                </div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">TalentLyft</p>
+                                                    <p class="mb-0"><small>Submitted By</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_1_skills')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Required Skills</small></span>
+                                    </button>
+                                </div>
+                                <div v-bind:class="{'d-none': collapsible.request_1_skills}"  class="mb-4 ml-4 pl-1">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Java</span><span class="tag tag-blue3 mb-1 mr-1">Apache Tomcat</span><span class="tag tag-blue3 mb-1 mr-1">Hibernate</span><span class="tag tag-blue3 mb-1 mr-1">Spring MVC</span><span class="tag tag-blue3 mb-1 mr-1">Cassandra</span><span class="tag tag-blue3 mb-1 mr-1">Jenkins</span>
+                                </div>
+            
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_1_description')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i v-if="!collapsible.description"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Description</small></span>
+                                    </button>
+                                </div>
+                                
+                                <div v-bind:class="{'d-none': collapsible.request_1_description}" class="list-style-regular ml-4 mb-3 pl-1 collapsible-overflow">
+                                    <p>Doozer Software has been providing custom software development, database/BI consulting, and IT staffing services to companies for the past 23 years. Our IT staffing division is currently assisting one of our customers in a search for a Java Developer. These positions are 70-80% backend development and 20-30% front end development. The Java Developers will assist the team in the development and maintenance of line-of-business software applications and will work closely with Software Engineers and Architects in the development of system components. This is a full time position that comes with a suite of benefits. **This position will work remotely but in the future this position will require you to work onsite in Birmingham, Alabama or in Jacksonville, Florida. There is no sponsorship available for this position.</p>
+                                    <p><b>Position Responsibilities: </b></p>
+                                    <ul>
+                                    <li>Gathers and documents, understands and articulates functional, non-functional and business requirements that are already defined.</li>
+                                    <li>Assists with and demonstrated a growing proficiency in the design and development of simple software applications, model data relationships. Learns and uses software applications and infrastructure architecture.</li>
+                                    <li>Uses programming &amp; technical skills in various languages and products currently used by the company as specified for the position to develop of update programs.</li>
+                                    <li>Will work in the following environment: Java, Spring, Spring Boot, Hibernate, Restful APIs, SQL.</li>
+                                    <li>Will integrate with SOAP/Restful services</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Learns to write unit tests and performs integration testing to ensure high application quality to meet business requirements.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Develops an understanding of various deployment methods, tools and writes scripts and/or procedures to ensure efficient processes.</li>
+                                    <li>Becomes familiar with systems, databases and networking. Develops an understanding of the interoperability of IT assets with custom software development.</li>
+                                    </ul>
+                                    <p><b>Position Qualifications: </b></p>
+                                    <ul>
+                                    <li>5+ years of experience in a position performing software development.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Java, Spring Boot experience required.</li>
+                                    <li>Experience with AngularJS / Angular is a plus.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Must have the ability to learn Object Oriented Concepts and the concepts of a Software Development Life Cycle.</li>
+                                    <li>Understands the process of new application development and has the ability to apply these concepts with minimal mentoring and supervision.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Must have the ability to learn to provide support &amp; maintenance for simple to complex software applications.</li>
+                                    </ul>
+                                    <p>Job Type: Full-time</p>
+                                    <p>Pay: $85,000.00 - $125,000.00 per year</p>
+                                    <p>Benefits:</p>
+                                    <ul>
+                                    <li>401(k)</li>
+                                    <li>401(k) matching</li>
+                                    <li>Disability insurance</li>
+                                    <li>Health insurance</li>
+                                    <li>Life insurance</li>
+                                    <li>Paid time off</li>
+                                    </ul>
+                                    <p>Schedule:</p>
+                                    <ul>
+                                    <li>Monday to Friday</li>
+                                    </ul>
+                                    <p>Experience:</p>
+                                    <ul>
+                                    <li>JavaScript OR Angular: 3 years (Required)</li>
+                                    <li>java: 3 years (Required)</li>
+                                    <li>Spring MVC or Spring Boot: 2 years (Preferred)</li>
+                                    </ul>
+                                    <p>Work authorization:</p>
+                                    <ul>
+                                    <li>United States (Required)</li>
+                                    </ul>
+                                    <p>Work Location:</p>
+                                    <ul>
+                                    <li>Multiple locations</li>
+                                    </ul>
+                                    <p>Visa Sponsorship Potentially Available:</p>
+                                    <ul>
+                                    <li>No: Not providing sponsorship for this job</li>
+                                    </ul>
+                                    <p>Company's website:</p>
+                                    <ul>
+                                    <li>www.doozer.com</li>
+                                    </ul>
+                                    <p>Work Remotely:</p>
+                                    <ul>
+                                    <li>Temporarily due to COVID-19</li>
+                                    </ul>
+                                    <p>COVID-19 Precaution(s):</p>
+                                    <ul>
+                                    <li>Remote interview process</li>
+                                    </ul>                                
+                                </div>
+
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('education')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.education"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Education</small></span>
+                                    </button>
+                                </div>   
+                                <div v-bind:class="{'d-none': collapsible.education}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">High School Degree</span><span class="tag tag-blue3 mb-1 mr-1">Bachelors In Software Related Degrees</span>
+                                </div>
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('certifications')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.certifications"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Certifications</small></span>
+                                    </button>
+                                </div>    
+                                <div v-bind:class="{'d-none': collapsible.certifications}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Java Masters Course</span><span class="tag tag-blue3 mb-1 mr-1">Toast Masters</span><span class="tag tag-blue3 mb-1 mr-1">PMP</span>
+                                </div>  
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('industries')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.industries"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Industries</small></span>
+                                    </button>
+                                </div>     
+                                <div v-bind:class="{'d-none': collapsible.industries}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Aviation</span><span class="tag tag-blue3 mb-1 mr-1">Big Data</span>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('workHours')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.workHours"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Work Hours</small></span>
+                                    </button>
+                                </div> 
+                                <div v-bind:class="{'d-none': collapsible.workHours}"  class="mb-3 ml-4">
+                                    <p>Flexible</p>
+                                </div>     
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('travel')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.travel"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Travel</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.travel}"  class="mb-3 ml-4">
+                                    <p>15%</p>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('drugTest')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.drugTest"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Drug Test</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.drugTest}"  class="mb-3 ml-4">
+                                    <span >No</span>
+                                </div>        
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('backgroundCheck')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.backgroundCheck"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Background Check</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.backgroundCheck}"  class="mb-3 ml-4">
+                                    <span>No</span>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('securityClearance')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.securityClearance"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Security Clearance Level</small></span>
+                                    </button>
+                                </div> 
+                                <div v-bind:class="{'d-none': collapsible.securityClearance}"  class="mb-3 ml-4">
+                                    <p>none</p>
+                                </div>                    
+
+                            </div>
+                            <div class="py-3" v-if="requestTabs1.request_1_screenings">
+                                <div v-if="video1way">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('video1way')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>1 Way Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video1way}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="video2way">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('video2way')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>2 Way Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video2way}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="videomcq">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('videomcq')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>MCQ Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.videomcq}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs1.request_1_resumes">
+                                <div v-if="resumedoc">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('resumedoc')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>Resume Download</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumedoc}">
+                                        <a href="#" class="btn btn-secondary d-inline-block"><i class="fal fa-cloud-download-alt mr-2"></i>Download Resume</a>
+                                    </div>
+                                </div>
+                                <div v-if="resumevideo">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('resumevideo')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>Resume Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumevideo}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs1.request_1_interviews">
+                                <div class="card card-lg card-borderless card-flat  w-100">
+                                    <div class="card-body text-center">
+                                        <div class="avatar avatar-lg">
+                                            <i class="fad fa-fw fa-folder-open"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            No Interviews Found
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs1.request_1_history">
+                                <div class="timeline-wrap" style="max-height: unset;">
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>Submitted</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>RTR Accepted</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>Pending RTR</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>2 days ago</small> 
+                                          <p class="mb-0"><strong>Automatched</strong></p>
+                                       </div>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>   
+                    </div>  
+                </div>
+                <div class="card card-flat mb-2">
+                    <div class="card-body">
+                        <div>
+                            <button 
+                            v-on:click="onCollapsibleClick('request_2')"
+                            type="button" 
+                            class="btn btn-collapsible d-flex align-items-center">
+                                <div class="d-flex align-items-center d-block-600">
+                                    <div class="mr-2">
+                                        <span><small class="font-primary">Web Designer</small></span>
+                                    </div>
+                                    <div class="d-none d-block-600 mb-1"></div>
+                                    <div v-if="!isRecruiter">
+                                        <span class="tag tag-blue3 font-white">Submitted</span>
+                                        <span class="ml-1"><small>ID: 1231223-3</small></span>
+                                    </div>
+                                    <div v-if="isRecruiter">
+                                        <span class="tag tag-blue3 font-white">Sourced</span>
+                                        <span class="ml-1"><small>ID: 1231223-3</small></span>
+                                    </div>
+                                </div>
+                                <div class="ml-auto">
+                                    <i v-if="!collapsible.request_2"  class="fal fa-fw fa-chevron-square-down"></i>
+                                    <i v-else aria-hidden="true" class="fal fa-fw fa-chevron-square-up"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div v-bind:class="{'d-none': collapsible.request_2}"  class="mb-4 pl-1 mt-4">
+                            <div class="card card-flat card-borderless bg-brand_blue">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <a href="/hiringmanager/request/123" class="btn btn-link btn-white"><strong>View Request: 1231223-3</strong></a>         
+                                    <div v-if="!isRecruiter" class="btn-group btn-group-sm btn-split">
+                                        <button type="button" v-on:click="shortlist" class="btn btn-sm">Shortlist</button>
+                                        <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <button type="button" v-on:click="offer" class="dropdown-item">Make An Offer</button>
+                                            <button type="button" v-on:click="onDisqualifyClick(name)" class="dropdown-item">Disqualify</button>
+                                        </div>
+                                    </div>   
+                                    <div v-if="isRecruiter"">
+                                        <button type="button" v-on:click="resendRTR(candidate)" class="btn btn-sm">Resend RTR</button>
+                                    </div>  
+                                </div>
+                            </div>   
+                            <!-- request candidate tabs-->  
+                            <ul class="nav nav-tabs mt-3">
+                                <li 
+                                v-on:click="onTabClick('requestTabs2','request_2_details')"    
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs2.request_2_details}"
+                                type="button" class="nav-link pb-3">
+                                    Request Details
+                                    </button>
+                                 </li>
+                                <li 
+                                v-on:click="onTabClick('requestTabs2','request_2_screenings')"
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs2.request_2_screenings}"
+                                type="button" class="nav-link pb-3">
+                                   Screenings
+                                   </button>
+                                </li>
+                                <li 
+                                v-bind:class="{active: requestTabs2.request_2_resumes}"
+                                v-on:click="onTabClick('requestTabs2','request_2_resumes')"
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs2.request_2_resumes}"
+                                type="button" class="nav-link pb-3">
+                                   Resumes
+                                   </button>
+                                </li>
+                                <li 
+                                v-bind:class="{active: requestTabs2.request_2_interviews}"
+                                v-on:click="onTabClick('requestTabs2','request_2_interviews')"                                
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs2.request_2_interviews}"
+                                type="button" class="nav-link pb-3">
+                                   Interviews
+                                   </button>
+                                </li>
+                                <li 
+                                v-on:click="onTabClick('requestTabs2','request_2_history')"                                
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs2.request_2_history}"
+                                type="button" class="nav-link pb-3">
+                                   History
+                                   </button>
+                                </li>
+                             </ul>                            
+                            <hr class="m-0"/>
+                            <div v-if="requestTabs2.request_2_details">
+                                <div class="mb-2 mt-3">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_2_general')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.requst_2_general"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>General</small></span>
+                                    </button>
+                                </div>
+                                <div v-bind:class="{'d-none': collapsible.request_2_general}" class="mb-4 mt-4 ml-4">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-piggy-bank"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">Full Time</p>
+                                                    <p class="mb-0"><small>Job Type</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-calendar-day"></i></div>
+                                                <div class="ml-2">
+                                                    <p class="mb-0">6/1/2021</p>
+                                                    <p class="mb-0"><small>Target Start</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-map-marked-alt"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">Jacksonville Fl USA</p>
+                                                    <p class="mb-0"><small>Location</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-piggy-bank"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">$85,000</p>
+                                                    <p class="mb-0"><small>Maximum Annual Salary</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-users fa-fw"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">
+                                                        <span class="tag tag-font_accent d-inline-flex">
+                                                            <img width="16px" src="/images/high5-mark-circle.svg">
+                                                            <span class="mx-2">Hired 2 of 4</span>
+                                                        </span>
+                                                    </p>
+                                                    <p class="mb-0"><small>Total Number of Positions</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><img class="avatar avatar-sm" src="https://logo.clearbit.com/talentlyft.com"></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">TalentLyft</p>
+                                                    <p class="mb-0"><small>Submitted By</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_1_skills')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Required Skills</small></span>
+                                    </button>
+                                </div>
+                                <div v-bind:class="{'d-none': collapsible.request_1_skills}"  class="mb-4 ml-4 pl-1">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Java</span><span class="tag tag-blue3 mb-1 mr-1">Apache Tomcat</span><span class="tag tag-blue3 mb-1 mr-1">Hibernate</span><span class="tag tag-blue3 mb-1 mr-1">Spring MVC</span><span class="tag tag-blue3 mb-1 mr-1">Cassandra</span><span class="tag tag-blue3 mb-1 mr-1">Jenkins</span>
+                                </div>
+            
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_1_description')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i v-if="!collapsible.description"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Description</small></span>
+                                    </button>
+                                </div>
+                                
+                                <div v-bind:class="{'d-none': collapsible.request_1_description}" class="list-style-regular ml-4 mb-3 pl-1 collapsible-overflow">
+                                    <p>Doozer Software has been providing custom software development, database/BI consulting, and IT staffing services to companies for the past 23 years. Our IT staffing division is currently assisting one of our customers in a search for a Java Developer. These positions are 70-80% backend development and 20-30% front end development. The Java Developers will assist the team in the development and maintenance of line-of-business software applications and will work closely with Software Engineers and Architects in the development of system components. This is a full time position that comes with a suite of benefits. **This position will work remotely but in the future this position will require you to work onsite in Birmingham, Alabama or in Jacksonville, Florida. There is no sponsorship available for this position.</p>
+                                    <p><b>Position Responsibilities: </b></p>
+                                    <ul>
+                                    <li>Gathers and documents, understands and articulates functional, non-functional and business requirements that are already defined.</li>
+                                    <li>Assists with and demonstrated a growing proficiency in the design and development of simple software applications, model data relationships. Learns and uses software applications and infrastructure architecture.</li>
+                                    <li>Uses programming &amp; technical skills in various languages and products currently used by the company as specified for the position to develop of update programs.</li>
+                                    <li>Will work in the following environment: Java, Spring, Spring Boot, Hibernate, Restful APIs, SQL.</li>
+                                    <li>Will integrate with SOAP/Restful services</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Learns to write unit tests and performs integration testing to ensure high application quality to meet business requirements.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Develops an understanding of various deployment methods, tools and writes scripts and/or procedures to ensure efficient processes.</li>
+                                    <li>Becomes familiar with systems, databases and networking. Develops an understanding of the interoperability of IT assets with custom software development.</li>
+                                    </ul>
+                                    <p><b>Position Qualifications: </b></p>
+                                    <ul>
+                                    <li>5+ years of experience in a position performing software development.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Java, Spring Boot experience required.</li>
+                                    <li>Experience with AngularJS / Angular is a plus.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Must have the ability to learn Object Oriented Concepts and the concepts of a Software Development Life Cycle.</li>
+                                    <li>Understands the process of new application development and has the ability to apply these concepts with minimal mentoring and supervision.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Must have the ability to learn to provide support &amp; maintenance for simple to complex software applications.</li>
+                                    </ul>
+                                    <p>Job Type: Full-time</p>
+                                    <p>Pay: $85,000.00 - $125,000.00 per year</p>
+                                    <p>Benefits:</p>
+                                    <ul>
+                                    <li>401(k)</li>
+                                    <li>401(k) matching</li>
+                                    <li>Disability insurance</li>
+                                    <li>Health insurance</li>
+                                    <li>Life insurance</li>
+                                    <li>Paid time off</li>
+                                    </ul>
+                                    <p>Schedule:</p>
+                                    <ul>
+                                    <li>Monday to Friday</li>
+                                    </ul>
+                                    <p>Experience:</p>
+                                    <ul>
+                                    <li>JavaScript OR Angular: 3 years (Required)</li>
+                                    <li>java: 3 years (Required)</li>
+                                    <li>Spring MVC or Spring Boot: 2 years (Preferred)</li>
+                                    </ul>
+                                    <p>Work authorization:</p>
+                                    <ul>
+                                    <li>United States (Required)</li>
+                                    </ul>
+                                    <p>Work Location:</p>
+                                    <ul>
+                                    <li>Multiple locations</li>
+                                    </ul>
+                                    <p>Visa Sponsorship Potentially Available:</p>
+                                    <ul>
+                                    <li>No: Not providing sponsorship for this job</li>
+                                    </ul>
+                                    <p>Company's website:</p>
+                                    <ul>
+                                    <li>www.doozer.com</li>
+                                    </ul>
+                                    <p>Work Remotely:</p>
+                                    <ul>
+                                    <li>Temporarily due to COVID-19</li>
+                                    </ul>
+                                    <p>COVID-19 Precaution(s):</p>
+                                    <ul>
+                                    <li>Remote interview process</li>
+                                    </ul>                                
+                                </div>
+
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('education')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.education"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Education</small></span>
+                                    </button>
+                                </div>   
+                                <div v-bind:class="{'d-none': collapsible.education}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">High School Degree</span><span class="tag tag-blue3 mb-1 mr-1">Bachelors In Software Related Degrees</span>
+                                </div>
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('certifications')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.certifications"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Certifications</small></span>
+                                    </button>
+                                </div>    
+                                <div v-bind:class="{'d-none': collapsible.certifications}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Java Masters Course</span><span class="tag tag-blue3 mb-1 mr-1">Toast Masters</span><span class="tag tag-blue3 mb-1 mr-1">PMP</span>
+                                </div>  
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('industries')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.industries"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Industries</small></span>
+                                    </button>
+                                </div>     
+                                <div v-bind:class="{'d-none': collapsible.industries}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Aviation</span><span class="tag tag-blue3 mb-1 mr-1">Big Data</span>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('workHours')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.workHours"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Work Hours</small></span>
+                                    </button>
+                                </div> 
+                                <div v-bind:class="{'d-none': collapsible.workHours}"  class="mb-3 ml-4">
+                                    <p>Flexible</p>
+                                </div>     
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('travel')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.travel"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Travel</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.travel}"  class="mb-3 ml-4">
+                                    <p>15%</p>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('drugTest')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.drugTest"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Drug Test</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.drugTest}"  class="mb-3 ml-4">
+                                    <span >No</span>
+                                </div>        
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('backgroundCheck')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.backgroundCheck"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Background Check</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.backgroundCheck}"  class="mb-3 ml-4">
+                                    <span>No</span>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('securityClearance')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.securityClearance"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Security Clearance Level</small></span>
+                                    </button>
+                                </div> 
+                                <div v-bind:class="{'d-none': collapsible.securityClearance}"  class="mb-3 ml-4">
+                                    <p>none</p>
+                                </div>                    
+
+                            </div>
+                            <div class="py-3" v-if="requestTabs2.request_2_screenings">
+                                <div v-if="video1way">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('video1way')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>1 Way Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video1way}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="video2way">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('video2way')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>2 Way Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video2way}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="videomcq">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('videomcq')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>MCQ Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.videomcq}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs2.request_2_resumes">
+                                <div v-if="resumedoc">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('resumedoc')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>Resume Download</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumedoc}">
+                                        <a href="#" class="btn btn-secondary d-inline-block"><i class="fal fa-cloud-download-alt mr-2"></i>Download Resume</a>
+                                    </div>
+                                </div>
+                                <div v-if="resumevideo">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('resumevideo')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>Resume Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumevideo}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs2.request_2_interviews">
+                                <div class="card card-lg card-borderless card-flat  w-100">
+                                    <div class="card-body text-center">
+                                        <div class="avatar avatar-lg">
+                                            <i class="fad fa-fw fa-folder-open"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            No Interviews Found
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs2.request_2_history">
+                                <div class="timeline-wrap" style="max-height: unset;">
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>Submitted</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>RTR Accepted</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>Pending RTR</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>2 days ago</small> 
+                                          <p class="mb-0"><strong>Automatched</strong></p>
+                                       </div>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>   
+                    </div>  
+                </div>
+                <div class="card card-flat mb-2">
+                    <div class="card-body">
+                        <div>
+                            <button 
+                            v-on:click="onCollapsibleClick('request_3')"
+                            type="button" 
+                            class="btn btn-collapsible d-flex align-items-center">
+                                <div class="d-flex align-items-center d-block-600">
+                                    <div class="mr-2">
+                                        <span><small class="font-primary">Graphic Designer</small></span>
+                                    </div>
+                                    <div class="d-none d-block-600 mb-1"></div>
+                                    <div>
+                                        <span class="tag tag-blue3 font-white">Shorlisted</span>
+                                        <span class="ml-1"><small>ID: 009873</small></span>
+                                    </div>
+                                </div>
+                                <div class="ml-auto">
+                                    <i v-if="!collapsible.request_3"  class="fal fa-fw fa-chevron-square-down"></i>
+                                    <i v-else aria-hidden="true" class="fal fa-fw fa-chevron-square-up"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div v-bind:class="{'d-none': collapsible.request_3}"  class="mb-4 pl-1 mt-4">
+                            <div class="card card-flat card-borderless bg-brand_blue">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <a href="/hiringmanager/request/123" class="btn btn-link btn-white"><strong>View Request: 009873</strong></a>         
+                                    <div v-if="!isRecruiter" class="btn-group btn-group-sm btn-split">
+                                        <button type="button" v-on:click="offer" class="btn btn-sm">Make An Offer</button>
+                                        <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <button type="button" v-on:click="onDisqualifyClick(name)" class="dropdown-item">Disqualify</button>
+                                        </div>              
+                                    </div> 
+                                </div>
+                            </div>   
+                            <!-- request candidate tabs-->  
+                            <ul class="nav nav-tabs mt-3">
+                                <li 
+                                v-on:click="onTabClick('requestTabs3','request_2_details')"    
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs3.request_2_details}"
+                                type="button" class="nav-link pb-3">
+                                    Request Details
+                                    </button>
+                                 </li>
+                                <li 
+                                v-on:click="onTabClick('requestTabs3','request_2_screenings')"
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs3.request_2_screenings}"
+                                type="button" class="nav-link pb-3">
+                                   Screenings
+                                   </button>
+                                </li>
+                                <li 
+                                v-bind:class="{active: requestTabs3.request_2_resumes}"
+                                v-on:click="onTabClick('requestTabs3','request_2_resumes')"
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs3.request_2_resumes}"
+                                type="button" class="nav-link pb-3">
+                                   Resumes
+                                   </button>
+                                </li>
+                                <li 
+                                v-bind:class="{active: requestTabs3.request_2_interviews}"
+                                v-on:click="onTabClick('requestTabs3','request_2_interviews')"                                
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs3.request_2_interviews}"
+                                type="button" class="nav-link pb-3">
+                                   Interviews
+                                   </button>
+                                </li>
+                                <li 
+                                v-on:click="onTabClick('requestTabs3','request_2_history')"                                
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs3.request_2_history}"
+                                type="button" class="nav-link pb-3">
+                                   History
+                                   </button>
+                                </li>
+                             </ul>                            
+                            <hr class="m-0"/>
+                            <div v-if="requestTabs3.request_2_details">
+                                <div class="mb-2 mt-3">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_3_general')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.requst_3_general"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>General</small></span>
+                                    </button>
+                                </div>
+                                <div v-bind:class="{'d-none': collapsible.request_3_general}" class="mb-4 mt-4 ml-4">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-piggy-bank"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">Full Time</p>
+                                                    <p class="mb-0"><small>Job Type</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-calendar-day"></i></div>
+                                                <div class="ml-2">
+                                                    <p class="mb-0">6/1/2021</p>
+                                                    <p class="mb-0"><small>Target Start</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-map-marked-alt"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">Jacksonville Fl USA</p>
+                                                    <p class="mb-0"><small>Location</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-piggy-bank"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">$85,000</p>
+                                                    <p class="mb-0"><small>Maximum Annual Salary</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-users fa-fw"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">
+                                                        <span class="tag tag-font_accent d-inline-flex">
+                                                            <img width="16px" src="/images/high5-mark-circle.svg">
+                                                            <span class="mx-2">Hired 2 of 4</span>
+                                                        </span>
+                                                    </p>
+                                                    <p class="mb-0"><small>Total Number of Positions</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><img class="avatar avatar-sm" src="https://logo.clearbit.com/talentlyft.com"></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">TalentLyft</p>
+                                                    <p class="mb-0"><small>Submitted By</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_1_skills')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Required Skills</small></span>
+                                    </button>
+                                </div>
+                                <div v-bind:class="{'d-none': collapsible.request_1_skills}"  class="mb-4 ml-4 pl-1">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Java</span><span class="tag tag-blue3 mb-1 mr-1">Apache Tomcat</span><span class="tag tag-blue3 mb-1 mr-1">Hibernate</span><span class="tag tag-blue3 mb-1 mr-1">Spring MVC</span><span class="tag tag-blue3 mb-1 mr-1">Cassandra</span><span class="tag tag-blue3 mb-1 mr-1">Jenkins</span>
+                                </div>
+            
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_1_description')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i v-if="!collapsible.description"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Description</small></span>
+                                    </button>
+                                </div>
+                                
+                                <div v-bind:class="{'d-none': collapsible.request_1_description}" class="list-style-regular ml-4 mb-3 pl-1 collapsible-overflow">
+                                    <p>Doozer Software has been providing custom software development, database/BI consulting, and IT staffing services to companies for the past 23 years. Our IT staffing division is currently assisting one of our customers in a search for a Java Developer. These positions are 70-80% backend development and 20-30% front end development. The Java Developers will assist the team in the development and maintenance of line-of-business software applications and will work closely with Software Engineers and Architects in the development of system components. This is a full time position that comes with a suite of benefits. **This position will work remotely but in the future this position will require you to work onsite in Birmingham, Alabama or in Jacksonville, Florida. There is no sponsorship available for this position.</p>
+                                    <p><b>Position Responsibilities: </b></p>
+                                    <ul>
+                                    <li>Gathers and documents, understands and articulates functional, non-functional and business requirements that are already defined.</li>
+                                    <li>Assists with and demonstrated a growing proficiency in the design and development of simple software applications, model data relationships. Learns and uses software applications and infrastructure architecture.</li>
+                                    <li>Uses programming &amp; technical skills in various languages and products currently used by the company as specified for the position to develop of update programs.</li>
+                                    <li>Will work in the following environment: Java, Spring, Spring Boot, Hibernate, Restful APIs, SQL.</li>
+                                    <li>Will integrate with SOAP/Restful services</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Learns to write unit tests and performs integration testing to ensure high application quality to meet business requirements.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Develops an understanding of various deployment methods, tools and writes scripts and/or procedures to ensure efficient processes.</li>
+                                    <li>Becomes familiar with systems, databases and networking. Develops an understanding of the interoperability of IT assets with custom software development.</li>
+                                    </ul>
+                                    <p><b>Position Qualifications: </b></p>
+                                    <ul>
+                                    <li>5+ years of experience in a position performing software development.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Java, Spring Boot experience required.</li>
+                                    <li>Experience with AngularJS / Angular is a plus.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Must have the ability to learn Object Oriented Concepts and the concepts of a Software Development Life Cycle.</li>
+                                    <li>Understands the process of new application development and has the ability to apply these concepts with minimal mentoring and supervision.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Must have the ability to learn to provide support &amp; maintenance for simple to complex software applications.</li>
+                                    </ul>
+                                    <p>Job Type: Full-time</p>
+                                    <p>Pay: $85,000.00 - $125,000.00 per year</p>
+                                    <p>Benefits:</p>
+                                    <ul>
+                                    <li>401(k)</li>
+                                    <li>401(k) matching</li>
+                                    <li>Disability insurance</li>
+                                    <li>Health insurance</li>
+                                    <li>Life insurance</li>
+                                    <li>Paid time off</li>
+                                    </ul>
+                                    <p>Schedule:</p>
+                                    <ul>
+                                    <li>Monday to Friday</li>
+                                    </ul>
+                                    <p>Experience:</p>
+                                    <ul>
+                                    <li>JavaScript OR Angular: 3 years (Required)</li>
+                                    <li>java: 3 years (Required)</li>
+                                    <li>Spring MVC or Spring Boot: 2 years (Preferred)</li>
+                                    </ul>
+                                    <p>Work authorization:</p>
+                                    <ul>
+                                    <li>United States (Required)</li>
+                                    </ul>
+                                    <p>Work Location:</p>
+                                    <ul>
+                                    <li>Multiple locations</li>
+                                    </ul>
+                                    <p>Visa Sponsorship Potentially Available:</p>
+                                    <ul>
+                                    <li>No: Not providing sponsorship for this job</li>
+                                    </ul>
+                                    <p>Company's website:</p>
+                                    <ul>
+                                    <li>www.doozer.com</li>
+                                    </ul>
+                                    <p>Work Remotely:</p>
+                                    <ul>
+                                    <li>Temporarily due to COVID-19</li>
+                                    </ul>
+                                    <p>COVID-19 Precaution(s):</p>
+                                    <ul>
+                                    <li>Remote interview process</li>
+                                    </ul>                                
+                                </div>
+
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('education')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.education"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Education</small></span>
+                                    </button>
+                                </div>   
+                                <div v-bind:class="{'d-none': collapsible.education}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">High School Degree</span><span class="tag tag-blue3 mb-1 mr-1">Bachelors In Software Related Degrees</span>
+                                </div>
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('certifications')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.certifications"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Certifications</small></span>
+                                    </button>
+                                </div>    
+                                <div v-bind:class="{'d-none': collapsible.certifications}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Java Masters Course</span><span class="tag tag-blue3 mb-1 mr-1">Toast Masters</span><span class="tag tag-blue3 mb-1 mr-1">PMP</span>
+                                </div>  
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('industries')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.industries"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Industries</small></span>
+                                    </button>
+                                </div>     
+                                <div v-bind:class="{'d-none': collapsible.industries}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Aviation</span><span class="tag tag-blue3 mb-1 mr-1">Big Data</span>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('workHours')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.workHours"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Work Hours</small></span>
+                                    </button>
+                                </div> 
+                                <div v-bind:class="{'d-none': collapsible.workHours}"  class="mb-3 ml-4">
+                                    <p>Flexible</p>
+                                </div>     
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('travel')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.travel"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Travel</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.travel}"  class="mb-3 ml-4">
+                                    <p>15%</p>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('drugTest')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.drugTest"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Drug Test</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.drugTest}"  class="mb-3 ml-4">
+                                    <span >No</span>
+                                </div>        
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('backgroundCheck')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.backgroundCheck"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Background Check</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.backgroundCheck}"  class="mb-3 ml-4">
+                                    <span>No</span>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('securityClearance')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.securityClearance"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Security Clearance Level</small></span>
+                                    </button>
+                                </div> 
+                                <div v-bind:class="{'d-none': collapsible.securityClearance}"  class="mb-3 ml-4">
+                                    <p>none</p>
+                                </div>                    
+
+                            </div>
+                            <div class="py-3" v-if="requestTabs3.request_2_screenings">
+                                <div v-if="video1way">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('video1way')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>1 Way Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video1way}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="video2way">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('video2way')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>2 Way Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video2way}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="videomcq">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('videomcq')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>MCQ Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.videomcq}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs3.request_2_resumes">
+                                <div v-if="resumedoc">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('resumedoc')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>Resume Download</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumedoc}">
+                                        <a href="#" class="btn btn-secondary d-inline-block"><i class="fal fa-cloud-download-alt mr-2"></i>Download Resume</a>
+                                    </div>
+                                </div>
+                                <div v-if="resumevideo">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('resumevideo')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>Resume Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumevideo}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs3.request_2_interviews">
+                                <div class="card card-lg card-borderless card-flat  w-100">
+                                    <div class="card-body text-center">
+                                        <div class="avatar avatar-lg">
+                                            <i class="fad fa-fw fa-folder-open"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            No Interviews Found
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs3.request_2_history">
+                                <div class="timeline-wrap" style="max-height: unset;">
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>Submitted</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>RTR Accepted</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>Pending RTR</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>2 days ago</small> 
+                                          <p class="mb-0"><strong>Automatched</strong></p>
+                                       </div>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>   
+                    </div>  
+                </div>
+                <div class="card card-flat mb-2">
+                    <div class="card-body">
+                        <div>
+                            <button 
+                            v-on:click="onCollapsibleClick('request_4')"
+                            type="button" 
+                            class="btn btn-collapsible d-flex align-items-center">
+                                <div class="d-flex align-items-center d-block-600">
+                                    <div class="mr-2">
+                                        <span><small class="font-primary">Illustrator</small></span>
+                                    </div>
+                                    <div class="d-none d-block-600 mb-1"></div>
+                                    <div>
+                                        <span class="tag tag-red1">Disqualified</span>
+                                        <span class="ml-1"><small>ID: 23456</small></span>
+                                    </div>
+                                </div>
+                                <div class="ml-auto">
+                                    <i v-if="!collapsible.request_4"  class="fal fa-fw fa-chevron-square-down"></i>
+                                    <i v-else aria-hidden="true" class="fal fa-fw fa-chevron-square-up"></i>
+                                </div>
+                            </button>
+                        </div>
+                        <div v-bind:class="{'d-none': collapsible.request_4}"  class="mb-4 pl-1 mt-4">
+                            <div class="card card-flat card-borderless bg-brand_blue">
+                                <div class="card-body d-flex justify-content-between align-items-center">
+                                    <a href="/hiringmanager/request/123" class="btn btn-link btn-white"><strong>View Request: 23456</strong></a>         
+                                    <div v-if="!isRecruiter" class="btn-group btn-group-sm btn-split">
+                                        <button type="button" v-on:click="shortlist" class="btn btn-sm">Shortlist</button>
+                                        <button type="button" class="btn btn-sm dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <button type="button" v-on:click="offer" class="dropdown-item">Make An Offer</button>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>   
+                            <!-- request candidate tabs-->  
+                            <ul class="nav nav-tabs mt-3">
+                                <li 
+                                v-on:click="onTabClick('requestTabs4','request_2_details')"    
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs4.request_2_details}"
+                                type="button" class="nav-link pb-3">
+                                    Request Details
+                                    </button>
+                                 </li>
+                                <li 
+                                v-on:click="onTabClick('requestTabs4','request_2_screenings')"
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs4.request_2_screenings}"
+                                type="button" class="nav-link pb-3">
+                                   Screenings
+                                   </button>
+                                </li>
+                                <li 
+                                v-bind:class="{active: requestTabs4.request_2_resumes}"
+                                v-on:click="onTabClick('requestTabs4','request_2_resumes')"
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs4.request_2_resumes}"
+                                type="button" class="nav-link pb-3">
+                                   Resumes
+                                   </button>
+                                </li>
+                                <li 
+                                v-bind:class="{active: requestTabs4.request_2_interviews}"
+                                v-on:click="onTabClick('requestTabs4','request_2_interviews')"                                
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs4.request_2_interviews}"
+                                type="button" class="nav-link pb-3">
+                                   Interviews
+                                   </button>
+                                </li>
+                                <li 
+                                v-on:click="onTabClick('requestTabs4','request_2_history')"                                
+                                class="nav-item">
+                                <button 
+                                v-bind:class="{active: requestTabs4.request_2_history}"
+                                type="button" class="nav-link pb-3">
+                                   History
+                                   </button>
+                                </li>
+                             </ul>                            
+                            <hr class="m-0"/>
+                            <div v-if="requestTabs4.request_2_details">
+                                <div class="mb-2 mt-3">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_4_general')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.requst_4_general"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>General</small></span>
+                                    </button>
+                                </div>
+                                <div v-bind:class="{'d-none': collapsible.request_4_general}" class="mb-4 mt-4 ml-4">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-piggy-bank"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">Full Time</p>
+                                                    <p class="mb-0"><small>Job Type</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-calendar-day"></i></div>
+                                                <div class="ml-2">
+                                                    <p class="mb-0">6/1/2021</p>
+                                                    <p class="mb-0"><small>Target Start</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-map-marked-alt"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">Jacksonville Fl USA</p>
+                                                    <p class="mb-0"><small>Location</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-fw fa-piggy-bank"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">$85,000</p>
+                                                    <p class="mb-0"><small>Maximum Annual Salary</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><i aria-hidden="true" class="fad fa-users fa-fw"></i></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">
+                                                        <span class="tag tag-font_accent d-inline-flex">
+                                                            <img width="16px" src="/images/high5-mark-circle.svg">
+                                                            <span class="mx-2">Hired 2 of 4</span>
+                                                        </span>
+                                                    </p>
+                                                    <p class="mb-0"><small>Total Number of Positions</small></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 d-flex mb-2 pl-1">
+                                                <div><img class="avatar avatar-sm" src="https://logo.clearbit.com/talentlyft.com"></div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">TalentLyft</p>
+                                                    <p class="mb-0"><small>Submitted By</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_1_skills')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Required Skills</small></span>
+                                    </button>
+                                </div>
+                                <div v-bind:class="{'d-none': collapsible.request_1_skills}"  class="mb-4 ml-4 pl-1">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Java</span><span class="tag tag-blue3 mb-1 mr-1">Apache Tomcat</span><span class="tag tag-blue3 mb-1 mr-1">Hibernate</span><span class="tag tag-blue3 mb-1 mr-1">Spring MVC</span><span class="tag tag-blue3 mb-1 mr-1">Cassandra</span><span class="tag tag-blue3 mb-1 mr-1">Jenkins</span>
+                                </div>
+            
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('request_1_description')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i v-if="!collapsible.description"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Description</small></span>
+                                    </button>
+                                </div>
+                                
+                                <div v-bind:class="{'d-none': collapsible.request_1_description}" class="list-style-regular ml-4 mb-3 pl-1 collapsible-overflow">
+                                    <p>Doozer Software has been providing custom software development, database/BI consulting, and IT staffing services to companies for the past 23 years. Our IT staffing division is currently assisting one of our customers in a search for a Java Developer. These positions are 70-80% backend development and 20-30% front end development. The Java Developers will assist the team in the development and maintenance of line-of-business software applications and will work closely with Software Engineers and Architects in the development of system components. This is a full time position that comes with a suite of benefits. **This position will work remotely but in the future this position will require you to work onsite in Birmingham, Alabama or in Jacksonville, Florida. There is no sponsorship available for this position.</p>
+                                    <p><b>Position Responsibilities: </b></p>
+                                    <ul>
+                                    <li>Gathers and documents, understands and articulates functional, non-functional and business requirements that are already defined.</li>
+                                    <li>Assists with and demonstrated a growing proficiency in the design and development of simple software applications, model data relationships. Learns and uses software applications and infrastructure architecture.</li>
+                                    <li>Uses programming &amp; technical skills in various languages and products currently used by the company as specified for the position to develop of update programs.</li>
+                                    <li>Will work in the following environment: Java, Spring, Spring Boot, Hibernate, Restful APIs, SQL.</li>
+                                    <li>Will integrate with SOAP/Restful services</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Learns to write unit tests and performs integration testing to ensure high application quality to meet business requirements.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Develops an understanding of various deployment methods, tools and writes scripts and/or procedures to ensure efficient processes.</li>
+                                    <li>Becomes familiar with systems, databases and networking. Develops an understanding of the interoperability of IT assets with custom software development.</li>
+                                    </ul>
+                                    <p><b>Position Qualifications: </b></p>
+                                    <ul>
+                                    <li>5+ years of experience in a position performing software development.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Java, Spring Boot experience required.</li>
+                                    <li>Experience with AngularJS / Angular is a plus.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Must have the ability to learn Object Oriented Concepts and the concepts of a Software Development Life Cycle.</li>
+                                    <li>Understands the process of new application development and has the ability to apply these concepts with minimal mentoring and supervision.</li>
+                                    </ul>
+                                    <ul>
+                                    <li>Must have the ability to learn to provide support &amp; maintenance for simple to complex software applications.</li>
+                                    </ul>
+                                    <p>Job Type: Full-time</p>
+                                    <p>Pay: $85,000.00 - $125,000.00 per year</p>
+                                    <p>Benefits:</p>
+                                    <ul>
+                                    <li>401(k)</li>
+                                    <li>401(k) matching</li>
+                                    <li>Disability insurance</li>
+                                    <li>Health insurance</li>
+                                    <li>Life insurance</li>
+                                    <li>Paid time off</li>
+                                    </ul>
+                                    <p>Schedule:</p>
+                                    <ul>
+                                    <li>Monday to Friday</li>
+                                    </ul>
+                                    <p>Experience:</p>
+                                    <ul>
+                                    <li>JavaScript OR Angular: 3 years (Required)</li>
+                                    <li>java: 3 years (Required)</li>
+                                    <li>Spring MVC or Spring Boot: 2 years (Preferred)</li>
+                                    </ul>
+                                    <p>Work authorization:</p>
+                                    <ul>
+                                    <li>United States (Required)</li>
+                                    </ul>
+                                    <p>Work Location:</p>
+                                    <ul>
+                                    <li>Multiple locations</li>
+                                    </ul>
+                                    <p>Visa Sponsorship Potentially Available:</p>
+                                    <ul>
+                                    <li>No: Not providing sponsorship for this job</li>
+                                    </ul>
+                                    <p>Company's website:</p>
+                                    <ul>
+                                    <li>www.doozer.com</li>
+                                    </ul>
+                                    <p>Work Remotely:</p>
+                                    <ul>
+                                    <li>Temporarily due to COVID-19</li>
+                                    </ul>
+                                    <p>COVID-19 Precaution(s):</p>
+                                    <ul>
+                                    <li>Remote interview process</li>
+                                    </ul>                                
+                                </div>
+
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('education')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.education"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Education</small></span>
+                                    </button>
+                                </div>   
+                                <div v-bind:class="{'d-none': collapsible.education}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">High School Degree</span><span class="tag tag-blue3 mb-1 mr-1">Bachelors In Software Related Degrees</span>
+                                </div>
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('certifications')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.certifications"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Certifications</small></span>
+                                    </button>
+                                </div>    
+                                <div v-bind:class="{'d-none': collapsible.certifications}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Java Masters Course</span><span class="tag tag-blue3 mb-1 mr-1">Toast Masters</span><span class="tag tag-blue3 mb-1 mr-1">PMP</span>
+                                </div>  
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('industries')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.industries"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Industries</small></span>
+                                    </button>
+                                </div>     
+                                <div v-bind:class="{'d-none': collapsible.industries}"  class="mb-3 ml-4">
+                                    <span class="tag tag-blue3 mb-1 mr-1">Aviation</span><span class="tag tag-blue3 mb-1 mr-1">Big Data</span>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('workHours')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.workHours"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Work Hours</small></span>
+                                    </button>
+                                </div> 
+                                <div v-bind:class="{'d-none': collapsible.workHours}"  class="mb-3 ml-4">
+                                    <p>Flexible</p>
+                                </div>     
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('travel')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.travel"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Travel</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.travel}"  class="mb-3 ml-4">
+                                    <p>15%</p>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('drugTest')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.drugTest"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Drug Test</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.drugTest}"  class="mb-3 ml-4">
+                                    <span >No</span>
+                                </div>        
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('backgroundCheck')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.backgroundCheck"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Background Check</small></span>
+                                    </button>
+                                </div>  
+                                <div v-bind:class="{'d-none': collapsible.backgroundCheck}"  class="mb-3 ml-4">
+                                    <span>No</span>
+                                </div>    
+                                <div class="mb-2">
+                                    <button 
+                                    v-on:click="onCollapsibleClick('securityClearance')"
+                                    type="button" class="btn btn-collapsible">
+                                        <i  v-if="!collapsible.securityClearance"  class="fal fa-angle-down fa-fw"></i>
+                                        <i v-else class="fal fa-angle-up fa-fw"></i>
+                                        <span><small>Security Clearance Level</small></span>
+                                    </button>
+                                </div> 
+                                <div v-bind:class="{'d-none': collapsible.securityClearance}"  class="mb-3 ml-4">
+                                    <p>none</p>
+                                </div>                    
+
+                            </div>
+                            <div class="py-3" v-if="requestTabs4.request_2_screenings">
+                                <div v-if="video1way">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('video1way')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>1 Way Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video1way}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="video2way">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('video2way')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>2 Way Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video2way}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="videomcq">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('videomcq')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>MCQ Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.videomcq}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs4.request_2_resumes">
+                                <div v-if="resumedoc">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('resumedoc')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>Resume Download</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumedoc}">
+                                        <a href="#" class="btn btn-secondary d-inline-block"><i class="fal fa-cloud-download-alt mr-2"></i>Download Resume</a>
+                                    </div>
+                                </div>
+                                <div v-if="resumevideo">
+                                    <div class="mb-2">
+                                        <button 
+                                        v-on:click="onCollapsibleClick('resumevideo')"
+                                        type="button" class="btn btn-collapsible">
+                                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                                            <span><small>Resume Video</small></span>
+                                        </button>
+                                    </div>
+                                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumevideo}">
+                                        <div class="card-body">
+                    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs4.request_2_interviews">
+                                <div class="card card-lg card-borderless card-flat  w-100">
+                                    <div class="card-body text-center">
+                                        <div class="avatar avatar-lg">
+                                            <i class="fad fa-fw fa-folder-open"></i>
+                                        </div>
+                                        <div class="mt-2">
+                                            No Interviews Found
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-3" v-if="requestTabs4.request_2_history">
+                                <div class="timeline-wrap" style="max-height: unset;">
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>Submitted</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>RTR Accepted</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>1 day ago</small> 
+                                          <p class="mb-0"><strong>Pending RTR</strong></p>
+                                       </div>
+                                    </div>
+                                    <div class="timeline pb-3">
+                                       <i class="fad fa-circle fa-fw icon" aria-hidden="true"></i> 
+                                       <div>
+                                          <small>2 days ago</small> 
+                                          <p class="mb-0"><strong>Automatched</strong></p>
+                                       </div>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div>   
+                    </div>  
+                </div>
+            </div>
+            <div v-if="tabs.screenings">
+                <div v-if="video1way">
+                    <div class="mb-2">
+                        <button 
+                        v-on:click="onCollapsibleClick('video1way')"
+                        type="button" class="btn btn-collapsible">
+                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                            <span><small>1 Way Video</small></span>
+                        </button>
+                    </div>
+                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video1way}">
+                        <div class="card-body">
+    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="video2way">
+                    <div class="mb-2">
+                        <button 
+                        v-on:click="onCollapsibleClick('video2way')"
+                        type="button" class="btn btn-collapsible">
+                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                            <span><small>2 Way Video</small></span>
+                        </button>
+                    </div>
+                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.video2way}">
+                        <div class="card-body">
+    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="videomcq">
+                    <div class="mb-2">
+                        <button 
+                        v-on:click="onCollapsibleClick('videomcq')"
+                        type="button" class="btn btn-collapsible">
+                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                            <span><small>MCQ Video</small></span>
+                        </button>
+                    </div>
+                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.videomcq}">
+                        <div class="card-body">
+    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="tabs.resumes">
+                <div v-if="resumedoc">
+                    <div class="mb-2">
+                        <button 
+                        v-on:click="onCollapsibleClick('resumedoc')"
+                        type="button" class="btn btn-collapsible">
+                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                            <span><small>Resume Download</small></span>
+                        </button>
+                    </div>
+                    <div class="ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumedoc}">
+                        <a href="#" class="btn btn-secondary d-inline-block"><i class="fal fa-cloud-download-alt mr-2"></i>Download Resume</a>
+                    </div>
+                </div>
+                <div v-if="resumevideo">
+                    <div class="mb-2">
+                        <button 
+                        v-on:click="onCollapsibleClick('resumevideo')"
+                        type="button" class="btn btn-collapsible">
+                            <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                            <i v-else class="fal fa-angle-up fa-fw mt-1"></i>
+                            <span><small>Resume Video</small></span>
+                        </button>
+                    </div>
+                    <div class="card ml-4 mb-4" v-bind:class="{'d-none': collapsible.resumevideo}">
+                        <div class="card-body">
+    <img class="img-fluid" src="/images/video_player_placeholder.gif"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="tabs.interviews">
+                <div v-if="interviews.length == 0">
+                    <div class="card card-lg card-borderless card-flat  w-100">
+                        <div class="card-body text-center">
+                            <div class="avatar avatar-lg">
+                                <i class="fad fa-fw fa-folder-open"></i>
+                            </div>
+                            <div class="mt-2">
+                                No Interviews Found
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else>
+                    <div v-for="(item,index) in interviews">
+                        <div class="d-flex align-items-center mb-2">
+                            <span class="avatar avatar-sm mr-4">{{index + 1}}</span>
+                            <span v-if="item.isCompleted">Completed On: {{item.date}}</span>
+                            <span v-else>Upcoming Interview</span>
+                        </div>
+                        <div v-if="!item.isCompleted" class="d-flex align-items-center justify-content-center mb-4">
+                            <div class="card card-lg card-flat  w-100 ml-5">
+                                <div class="card-body d-flex">
+                                    <div class="avatar avatar-blue3 mr-3">
+                                        <i class="fad fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="w-100">
+                                        <div class="mb-2">
+                                            <p class="mb-1"><strong>Scheduled</strong></p>
+                                            {{item.date}}
+                                        </div>
+                                        <div class="mb-2">
+                                            <p class="mb-1"><strong>Type</strong></p>
+                                            <span v-if="item.is2Way">2 Way Video</span>
+                                            <span v-if="item.isMCQ">MCQ</span>
+                                            <span v-if="item.isF2F">Face To Face</span>
+                                            <span v-if="item.isTelephone">Telephone</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <p class="mb-1"><strong>Interviewer(s)</strong></p>
+                                            <span v-if="item.isExpert"><span class="tag tag-coral mr-2">High5 Expert: Niraj S.</span></span>
+                                            <span v-if="item.HM"><span class="tag">Garrett M.</span></span>
+                                            <span v-if="item.isGroup">
+                                                <span v-for="(interviewer,index) in item.interviewers" class="tag">{{interviewer}}</span>
+                                            </span>
+                                        </div>
+                                        <hr/>
+                                        <div class="mt-3">
+                                            <button type="button" v-on:click="rescheduleInterview" class="btn btn-text">
+                                                Reschedule Interview
+                                            </button>
+                                            <span class="mx-1">|</span>
+                                            <button 
+                                            v-on:click="cancelInterview(item)"
+                                            type="button" class="btn btn-text">
+                                                Cancel Interview
+                                            </button>
+                                        </div>                                 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="card mb-4 ml-5" v-bind:class="{'d-none': collapsible.video1way}">
+                            <div class="card-body">
+
+                                <iframe v-if="item.isMCQ" class="mb-3" width="100%" height="315" src="https://www.youtube.com/embed/1SsDFqhUetQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                <iframe v-if="item.is2Way" class="mb-3" width="100%" height="315" src="https://www.youtube.com/embed/1SsDFqhUetQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                          
+                                <div>
+                                    <div class="mb-2">
+                                        <p class="mb-1"><strong>Type</strong></p>
+                                        <span v-if="item.is2Way">2 Way Video</span>
+                                        <span v-if="item.isMCQ">MCQ</span>
+                                        <span v-if="item.isF2F">Face To Face</span>
+                                        <span v-if="item.isTelephone">Telephone</span>
+                                    </div>
+                                    <div class="mb-2">
+                                        <p class="mb-1"><strong>Interviewer(s)</strong></p>
+                                        <span v-if="item.isExpert"><span class="tag tag-coral mr-2">High5 Expert: Niraj S.</span></span>
+                                        <span v-if="item.isHM"><span class="tag">Garrett M.</span></span>
+                                        <span v-if="item.isGroup">
+                                            <span v-for="(interviewer,index) in item.interviewers" class="tag mr-2">{{interviewer}}</span>
+                                        </span>
+                                    </div>
+                                </div>                               
+                                
+                                <p v-if="item.comments" class="mt-3 mb-1"><strong>Comments</strong></p>
+
+                                <div v-for="(comment,index) in item.comments" class="card card-flat card-borderless bg-blue_gray mb-2">
+                                    <div class="card-body d-flex">
+                                       <div class="mr-2"><i class="fas fa-comment font-muted" aria-hidden="true"></i></div>
+                                       <div>
+                                          <p class="mb-0"><small>{{comment.author}}</small></p>
+                                          <div class="font-14">{{comment.message}}</div>
+                                       </div>
+                                    </div>
+                                 </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-wrap" v-if="tabs.history" style="max-height: unset;">
+
+                <div class="timeline pb-3" v-for="item in history">
+                    <i class="fad fa-circle fa-fw icon"></i>
+                    <div>
+                        <small>{{item.timestamp}}</small>
+                        <p class="mb-0">
+                            <strong>{{item.description}}</strong>
+                        </p>
+                        <div  v-for="comment in item.comments" class="card card-flat card-borderless bg-blue_gray mt-2">
+                            <div class="card-body d-flex">
+                                <div class="mr-2">
+                                    <i class="fas fa-comment font-muted"></i>
+                                </div>
+                                <div>
+                                    <p class="mb-0"><small>{{comment.author}}</small></p>
+                                    <div class="font-14" v-html="comment.message"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</script>

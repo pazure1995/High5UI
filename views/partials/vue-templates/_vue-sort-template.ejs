@@ -1,0 +1,70 @@
+<script type="text/x-template" id="sort-template">
+    <div v-on:click="dropdownSortClicked" class="dropdown-sort dd-sort">
+        <button 
+        v-if="toggleView.gridview || toggleView.listview" 
+        type="button" 
+        v-on:click="toggleSort"
+        v-bind:class="{ 'btn-gray': sortHasSorts }"
+        class="btn btn-sm w-auto btn-text-accent dd-sort">
+            <i aria-hidden="true" class="fad fa-sort-down font-16 dd-sort"></i>
+            Sort /
+            <span class="dd-sort">{{sortList.length}}</span>
+        </button>
+        <div
+        v-if="showSort"
+        class="dropdown-sort-menu reset-on-click dd-sort">
+            <div class="d-flex justify-content-between dd-sort reset-on-click">
+                <h6 class="mb-0 reset-on-click dd-sort">Sort</h6>
+                <button type="button" v-on:click="removeAllSorts" class="btn btn-text dd-sort"><strong class="dd-sort">Clear All</strong></button>
+            </div>
+            <p class="mb-0 py-3 reset-on-click dd-sort" v-if="sortList.length == 0">
+                Sort by Job Title, Type, Location, Preferred Start Date, and New Candidates
+            </p>
+
+            <div v-for="(sort,index) in sortList"
+            class="d-flex align-items-center justify-content-end mt-3 dd-sort">
+                <div class="dropdown dropdown-select mr-2 dd-sort w-100">
+                    <button v-on:click="showSortCategoryDropdownMenu(sort)" class="btn btn-secondary dropdown-toggle dd-sort w-100 d-flex align-items-center justify-content-between" type="button">
+                        <span class="dd-sort" v-html="sort.label"></span>
+                    </button>
+                    <ul class="dropdown-menu dd-sort" v-if="sort.showCategoryDropdownMenu">
+                        <li class="dd-sort" 
+                        v-for="(option,index) in sort.options">
+                            <button type="button"
+                            class="dd-sort" 
+                            v-bind:class="{ 'dd-active': option.is_active }"
+                            v-on:click="setSortSelectCategory(option)" 
+                            v-html="option.label"></button>
+                        </li>
+                    </ul>
+                  </div>
+                  <div class="dropdown dropdown-select dd-sort">
+                    <button 
+                    v-on:click="showSortDirectionDropdownMenu(sort)"
+                    class="btn btn-secondary dropdown-toggle dd-sort" type="button" >
+                        <i class="fal fa-sort-amount-down mr-2 dd-sort"></i> Ascending
+                    </button>
+                    <ul class="dropdown-menu dd-sort" 
+                    v-if="sort.showDirectionDropdownMenu">
+                        <li class="dd-sort"><button type="button" class="dd-sort"><i class="fal fa-fw fa-sort-amount-down mr-2 dd-sort"></i> Ascending</button></li>
+                        <li class="dd-sort"><button type="button" class="dd-sort"><i class="fal fa-fw fa-sort-amount-up mr-2 dd-sort"></i> Descending</button></li>
+                    </ul>
+                  </div>
+                  <button type="button" v-on:click="removeSort(sort)" class="btn btn-text ml-2 mr-1 dd-sort">
+                      <strong class="dd-sort font-muted">
+                          <i class="fas fa-times-circle dd-sort"></i>
+                        </strong>
+                    </button>
+            </div>
+            <button 
+            type="button" 
+            v-on:click="addSort" 
+            v-if="sortHasCategories"
+            class="btn btn-text mt-4 dd-sort">
+                <i class="fal fa-plus mr-2 dd-sort"></i>
+                <strong class="dd-sort">Add Sort</strong>
+            </button>
+        </div>
+
+    </div>
+</script>

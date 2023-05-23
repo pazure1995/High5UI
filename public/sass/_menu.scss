@@ -1,0 +1,280 @@
+#Menu{
+    width: $MainMenuWidth;
+    background: white;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    @include transition(all .5s ease);
+    .inner{
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .menu-header{
+        text-align: center;
+        padding: 0px 20px;
+        height: $MainMenuHeaderHeight;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+    .logo{
+        width: 30px;
+    }
+    .search-field{
+        position: relative;
+        input{
+            width: 100%;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            padding-left: 30px;
+            font-size: 14px;
+            border: none;
+            @include border-radius(250px);
+            background: $blue_gray;
+            @include box-shadow(none);
+            &:focus,
+            &:active{
+                outline: none
+            }
+
+        }
+        svg{
+            color: $font_accent;
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            font-size: 14px;
+        }
+        .appsearch-results-wrap{
+            top: 28px;
+            a{
+                text-align: left;
+            }
+        }
+    }
+}
+#MenuToggleClose{
+    position: fixed;
+    top: 20px;
+    left: $MainMenuWidth - 16px;
+    z-index: 2;
+    background: white;
+    @include box-shadow(none);
+    @include border-radius(250px);
+    border: none;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    z-index: 5;
+    @include transition(all .5s ease);
+    cursor: pointer;
+    padding: 0;
+    &:focus,
+    &:active{
+        outline: none;
+    }
+    &:hover{
+        svg{
+            path{
+                fill: $blue5;
+            }
+        }
+    }
+    .collapse-icon,
+    .open-icon{
+        @include transition(all .5s ease);
+    }
+    .collapse-icon{
+        @include transform(translateX(5px));
+    }
+    .open-icon{
+        @include transform(scale(0));
+    }
+}
+#VersionSelect{
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    padding: 0;
+    color: $blue_primary !important;
+    font-weight: bold;
+    background: none;
+    border: none;
+    &:hover,
+    &:focus{
+        background: none !important;
+        border: none !important;
+        outline: none;
+        @include box-shadow(none !important);
+    }
+}
+#MainNav{
+    margin: 0;
+    list-style-type: none;
+    padding: 0 0 50px 0;
+    width: 100%;
+    height: calc(100% - #{$MainMenuHeaderHeight});
+    overflow: auto;
+    padding-top: 20px;
+    li{
+        padding: 0;
+        margin: 0;
+        margin-bottom: 20px;
+        ul{
+            li{
+                margin-bottom: 0px;
+            }
+        }
+
+        &.nav-collapse{
+            margin-bottom: 5px;
+            button{
+                svg{
+                    @include transform(rotate(-90deg));
+                }
+            }
+            ul{
+                display: none;
+            }
+        }
+    }
+    button{
+        background: none;
+        border: none;
+        @include box-shadow(none);
+        color: $font_accent !important;
+        font-weight: bold;
+        font-size: 14px;
+        padding: 3px 20px;
+        position: relative;
+        width: 100%;
+        text-align: left;
+        display: block;
+        @include border-radius(0px);
+    
+        &:hover{
+            background: $gray3;
+            cursor: pointer;
+        }
+        &:hover,
+        &:focus{
+            outline: none;
+        }
+        svg{
+            position: absolute;
+            top: 6px;
+            right: 20px;
+        }
+    }
+    a{
+        font-size: 14px;
+        font-weight: 400;
+        display: block;
+        width: 100%;
+        padding: 3px 20px;
+        color: $font_accent;
+        position: relative;
+        &:before{
+            content: "";
+            display: block;
+            width: 4px;
+            height: 100%;
+            @include border-radius(0px 250px 250px 0);
+            background: $blue5;
+            position: absolute;
+            top: 0;
+            left: 0;
+            @include transition(all .5s ease);
+            @include transform(scale(0));
+        }
+        &:hover{
+            color: $blue5;
+            text-decoration: none;
+            background: $gray3;
+        }
+        &.active{
+            font-weight: bold;
+            color: $blue5;
+            &:hover{
+                background: none;
+            }
+            &:before{
+                @include transform(scale(1));
+            }
+        }
+    }
+}
+#PageHeader{
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 70px;
+    padding: 0 20px;
+    z-index: 3;
+}
+body.scrolling{
+    &.collapse-menu{
+        #MenuToggleClose{
+            background: white !important;
+            @include box-shadow(0px 0px 0px 2px white);
+            path{
+                fill: $font-primary;
+            }
+            &:hover{
+                svg{
+                    path{
+                        fill: $blue_primary !important;
+                    }
+                }
+            }
+        }
+    }
+}
+body.collapse-menu{
+    #Menu{
+        @include transform(translateX(-100%));
+    }
+    #MenuToggleClose{
+        @include transform(translateX(-($MainMenuWidth - 30px)));
+        background: none;      
+        .collapse-icon{
+            @include transform(scale(0));
+        }
+        .open-icon{
+            @include transform(scale(1.2) translateX(-2px));
+        }
+    }
+    #BodyWrap{
+        width: 100%;
+        @include transform(translateX(-$MainMenuWidth));
+    }
+    &.menu-toggle-white{
+        .open-icon{
+            svg{
+                path{
+                    fill: white;
+                }
+            }
+        }
+        #MenuToggleClose:hover svg path {
+            fill: white;
+        }
+    }
+}
+@media(max-width: 1024px){
+    body.collapse-menu{
+        #BodyWrap{
+            @include transform(translateX(0));
+        }
+    }
+}

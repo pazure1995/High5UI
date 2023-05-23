@@ -1,0 +1,254 @@
+// Avatar Variables
+// Circle size
+$avatarSmall: 25px;
+$avatarMedium: 48px;
+$avatarLarge: 64px;
+$avatarExtraLarge: 80px;
+$avatarExtraExtraLarge: 108px;
+// Text top padding
+$avatarPadSmall: 5px;
+$avatarPadMedium: 13px;
+$avatarPadLarge: 20px;
+$avatarPadExtraLarge: 30px;
+$avatarPadExtraExtraLarge: 40px;
+// Font-size 
+$avatarFontSmall: 12px;
+$avatarFontMedium: 18px;
+$avatarFontLarge: 28px;
+$avatarFontExtraLarge: 36px;
+$avatarFontExtraExtraLarge: 44px;
+
+// Avatar Mixin
+// Default at medium - gray3 - font primary
+@mixin avatar-dims($fontSize: $avatarFontMedium,$size: $avatarMedium){
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: top;
+    
+    //dims
+    border-radius: 50%;
+    height: $size;
+    width: $size;
+    max-width: $size;
+    min-width: $size;
+    max-height: $size;
+    min-height: $size;
+    font-size: $fontSize; 
+    line-height: $size;
+
+    img{
+        width: 100%;
+        height: 100%;
+        display: block;
+        @include border-radius(250px);
+    }
+
+    &.avatar-bordered{
+        line-height: $size - 5px;
+    }
+}
+
+@mixin avatar-color($avaColor: $gray3, $fontColor: $font-primary){ 
+    //colors
+    background-color: $avaColor;
+    color: $fontColor;   
+}
+
+
+// Avatars
+.avatar-lg .avatar.avatar-sm{
+    position: relative;
+    font-family: 'Arial', sans-serif;
+    @include avatar-dims();
+}
+.avatar {
+    position: relative;
+    font-family: 'Arial', sans-serif;
+    @include avatar-dims();
+    @include avatar-color();
+
+    &.avatar-sm{
+        @include avatar-dims($size: $avatarSmall,$fontSize: $avatarFontSmall);
+        line-height: $avatarSmall;
+    }
+    &.avatar-lg{
+        @include avatar-dims($size: $avatarLarge,$fontSize: $avatarFontLarge);
+        line-height: $avatarLarge;
+    }
+    &.avatar-xl{
+        @include avatar-dims($size: $avatarExtraLarge,$fontSize: $avatarFontExtraLarge);
+        line-height: $avatarExtraLarge - 3;    
+    }
+    &.avatar-xxl{
+        @include avatar-dims($size: $avatarExtraExtraLarge,$fontSize: $avatarFontExtraExtraLarge);
+        line-height: $avatarExtraExtraLarge - 3;    
+    }
+    &.avatar-bordered,
+    &.avatar-bordered.avatar-white{
+        border: 3px solid white !important;
+    }
+    &.avatar-modal{
+        color: $muted_gray;
+        background: none;
+        border: none;
+        width: auto !important;
+        height: auto !important;
+        font-size: 16px;
+    }
+    &.avatar-card{
+        color: $muted_gray;
+        background: none;
+        border: none;
+        width: auto !important;
+        height: auto !important;
+        font-size: 22px;
+        line-height: 1.5em;
+        margin-bottom:10px;
+    }
+
+    .jewel{
+        position: absolute;
+        top: 0px;
+        right: -5px;
+        padding: 4px;
+        @include border-radius(250px);
+        background: $brand_coral;
+        display: block;
+        border: 2px solid white;
+
+    &.jewel-green{
+        background-color: $green1;
+    }
+    
+
+    }
+
+}
+
+img.avatar{
+    @include avatar-dims();
+    object-fit: cover;
+
+    &.avatar-sm{
+        @include avatar-dims( $size: $avatarSmall);
+        object-fit: cover;
+    }
+
+    &.avatar-lg{
+        @include avatar-dims( $size: $avatarLarge);
+        object-fit: cover;
+    }
+    &.avatar-bordered{
+        border: 1px solid $gray1;
+    }
+}
+.avatar-blue_primary{
+    @include avatar-color($blue_primary,$white);
+}
+.avatar-blue1{
+    @include avatar-color($blue1,$white);
+}
+.avatar-blue2{
+    @include avatar-color($blue2,$white);
+}
+.avatar-blue3{
+    @include avatar-color($blue3,$blue_primary);
+}
+.avatar-red1{
+    @include avatar-color($red1,$white);
+}
+.avatar-red2{
+    @include avatar-color($red2,$red1);
+}
+.avatar-orange1{
+    @include avatar-color($orange1,$white);
+}
+.avatar-orange2{
+    @include avatar-color($orange2,$white);
+}
+.avatar-orange3{
+    @include avatar-color($orange3,$orange1);
+}
+.avatar-green_primary{
+    @include avatar-color($green_primary,white);
+}
+.avatar-green_button{
+    @include avatar-color($green_button,white);
+}
+.avatar-green1{
+    @include avatar-color($green1,white);
+}
+.avatar-green2{
+    @include avatar-color($green2,$green_primary);
+}
+.avatar-green3{
+    @include avatar-color($green4,white);
+}
+.avatar-green4{
+    @include avatar-color($green5,white);
+}
+.avatar-purple1{
+    @include avatar-color($purple1,white);
+}
+.avatar-purple2{
+    @include avatar-color($purple2,white);
+}
+.avatar-purple3{
+    @include avatar-color($purple3,$purple1);
+}
+.avatar-pink1{
+    @include avatar-color($pink,white);
+}
+.avatar-white{
+    @include avatar-color(white,$font_primary);
+    border: 1px solid #ccc !important;
+}
+.avatar-ghost{
+    @include avatar-color(none,$font_primary);
+    border: 1px solid $blue_primary !important;
+    background: none;
+}
+.avatar-brandblue{
+    @include avatar-color($brand_blue,white);
+}
+.avatar-coral{
+    @include avatar-color($brand_coral,white);
+}
+
+.avatar.avatar-edit{
+    position: relative;
+    @include border-radius(250px !important);
+    padding: 0 !important;
+    &:hover,
+    &:active,
+    &:focus{
+        img{
+            filter:grayscale(1);
+        }
+        .edit-icon{
+            background: #33b1ff;
+            border-color: #33b1ff;
+            color: white;
+        }
+    }
+    .edit-icon{
+        position: absolute;
+        bottom: -4px;
+        right: -4px;
+        font-size: 12px;
+        display: block;
+        @include border-radius(250px);
+        background: white;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    input{
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+}

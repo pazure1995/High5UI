@@ -1,0 +1,19 @@
+.ti-new-tag-input{
+    &:focus,
+    &:active{
+        @include box-shadow(none);
+    }
+}
+.vue-tags-input{
+    max-width: 100% !important;
+}
+.ti-input{
+    order: 1px solid #ced4da;
+    font-size: 14px !important;
+    @include border-radius(.25rem);
+}
+.ti-tag{
+    background: $blue3 !important;
+    color: $brand_blue !important;
+    font-size: 14px !important;
+}

@@ -1,0 +1,285 @@
+// Paragraphs
+p {
+    font-size: 1em;
+}
+
+// Lead Paragraphs
+p.lead {
+    font-size: 1.57em;
+    line-height: 1.8em;
+    font-weight: 200;
+}
+p.normal{
+  font-size: 1.17em;
+  line-height: 1.5;
+}
+
+// Headlines H1-H6
+h1,h2,h3,h4,h5,h6{
+    font-weight: 700;
+}
+h1 {
+    font-size: 2.857em;
+}
+
+h2 {
+    font-size: 2.286em;
+}
+
+h3 {
+    font-size: 2em;
+}
+
+h4 {
+    font-size: 1.714em;
+}
+
+h5 {
+    font-size: 1.429em;
+}
+
+h6 {
+    font-size: 1.143em;
+}
+
+// HR
+hr{
+    border: none;
+    background: $gray1;
+}
+.hr-small {
+    max-width: 50px;
+    border-top-width: 3px;
+}
+
+.hr-left {
+    margin-left: 0;
+    text-align: left;
+}
+
+.hr-right {
+    margin-right: 0;
+    text-align: right;
+}
+
+.hr-white {
+    background: white;
+}
+
+.hr-blue {
+    border-top-color: $blue_primary;
+}
+.list-style-none{
+  ul,ol{
+    list-style-type: none;
+  }
+}
+.list-style-regular{
+  ul,ol{
+    margin-left: 20px;
+  }
+}
+// Links
+a {
+    color: $brand_coral;
+    font-weight: 700; 
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    text-decoration: none;
+
+    &:hover{
+        color: darken($brand_coral,5%);
+    }
+    &.no-hover{
+      color: inherit;
+    }
+}
+
+.font-uppercase{
+    text-transform: uppercase;
+}
+// Small
+.font-small,
+small {
+    font-size: 80%;
+    font-weight: inherit;
+}
+.font-xsmall{
+    font-size: 60%;
+}
+// Strong
+.font-strong,
+.font-bold {
+    font-weight: bold;
+}
+.font-regular{
+    font-weight: 400;
+}
+// Font Utilities
+.font-light {
+    font-weight: 300;
+}
+
+
+ul,ol{
+    list-style-type: disc;
+    padding-left: 0;
+}
+ol{
+    list-style-type:decimal;
+}
+
+.font-black{color: #000;}
+.font-gray1{color: $gray1;}
+
+.font-white{color: $white;}
+.font-primary{color: $font_primary;}
+.font-blue_primary{color: $blue_primary;}
+.font-muted{color: $muted_gray;}
+.font-coral{color: $brand_coral;}
+.font-brandBlue{color: $brand_blue;}
+.font-green{color: $green_primary;}
+.font-red{color: $red1;}
+.font-lg{
+    font-size: 3.5em;
+}
+.font-14{
+  font-size: 14px;
+}
+.font-16{
+  font-size: 16px;
+}
+.font-18{
+  font-size: 18px !important;
+}
+.font-22{
+  font-size: 22px !important;
+}
+.font-italic{
+    font-style:italic;
+}
+.overflow-hidden{
+    overflow: hidden;
+}
+.p-relative{
+    position: relative;
+}
+.p-absolute-top-left{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  z-index: 2;
+  &.left-20{
+    left: 20px;
+  }
+}
+.p-absolute-top-right{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 2;
+  &.left-20{
+    left: 20px;
+  }
+}
+.hide{
+    display: none;
+}
+.img-fluid{
+    width: 100%;
+}
+.text-justify {
+    text-align: justify !important;
+  }
+  
+  .text-nowrap {
+    white-space: nowrap !important;
+  }
+  
+  .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .text-left {
+    text-align: left !important;
+  }
+  
+  .text-right {
+    text-align: right !important;
+  }
+  
+  .text-center {
+    text-align: center !important;
+  }
+  
+  @media (min-width: 576px) {
+    .text-sm-left {
+      text-align: left !important;
+    }
+    .text-sm-right {
+      text-align: right !important;
+    }
+    .text-sm-center {
+      text-align: center !important;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .text-md-left {
+      text-align: left !important;
+    }
+    .text-md-right {
+      text-align: right !important;
+    }
+    .text-md-center {
+      text-align: center !important;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .text-lg-left {
+      text-align: left !important;
+    }
+    .text-lg-right {
+      text-align: right !important;
+    }
+    .text-lg-center {
+      text-align: center !important;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .text-xl-left {
+      text-align: left !important;
+    }
+    .text-xl-right {
+      text-align: right !important;
+    }
+    .text-xl-center {
+      text-align: center !important;
+    }
+  }
+  
+  .text-lowercase {
+    text-transform: lowercase !important;
+  }
+  
+  .text-uppercase {
+    text-transform: uppercase !important;
+  }
+  
+  .text-capitalize {
+    text-transform: capitalize !important;
+  }
+  .jewel{
+    position: absolute;
+    top: 0px;
+    right: -10px;
+    padding: 3px;
+    @include border-radius(250px);
+    background: $brand_coral;
+    display: block;
+    border: 2px solid white;
+  }

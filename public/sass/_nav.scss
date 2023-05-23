@@ -1,0 +1,126 @@
+
+#Nav{
+    width: $NavWidth;
+    background: $brand_blue;
+    height: 100%;
+    position: relative;
+    &:after{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 10px;
+        height: 100%;
+        @include border-radius(50px 0 0 50px);
+        background: white;
+        content: "";
+        display: none;
+    }
+    .top{
+        display: flex;
+        padding: 10px 15px;
+    }
+    .brand-logo{
+        width: 50px;
+        height: 50px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: 50%;
+    }
+    .title{
+        color: white;
+    }
+    .body{
+        padding: 10px 15px;
+    }
+    .menu{
+        margin-top: 20px;
+        list-style-type:none;
+        a{
+            padding: 10px 15px;
+            color: white;
+            display: block;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            @include border-radius(6px);
+            &.active,
+            &:hover{
+                background: rgba(255,255,255,.1);
+            }
+        }
+    }
+}
+.nav-tabs{
+    border-bottom: none;
+    flex-wrap: nowrap;
+    overflow:auto;
+    a.nav-link,
+    .nav-link{
+        border: none;
+        margin-bottom: 0;
+        font-weight: 400;
+        color: $gray1;
+        @include border-radius(0px !important);
+        position: relative;
+        white-space: nowrap;
+        padding-left: 10px;
+        padding-right: 10px;
+        &:after{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            max-width: 20px;
+            content: "";
+            display: block;
+            height: 3px;
+            background: $brand_coral;
+            margin: 0 auto;
+            @include border-radius(25px 25px 0 0);
+            @include transition(all .5s ease);
+            @include transform(scale(0));
+        }
+        &:hover,
+        &:active,
+        &:focus,
+        &.active{
+            color: $brand_coral;
+            border: none;
+            outline: none;
+            @include box-shadow(none);
+            &:after{
+                @include transform(scale(1));
+            }
+        }
+        &.active{
+            color: $font_primary;
+        }
+    }
+    &.nav-tabs-white{
+        .nav-link{
+            color: white;
+            background: none;
+            &:after{
+                background: white;
+            }
+            &:hover,
+            &:active,
+            &:focus,
+            &.active{
+                color: white;
+            }
+        }
+    }
+}
+@media(max-width: 1024px){
+    .nav-tabs.nav-tabs-tablet{
+        justify-content: start !important;
+        background: $blue4;
+        @include border-radius(4px);
+        .tag{
+            background: white;
+        }
+    }
+}

@@ -1,0 +1,84 @@
+<% layout('/layouts/layout-communitymanager-admin-single') -%>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="mb-5">
+                    <h1>Hi. 👋 Garrett Welcome Back </h1>
+                    <p>What can we help you work on today?</p>
+                </div>
+            </div>
+        </div>
+        <div  class="row justify-content-center">
+            <div class="col-lg-9">
+                <div id="TenantDashboard" class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs pt-1">
+                                    <li class="nav-item">
+                                        <button 
+                                        v-bind:class="{active: tabs.settings}"
+                                        v-on:click="onTabClick('tabs','settings')"
+                                        type="button" class="nav-link pb-3">
+                                            Settings
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button 
+                                        v-bind:class="{active: tabs.employees}"
+                                        v-on:click="onTabClick('tabs','employees')"
+                                        type="button" class="nav-link pb-3">
+                                            Employees
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button 
+                                        v-bind:class="{active: tabs.suppliers}"
+                                        v-on:click="onTabClick('tabs','suppliers')"
+                                        type="button" class="nav-link pb-3">
+                                            Suppliers
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button 
+                                        v-bind:class="{active: tabs.learning}"
+                                        v-on:click="onTabClick('tabs','learning')"
+                                        type="button" class="nav-link pb-3">
+                                            Learning
+                                        </button>
+                                    </li>
+                                </ul>  
+                                <hr class="mt-0"/>   
+                                <div v-if="tabs.settings">
+                                    <div class="card card-flat mb-2">
+                                        <div class="card-body">
+                                            <roles></roles>
+                                        </div>
+                                    </div>
+                                    <div class="card card-flat">
+                                        <div class="card-body">
+                                            <manage-privileges></manage-privileges>
+                                        </div>
+                                    </div>
+                                </div>   
+                                <!-- employee widget -->
+                                <div v-if="tabs.employees">
+                                    <manage-employees></manage-employees>
+                                </div> 
+                                <!-- employee widget -->
+                                <div v-if="tabs.suppliers">
+                                    <manage-suppliers></manage-suppliers>
+                                </div> 
+                                <div v-if="tabs.learning">
+                                    <manage-learning></manage-learning>
+                                </div>                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/vue.tenant-dashboard.js"></script>

@@ -1,0 +1,28 @@
+<div id="FullScreenLoader" class="add reveal">
+    <lottie-player 
+    id="HandLoader"
+    background="transparent" 
+    src="/lottie/hand-loader.json"
+    speed="1"
+    style="width: 250px; height: 250px;"  loop autoplay
+    ></lottie-player>
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //simulating page loader
+        setTimeout(() => {
+            fullScreenLoader.remove();
+        }, 2500);
+    });
+
+    var fullScreenLoader = {
+        remove: function(){
+            document.getElementById("FullScreenLoader").classList.remove('reveal');
+            setTimeout(() => {
+                document.getElementById("FullScreenLoader").classList.remove('add');
+            }, 1000);
+        }
+    };
+
+</script>

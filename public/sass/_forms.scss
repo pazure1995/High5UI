@@ -1,0 +1,685 @@
+$field-border-radius: 4px;
+$field-border: 1px solid $gray_border;
+// Toggle Slider Colors
+$toggleTrackOn:     $green3 ;
+$toggleTrackOff:    $gray3;
+$toggleKnobOn:      white;
+$toggleKnobOff:     $blue_primary;
+
+.form-group{
+    position: relative;
+    margin-bottom: 20px;
+    @include border-radius($field-border-radius);
+    &.has-focus,
+    &.has-value,
+    &.form-group-select{
+        label{
+            opacity: 1;
+        }
+    }
+    &.has-focus{
+        @include box-shadow(0px 0px 0 1px $blue5);
+        input,
+        .input-group-append,
+        .input-group-prepend{
+            border-color: $blue5 !important;
+        }
+    }
+    &.has-value{
+        @include box-shadow(none);
+        input,
+        .input-group-append,
+        .input-group-prepend{
+            border-color: $gray_border;
+        }   
+        &.has-focus{
+            @include box-shadow(0px 0px 0px 1px $blue5);
+            input,
+            .input-group-append,
+            .input-group-prepend{
+                border-color: $blue5;
+            } 
+        }     
+    }
+    &.form-group-append,
+    &.form-group-prepend{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+    }
+    &.form-group-append{
+        input{
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+        }
+        .input-group-append{
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-top-right-radius: $field-border-radius;
+            border-bottom-right-radius: $field-border-radius;
+            border: $field-border;
+            height: 100%;
+            border-left: none;
+            min-height: 43px;
+        }
+    }
+    &.form-group-prepend{
+        input{
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: none;
+        }
+        .input-group-prepend{
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            padding: 10px 2px 10px 10px;
+            border-top-left-radius: $field-border-radius;
+            border-bottom-left-radius: $field-border-radius;
+            border: $field-border;
+            height: 100%;
+            border-right: none;
+            min-height: 43px;
+        }
+    }
+
+    &.form-group-char-cnt{
+        padding-bottom: 20px;
+    }
+
+    .char-cnt{
+        position: absolute;
+        bottom: 0px;
+        right: 0;
+        display:block;
+        width: 100%;
+        border: $field-border;
+        @include border-radius(0px 0px $field-border-radius $field-border-radius);
+        text-align: right;
+        border-top: none;
+
+    }
+    .status-icon{
+        position: absolute;
+        top: -2px;
+        right: 5px;
+
+    }
+    &.success{
+        .status-icon{
+            color: $green3;
+        }
+    }
+    &.warning{
+        .status-icon{
+            color: $orange1;
+        }
+    }
+    &.danger{
+        .status-icon{
+            color: $red1;
+        }
+    }
+}
+.form-text{
+    &.success{
+        color: $green3;
+    }
+    &.warning{
+        color: $orange_accessibility;
+    }
+    &.danger{
+        color: $red1;
+    }
+}
+
+label{
+    padding-top: 1.1rem;
+}
+.form-floating>label{
+  z-index: 2;
+}
+.form-floating>.form-select {
+  padding-bottom: .525rem;
+}
+.form-country-code{
+  width: 100px;
+}
+.form-sm{
+  font-size: 14px;
+}
+.form-floating.form-date>label,
+.form-floating.input-group>label{
+  opacity: .65;
+  @include transform( scale(.85) translateY(-.5rem) translateX(.15rem));
+}
+.form-wyziwig{
+  position: relative;
+  padding-top: 50px;
+  .wyziwig{
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: auto;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+  }
+  .wyziwig-menu{
+    width: auto;
+    @include border-radius(250px);
+    border: 1px solid $gray2;
+    padding: 5px 10px;
+    background: white;
+    button{
+      padding: 0 10px;
+    }
+  }
+}
+.input-group{
+  @include border-radius(4px);
+  @include transition(all .3s ease);
+}
+.input-group-text{
+  background: none;
+  border-right:none;
+  align-items: flex-end;
+  padding-right: 0;
+  padding-bottom: 8px;
+}
+.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+  border-top-right-radius: .25rem;
+  border-bottom-right-radius: .25rem;
+}
+.input-group{
+  background: white;
+  &.input-group-append .form-control{
+    border-left: 1px solid #ced4da;
+  }
+}
+.input-group .form-control{
+  border-left: none;
+  background: none;
+  &:focus{
+    @include box-shadow(none);
+  }
+}
+.form-control.form-control-filter{
+  padding: 5px;
+  margin-bottom: 10px;
+  background: $gray3;
+  border: none;
+}
+.input-group:focus-within {
+  color: #212529;
+  background-color: #fff;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25%);
+}
+.form-group>.form-control, .form-group>.form-select {
+  height: calc(3.5rem + 2px);
+  padding: 1rem .75rem;
+}
+.form-floating>textarea.form-control{
+  height: auto;
+}
+.form-switch .form-check-input{
+  width: 3em;
+}
+.form-check-input:checked {
+  background-color: $green_primary;
+  border-color: $green_primary;
+}
+td .form-check-square{
+  width: 30px;
+}
+.form-check-square{
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  padding: 5px;
+  border: 1px solid $gray3;
+  background: white;
+  @include border-radius(6px);
+  label{
+    cursor: pointer;
+    padding: 0;
+    margin: 0 0 0 5px;
+  }
+  .form-check-input{
+    padding: 0;
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+}
+input,
+select,
+textarea{
+    border: $field-border;
+    @include border-radius($field-border-radius);    
+    padding: 10px 6px;
+    display: block;
+    width: 100%;
+    font-size: 14px;
+    @include transition(all .3s ease);
+
+    &:focus,
+    &:active{
+        outline: none;
+        @include box-shadow(0px 0px 0px 2px $blue_primary);
+    }
+    &:disabled{
+        background: $gray_disabled;
+    }
+}
+textarea{
+    padding-bottom: 20px;
+    border-bottom: none;
+    @include border-radius($field-border-radius $field-border-radius 0 0);
+}
+.select2-container--default .select2-selection--single {
+    border: $field-border;
+    @include border-radius($field-border-radius);
+}
+.select2-container--default .select2-selection--multiple {
+    border: $field-border;
+    @include border-radius($field-border-radius);
+}
+.select2-container .select2-selection--single{
+    height: 43px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 43px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 43px;
+    right: 5px;
+}
+.select2-container .select2-selection--multiple {
+    min-height: 43px;
+}
+.select2-container--default .select2-search--inline .select2-search__field {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: $blue3;
+    border: 1px solid $blue3;
+    color: $font_accent;
+    position:relative;
+    padding-right: 15px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: $blue_primary !important;
+    background: none;
+    border: none;
+    font-weight: bold;
+    position: absolute;
+    font-size: 16px;
+    top: -1px;
+    right: 0;
+    &:hover{
+        background: none;
+        color: $blue5;
+    }
+}
+.pika-button{
+    color: $font_primary !important;
+    &:hover{
+        color: white !important;
+        background: $blue_primary;
+    }
+}
+.pika-prev{
+    &:hover{
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAUklEQVR42u3VMQoAIBADQf8Pgj+OD9hG2CtONJB2ymQkKe0HbwAP0xucDiQWARITIDEBEnMgMQ8S8+AqBIl6kKgHiXqQqAeJepBo/z38J/U0uAHlaBkBl9I4GwAAAABJRU5ErkJggg==');
+    }
+}
+.pika-next{
+    &:hover{
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAU0lEQVR42u3VOwoAMAgE0dwfAnNjU26bYkBCFGwfiL9VVWoO+BJ4Gf3gtsEKKoFBNTCoCAYVwaAiGNQGMUHMkjGbgjk2mIONuXo0nC8XnCf1JXgArVIZAQh5TKYAAAAASUVORK5CYII=');
+    }
+}
+
+.search-field{
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    width: 100%;
+    &.inverted{
+          .field-wrap{
+              input{
+                  background: white;
+                  @include box-shadow(inset 0px 0px 0px 1px $gray_border);
+              }
+          }
+    }
+    .field-wrap{
+      position: relative;
+      width: 100%;
+      .icon{
+        position: absolute;
+        top: 11px;
+        left: 14px;
+      }
+      input{
+        background: $gray3;
+        @include border-radius(6px);
+        @include box-shadow(none);
+        border: none;
+        padding: 10px 10px 10px 40px;
+        min-width: 100px;
+        width: 100%;
+        display: block;
+        @include transition(all .3s ease);
+        &:focus,
+        &:active{
+            outline: 0;
+            @include box-shadow(inset 0px 0px 0px 1px $gray2);
+        }
+      }
+      .icon{
+        color: $gray1;
+      }
+    }
+  }
+
+// Toggles
+@mixin toggle-field($isSmall: false){
+    position: relative;
+    @if($isSmall){
+      width: 44px;
+      height: 16px;
+    } 
+    @else {
+      width: 65px;
+      height: 24px;
+    }
+    border-radius: 50px;
+    display: inline-block;
+    color: $font_accent;
+    background: $toggleTrackOff;
+    cursor: pointer;
+    -webkit-transition: background-color .40s ease-in-out;
+    -moz-transition: background-color .40s ease-in-out;
+    -o-transition: background-color .40s ease-in-out;
+    transition: background-color .40s ease-in-out;
+  
+    .toggleOn {
+      position: absolute;
+      top: 1px;
+      left: 8px;
+      opacity: 0;
+      transition: opacity .4s;
+      color: white;
+    }
+    .toggleOff {
+      position: absolute;
+      top: 1px;
+      right: 8px;
+      opacity: 1;
+      transition: opacity .4s;
+    } 
+    
+    &.active{
+      background: $toggleTrackOn;
+  
+      .round-btn{
+        @if ($isSmall) {
+          left: 29px;
+        }
+        background-color: $toggleKnobOn;
+      }
+      .toggleOn {
+        opacity: 1;
+      }
+      .toggleOff {
+        opacity: 0;
+      }
+    }
+  
+    .round-btn{
+      left: 3px;
+      top: 2px;
+      bottom: 2px;
+      right: 22px;
+      @if ($isSmall) {
+        height: 12px;
+        width: 12px;
+      } 
+      @else {
+        height: 20px;
+        width: 20px;
+      }
+      background-color: $toggleKnobOff;
+      border-radius: 100%;
+      display: inline-block;
+      position: absolute;
+      -webkit-transition: all .30s ease-in-out;
+      -moz-transition: all .30s ease-in-out;
+      -o-transition: all .30s ease-in-out;
+      transition: all .30s ease-in-out;
+    }
+    .cb-value{
+      position: absolute;
+      left:0;
+      right:0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      z-index: 9;
+      cursor:pointer;
+      -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    }
+  }
+  // === END Mixins ===
+  .toggle-slider {
+    @include toggle-field();
+    &-sm{
+      @include toggle-field($isSmall: true);
+    }
+  
+    &.disabled {
+      background-color: $gray2;
+      & .round-btn {
+        background-color: $gray3;
+      }
+    }
+  }
+
+  .slider-track,
+.slider-track-low,
+.slider-track-high {
+  background: #ccc;
+  border-radius: 0;
+}
+
+.slider.slider-horizontal {
+  width: 100%;
+}
+.slider.slider-horizontal .slider-handle,
+.slider.slider-horizontal .slider-selection {
+  background: #0575e6;
+  z-index: 10;
+}
+.slider.slider-horizontal .slider-selection {
+  border-radius: 0;
+}
+.slider.slider-horizontal .slider-track {
+  height: 5px;
+  margin-top: -3px;
+}
+.slider.slider-horizontal .slider-tick-container .slider-tick {
+  border-radius: 0;
+  width: 2px;
+  height: 10px;
+  top: 7px;
+  margin-left: 0;
+  background: #ccc;
+}
+.slider.slider-horizontal .tooltip {
+  opacity: 1;
+}
+.slider.slider-horizontal .tooltip.top {
+  margin-top: -25px;
+}
+.slider.slider-horizontal .tooltip.tooltip-main {
+  opacity: 0;
+}
+.slider.slider-horizontal .tooltip-inner {
+  color: #4b4b4b;
+  background: inherit;
+  font-family: 'Lato', 'Arial', sans-serif;
+}
+.popover{
+    z-index: 9000;
+    opacity: 1;
+    width: 220px;
+    @include box-shadow(0px 0px 20px rgba(0,0,0,.1));
+    border: none;
+    .popover-title{
+        font-size: 14px;
+        padding: 10px 10px 0 10px;
+        color: $font_accent;
+        font-weight: bold;
+    }
+    .popover-content{
+        padding: 10px 10px 10px 10px;
+    }
+    .arrow{
+        display: none;
+    }
+}
+.tooltip{
+    @include box-shadow(0px 0px 10px rgba(0,0,0,.1));
+    .tooltip-inner {
+        background: white;
+        color: $font_primary;
+        // min-width:120px;
+        max-width: 100% !important;
+    }
+    &.right{
+        .tooltip-inner{
+            text-align: left;
+            max-width: 200px !important;
+        }
+    }
+}
+
+/* custom bootstrap checkbox override */
+.form-check-input--primary:checked {
+  background-color: $brand_blue;
+  border-color: $brand_blue;
+}
+/* custom bootstrap checkbox override */
+.read-only{
+  .form-floating{
+    input,select,textarea{
+      background: none !important;
+      border: none !important;
+    } 
+  }
+}
+.form-floating{
+  &.read-only{
+    input{
+      background: none;
+      border: none;
+    }
+  }
+}
+.form-password{
+  position: relative;
+  button{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+.form-inline-edit{
+  .toggle{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 3px;
+    @include border-radius(4px);
+    @include transition(all .5s ease);
+    &:hover{
+      background: $gray3;
+      cursor: pointer;
+    }
+  }
+}
+@media(max-width: 768px){
+  .form-inline-edit{
+    .toggle{
+      justify-content: flex-start;
+    }
+  }
+}
+
+#SearchResults{
+  width: calc(100% - #{$NavWidth});
+  height: calc(100% - #{$TopBarHeight});
+  position: fixed;
+  top: $TopBarHeight;
+  left: $NavWidth;
+  z-index: 9001;
+  padding-bottom: 20px;
+  .results{
+    margin: 0 auto;
+    background: white;
+    max-height: 100%;
+    overflow: auto;
+    width: 600px;
+    @include box-shadow(0px 0px 20px rgba(0,0,0,.2));
+    a{
+      padding: 8px 0;
+      &:hover,
+      &:active,
+      &:focus{
+        background: $gray3;
+      }
+    }
+  }
+}
+body.close-menu{
+  #SearchResults{
+    left: $NavClosedWidth;
+    width: calc(100% - #{$NavClosedWidth});
+  }
+}
+@media(max-width: 1024px){
+  #SearchResults{
+    .results{
+      width: 400px;
+    }
+  }
+}
+@media(max-width: 768px){
+  #SearchResults{
+    left: 0;
+    width: 100%;
+    .results{
+      width: 100%;
+    }
+  }
+  body.close-menu{
+    #SearchResults{
+      left: 0;
+      width: 100%;
+    }
+  }
+}

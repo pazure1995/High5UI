@@ -1,0 +1,375 @@
+<div id="TopBar">
+    <div class="nav-toggle-wrap">
+        <button id="MainMenuToggle" type="button" class="btn btn-icon nav-toggle btn-nav">
+            <i class="fal fa-angle-left"></i>
+        </button>
+        <div class="divider"></div>
+    </div>
+    <div class="flex-grow-1">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-xxl-5 col-xl-6 col-lg-8  d-flex d-none-1024">
+                    <div class="form-floating w-100">
+                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                          <option value="1" selected>Apple</option>
+                          <option value="2">Hammock Creative Inc.</option>
+                          <option value="3">Google Inc.</option>
+                        </select>
+                        <label for="floatingSelect">Client</label>
+                    </div>
+                    <div class="form-floating w-100">
+                        <select class="form-select change-role" v-model="role"   aria-label="Floating label select example">
+                            <option value="/communitymanager/admin">Admin</option>
+                            <option value="/communitymanager/hiringmanager">Hiring Manager</option>
+                            <option value="/communitymanager/recruiter" selected>Recruiter</option>
+                        </select>
+                        <label>Role</label>
+                    </div>
+                </div>
+                <div class="col-xxl-7 col-xl-6 col-lg-4 d-none-1024">
+                    <div id="SiteSearchField" class="search-field sitesearchresults">
+                        <div class="field-wrap">
+                            <input type="text"  v-model="searchTerm" v-on:focus="showHistory" class="sitesearch" placeholder="Search Talent and Jobs"> 
+                            <span class="icon"><i aria-hidden="true" class="fas fa-search"></i></span>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+      </div> 
+      <div class="extras ml-auto text-right">
+        <a href="/communitymanager/dashboard"
+            class="btn btn-action-panel btn-icon btn-nav d-none-1024">
+            <i class="fal fa-fw fa-tachometer-alt-fastest"></i>
+        </a>
+        <a href="/communitymanager/dashboard"
+            class="btn btn-action-panel btn-icon btn-nav mr-3 d-none d-inline-block-1024">
+            <i class="fal fa-fw fa-tachometer-alt-fastest"></i>
+        </a>
+        <button 
+        type="button" 
+        data-target="ClientRolePanel" class="btn btn-action-panel btn-icon btn-nav d-none d-inline-block-1024 ">
+            <i class="fal fa-fw fa-user-secret"></i>
+        </button>
+        <button 
+        type="button" 
+        data-target="SearchPanel" class="btn btn-action-panel btn-icon btn-nav ml-3 d-none d-inline-block-1024 ">
+            <i class="fal fa-fw fa-search"></i>
+        </button>
+        <button type="button" data-target="NotificationsPanel" class="btn btn-action-panel btn-icon btn-nav ml-3 ">
+            <i class="fal fa-fw fa-bell"></i>
+            <span class="jewel"></span>
+        </button>
+        <button type="button" data-target="SupportPanel" class="btn btn-action-panel btn-icon btn-nav ml-3"><i class="fal fa-fw fa-life-ring"></i></button>
+        <div class="dropdown ml-3">
+            <button class="btn btn-icon dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img class="avatar avatar-sm avatar-bordered" src="https://uifaces.co/our-content/donated/t33XAm04.jpg"/>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="/superadmin/profile"><i class="fal fa-user-circle mr-3"></i>Profile</a>
+              <a class="dropdown-item" href="/superadmin/preferences"><i class="fal fa-cog mr-3"></i>Preferences</a>
+              <hr/>
+              <a class="dropdown-item" href="/"><i class="fal fa-sign-out mr-3"></i>Logout</a>
+            </div>
+        </div>
+      </div>          
+</div>
+<div id="ClientRolePanel" class="action-panel action-panel-short">
+    <div class="form-floating w-100 mb-2">
+        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+          <option value="1" selected>Apple</option>
+          <option value="2">Hammock Creative Inc.</option>
+          <option value="3">Google Inc.</option>
+        </select>
+        <label for="floatingSelect">Client</label>
+    </div>
+    <div class="form-floating w-100">
+        <select class="form-select change-role" v-model="role"   aria-label="Floating label select example">
+            <option value="/communitymanager/admin">Admin</option>
+            <option value="/communitymanager/hiringmanager">Hiring Manager</option>
+            <option value="/communitymanager/recruiter" selected>Recruiter</option>
+        </select>
+        <label>Role</label>
+    </div>
+</div>
+<div id="SearchPanel" class="action-panel action-panel-short">
+    <div id="SiteSearchField" class="search-field sitesearchresults">
+        <div class="field-wrap">
+            <input type="text"  v-model="searchTerm" v-on:focus="showHistory" class="sitesearch" placeholder="Search Talent and Jobs"> 
+            <span class="icon"><i aria-hidden="true" class="fas fa-search"></i></span>
+         </div>
+     </div>
+</div>
+<div id="NotificationsPanel" class="action-panel">
+    <div class="py-2 px-3">
+        <div class="mb-2"><strong><small>Today</small></strong></div>
+        <a href="#" class="card card-flat mb-1">
+            <div class="card-body">
+                <strong>Candidate Submitted</strong>
+                <p class="font-small mb-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            
+            <small class="font-muted">2 min</small>
+           </div>
+        </a>
+        <a href="#" class="card card-flat mb-1">
+            <div class="card-body">
+                <strong>Assignment Ended</strong>
+                <p class="font-small mb-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            
+            <small class="font-muted">2 min</small>
+           </div>
+        </a>
+        <a href="#" class="card card-flat mb-1">
+            <div class="card-body">
+                <strong>Candidate Submitted</strong>
+                <p class="font-small mb-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            
+            <small class="font-muted">2 min</small>
+           </div>
+        </a>
+        <a href="#" class="card card-flat mb-1">
+            <div class="card-body">
+                <strong>Request Created</strong>
+                <p class="font-small mb-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            
+            <small class="font-muted">2 min</small>
+           </div>
+        </a>
+
+        <div class="mb-2"><strong><small>Yesterday</small></strong></div>
+        <a href="#" class="card card-flat mb-1">
+            <div class="card-body">
+                <strong>Candidate Submitted</strong>
+                <p class="font-small mb-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            
+            <small class="font-muted">2 min</small>
+           </div>
+        </a>
+        <a href="#" class="card card-flat mb-1">
+            <div class="card-body">
+                <strong>Request Created</strong>
+                <p class="font-small mb-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            
+            <small class="font-muted">2 min</small>
+           </div>
+        </a>
+
+        <div class="mb-2"><strong><small>Mar 25th 2020</small></strong></div>
+        <a href="#" class="card card-flat mb-1">
+            <div class="card-body">
+                <strong>Candidate Submitted</strong>
+                <p class="font-small mb-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            
+            <small class="font-muted">2 min</small>
+           </div>
+        </a>
+       
+     </div>
+</div>
+<div v-if="show" id="SearchResults">
+    <div class="results">
+        <div v-if="!showSearchResults">
+            <div class="px-3 pt-3">
+                <p class="mb-3 text-uppercase font-muted">Recently Viewed</p>
+            </div>
+            <div class="pb-1">
+                <ul class="list-unstyled">
+                    <li class="m-0">
+                        <a href="/hiringmanager/request/12321" class="d-flex justify-content-between px-3">
+                            <div class="d-flex">
+                                <span class="avatar avatar-sm mr-2"><i class="fad fa-briefcase"></i></span>
+                                <div>
+                                    <h6 class="mb-1 font-14">Development Manager</h6>
+                                    <span class="tag tag-red1 mr-2">HOT</span><small class="font-primary font-regular">#123432 / Contract / Jacksonville FL.</small>
+                                </div>
+                            </div>
+                            <div class="d-none-1024">
+                                <small class="font-primary font-regular">Today at 3:11</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="px-2"><hr class="m-0"/></li>
+                    <li class="m-0">
+                        <a href="/hiringmanager/candidate/12321" class="d-flex justify-content-between px-3">
+                            <div class="d-flex">
+                                <span class="avatar avatar-sm mr-2 avatar-green1">SF</span>
+                                <div>
+                                    <h6 class="mb-0 font-14">Sarah Farlow </h6>
+                                    <small class="font-primary font-regular">Director of User Experience / Jacksonville FL.</small>
+                                </div>
+                            </div>
+                            <div class="d-none-1024">
+                                <small class="font-primary font-regular">Today at 3:08</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="px-2"><hr class="m-0"/></li>
+                    <li class="m-0">
+                        <a href="/hiringmanager/request/12321" class="d-flex justify-content-between px-3">
+                            <div class="d-flex">
+                                <span class="avatar avatar-sm mr-2"><i class="fad fa-briefcase"></i></span>
+                                <div>
+                                    <h6 class="mb-1 font-14">Sr. Hadoop Architect </h6>
+                                    <span class="tag tag-red1 mr-2 ">HOT</span><small class="font-primary font-regular">#452345 / SOW / Jacksonville FL.</small>
+                                </div>
+                            </div>
+                            <div class="d-none-1024">
+                                <small class="font-primary font-regular">Today at 12:33</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="px-2"><hr class="m-0"/></li>
+                    <li class="m-0">
+                        <a href="/hiringmanager/request/12321" class="d-flex justify-content-between px-3">
+                            <div class="d-flex">
+                                <span class="avatar avatar-sm mr-2"><i class="fad fa-briefcase"></i></span>
+                                <div>
+                                    <h6 class="mb-1 font-14">Sr. Java Developer </h6>
+                                    <small class="font-primary font-regular">#393938 / SOW / Jacksonville FL.</small>
+                                </div>
+                            </div>
+                            <div class="d-none-1024">
+                                <small class="font-primary font-regular">Today at 12:30</small>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="px-2"><hr class="m-0"/></li>
+                    <li class="m-0">
+                        <a href="/hiringmanager/candidate/12321" class="d-flex justify-content-between px-3">
+                            <div class="d-flex">
+                                <span class="avatar avatar-sm avatar-bordered mr-2"><img src="https://randomuser.me/api/portraits/men/49.jpg"> <!----></span>
+                                <div>
+                                    <h6 class="mb-0 font-14">Jason Jamison </h6>
+                                    <small class="font-primary font-regular">Interaction Designer / Jacksonville FL.</small>
+                                </div>
+                            </div>
+                            <div class="d-none-1024">
+                                <small class="font-primary font-regular">Today at 3:08</small>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div v-else>
+            <div class="mb-1">
+                <div class="px-3 pt-3">
+                    <p class="mb-3 text-uppercase font-muted">Jobs</p>
+                </div>
+                <div class="pb-1">
+                    <ul class="list-unstyled">
+                        <li class="m-0">
+                            <a href="/hiringmanager/request/12321" class="d-flex justify-content-between px-3">
+                                <div class="d-flex">
+                                    <span class="avatar avatar-sm mr-2"><i class="fad fa-briefcase"></i></span>
+                                    <div>
+                                        <h6 class="mb-1 font-14">Sr. Java Developer </h6>
+                                        <span class="tag tag-red1 mr-2">HOT</span><small class="font-primary font-regular">#393938 / SOW / Jacksonville FL.</small>
+                                    </div>
+                                </div>
+                                <div class="d-none-1024">
+                                    <small class="font-primary font-regular">Updated 3 Days Ago</small>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="px-2"><hr class="m-0"/></li>
+                        <li class="m-0">
+                            <a href="/hiringmanager/request/12321" class="d-flex justify-content-between px-3">
+                                <div class="d-flex">
+                                    <span class="avatar avatar-sm mr-2"><i class="fad fa-briefcase"></i></span>
+                                    <div>
+                                        <h6 class="mb-1 font-14">Full Stack Engineer </h6>
+                                        <small class="font-primary font-regular">#393839 / Full Time / Jacksonville FL.</small>
+                                    </div>
+                                </div>
+                                <div class="d-none-1024">
+                                    <small class="font-primary font-regular">Updated 2 Weeks Ago</small>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div class="px-3">
+                    <p class="mb-3 text-uppercase font-muted">Talent</p>
+                </div>
+                <div class="pb-1">
+                    <ul class="list-unstyled">
+                        <li class="m-0">
+                            <a href="/hiringmanager/candidate/12321" class="d-flex justify-content-between px-3">
+                                <div class="d-flex">
+                                    <span class="avatar avatar-sm avatar-bordered mr-2"><img src="https://randomuser.me/api/portraits/men/49.jpg"> <!----></span>
+                                    <div>
+                                        <h6 class="mb-0 font-14">Jason Jamison </h6>
+                                        <small class="font-primary font-regular">Interaction Designer / Jacksonville FL.</small>
+                                    </div>
+                                </div>
+                                <div class="d-none-1024">
+                                    <small class="font-primary font-regular">Today at 3:08</small>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="SupportPanel" class="action-panel">
+    <div class="py-3 px-4">
+        <p class="lead mb-0">Hello Garrett</p>
+        <strong>What can we help you with today?</strong> 
+        <div class="search-field mb-3 mt-2">
+           <div class="field-wrap">
+               <input type="text" placeholder="Search Support"> 
+               <span class="icon"><i aria-hidden="true" class="fas fa-search"></i></span>
+            </div>
+        </div>
+        <strong><small>Common Questions</small></strong> 
+        <ul class="mt-1 ml-0 list-unstyled">
+           <li><a href="#">How to create a Request</a></li>
+           <li><a href="#">How to Review Candidates</a></li>
+           <li><a href="#">How to Track Assignments</a></li>
+        </ul>
+        <strong><small>History</small></strong> 
+        <ul class="mt-1 ml-0 list-unstyled">
+           <li><a href="#">Where is my Billing Settings<br><small class="font-muted">9/2/2020</small></a></li>
+        </ul>
+     </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(document).on("click",".btn-action-panel",function(){
+            console.log('click');
+            var $target = $("#"+$(this).attr("data-target"));
+
+            if($target.hasClass("show")){
+                $(this).removeClass("active");
+                $target.removeClass("show");
+            }else{
+                $(".action-panel").removeClass("show");
+                $(".btn-action-panel").removeClass("active");
+                $(this).addClass("active");
+                $target.addClass("show");
+            }
+
+            $(this).blur();
+        });
+    });
+</script>
+<script src="/js/vue.sitesearchfield.js"></script>

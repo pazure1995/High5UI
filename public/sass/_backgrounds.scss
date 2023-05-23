@@ -1,0 +1,97 @@
+//utility classes for background colors
+
+  
+.bg-green_button{background-color: $green_button}  
+.bg-green_primary,
+td.bg-green_primary{
+    background-color: $green_primary
+}           
+.bg-green1{background-color: $green1}                  
+.bg-green2{background-color: $green2}                 
+.bg-green3{background-color: $green3}                  
+.bg-green4{background-color: $green4}                
+.bg-green5{background-color: $green5}               
+
+.bg-font_accent{background-color: $font_accent}            
+.bg-blue5{background-color: $blue5 !important;}                
+.bg-blue_primary{background-color: $blue_primary}           
+.bg-blue1{background-color: $blue1}                   
+.bg-blue2{background-color: $blue2}                   
+.bg-blue3{background-color: $blue3}                
+.bg-blue_gray{background-color: $blue_gray}               
+.bg-blue4{background-color: $blue4}                   
+
+.bg-purple1{background-color: $purple1}                 
+.bg-purple2{background-color: $purple2}            
+.bg-purple3{background-color: $purple3}                 
+.bg-muted_gray{background-color: $muted_gray}         
+
+
+.bg-orange_accessibility{background-color: $orange_accessibility}     
+.bg-orange1{background-color: $orange1}                
+.bg-orange2{background-color: $orange2}               
+.bg-orange3{background-color: $orange3}            
+
+.bg-red_accessibility{background-color: $red_accessibility}        
+.bg-red1{background-color: $red1}                   
+.bg-red2{background-color: $red2}                   
+.bg-pink{background-color: $pink}                 
+
+.bg-black1{background-color: black}   
+.bg-black2{background-color: $black2}                 
+.bg-font_primary{background-color: $font_primary}             
+.bg-gray1{background-color: $gray1}                    
+.bg-gray_disabled{background-color: $gray_disabled}  
+.bg-gray_border {
+    background-color: $gray_border;
+}          
+.bg-gray2{background-color: $gray2}                    
+.bg-gray3,
+td.bg-gray3{background-color: $gray3}           
+.bg-gray4{background-color: $gray4}     
+.bg-gray_btn{background-color: $gray_btn}         
+               
+.bg-coral{background-color: $brand_coral;}
+.bg-brand_blue{background-color: $brand_blue;}
+.bg-white{background-color: $white;}
+.bg-none{
+    background: none;
+}
+.bg-cover{
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+}
+.bg-bottom{
+    background-position: bottom center;
+}
+.bg-contain{
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.bg-contain{
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.bg-top-right{
+    background-position: top right;
+}
+.bg-top-center{
+    background-position: top center;
+}
+.bg-center{
+    background-position: 50% !important;
+}
+.bg-blurred{
+  /* Add the blur effect */
+  filter: blur(20px);
+  -webkit-filter: blur(20px);
+}
+.hoverable{
+    @include transition(background .5s ease);
+    label{
+        cursor: pointer;
+    }
+    &:hover{
+        background: #e9ecef;
+    }
+}

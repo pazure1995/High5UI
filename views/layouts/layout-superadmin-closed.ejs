@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%-partial('../partials/_head')%> 
+</head>
+
+<body class="layout1 layout1-closed close-menu">
+    <div class="body-decorator body-decorator-top"></div>
+    <div class="body-decorator body-decorator-bottom"></div>
+    <%-partial('../partials/_nav-superadmin')%>
+    <%-partial('../partials/_topbar_superadmin')%>
+    <div id="Content">
+        <%- body %>
+    </div>
+    <%-partial('../partials/_newrequest')%>
+    <%-partial('../partials/vue-templates/_vue-profile-flyout-template')%>
+    <%-partial('../partials/vue-templates/_vue-modal-template')%>
+    <%-partial('../partials/_modals')%>
+</body>
+
+</html>

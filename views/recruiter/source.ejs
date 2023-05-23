@@ -1,0 +1,765 @@
+<% layout('/layouts/layout-recruiter-closed') -%>
+<div id="RequestView">
+    <div class="hero">
+        <div class="section pb-0">
+            <div class="container-fluid">
+                <div class="row justify-content-center mb-5">
+                    <div class="col-xl-11">
+                        <div class="text-center">
+                            <div class="font-white">
+                                <h4>{{jobTitle}}</h4>
+                                <p class="mb-">{{jobType}} / {{location}}</p>
+                                <span class="tag tag-lg tag-font_accent d-inline-flex mr-1">
+                                    <img width="16px" src="/images/high5-mark-circle.svg">
+                                    <span class="mx-2">Hired 2 of 4</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <div class="col-xl-3">
+                                <div class="hero-card-header card card-flat card-lg card-bottom-straight">
+                                    <div class="card-body pb-0 d-flex flex-column justify-content-between">
+                                        <div class="d-flex align-items-start">
+                                            <div>
+                                                <p class="mb-0">Request ID</p>
+                                                <p><a href="/recruiter/jobs/13132-1"><strong>{{requestId}}</strong></a></p>
+                                            </div>
+                                            <div class="ml-auto">
+                                                <div class="dropdown">
+                                                    <button 
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Export"
+                                                    class="btn btn-icon dropdown-toggle px-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fal fa-file-export fa-fw"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="requestMoreMenu">
+                                                    <button type="button" class="dropdown-item"><i class="fal fa-file-pdf mr-3"></i>PDF</button>
+                                                    <button type="button" class="dropdown-item"><i class="fal fa-file-word mr-3"></i>MS Word</button>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <button 
+                                                    data-bs-toggle="tooltip" data-bs-placement="top" title="Share"
+                                                    class="btn btn-icon dropdown-toggle px-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fal fa-share-alt fa-fw"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="requestMoreMenu">
+                                                    <button type="button" v-on:click="email" class="dropdown-item"><i class="fal fa-envelope mr-3"></i>Email</button>
+                                                    <button type="button" v-on:click="publicShareLink" class="dropdown-item"><i class="fal fa-link mr-3"></i>Public Share Link</button>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-icon dropdown-toggle px-1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="far fa-ellipsis-v fa-fw"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="requestMoreMenu">
+                                                    <button 
+                                                    v-on:click="editRequest"
+                                                    type="button" class="dropdown-item"><i class="fal fa-pencil fa-fw mr-3"></i>Edit</button>
+                                                    <hr class="my-2"/>
+                                                    <button 
+                                                        v-on:click="deleteRequest"
+                                                        type="button" 
+                                                        class="dropdown-item font-red">
+                                                        <i class="fal fa-trash-alt fa-fw mr-3"></i>
+                                                        Delete Request
+                                                    </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="m-0 hr-white"/>
+                                        <ul class="nav nav-tabs pt-1">
+                                            <li class="nav-item">
+                                                <button 
+                                                v-bind:class="{active: infoTabs.overview}"
+                                                v-on:click="onTabClick('infoTabs','overview')"
+                                                type="button" class="nav-link pb-3">
+                                                    Overview
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button 
+                                                v-bind:class="{active: infoTabs.details}"
+                                                v-on:click="onTabClick('infoTabs','details')"
+                                                type="button" class="nav-link pb-3">
+                                                    Details
+                                                </button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button 
+                                                v-bind:class="{active: infoTabs.activity}"
+                                                v-on:click="onTabClick('infoTabs','activity')"
+                                                type="button" class="nav-link pb-3">
+                                                    Activity
+                                                </button>
+                                            </li>
+                                        </ul>                                  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-9 d-none-1200">
+                                <div class="hero-card-header card card-lg card-flat card-bottom-straight">
+                                    <div class="card-body pb-0 d-flex flex-column justify-content-between">
+                                        <div>
+                                            <p class="px-1">Talent ({{totalTalent}})</p>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+
+                                            <div class="mr-4 nav nav-tabs">
+                                                <div class="d-flex align-items-center mr-4">
+                                                    <div class="form-check-square">
+
+                                                        <input v-model="selectAll" class="form-check-input" type="checkbox" id="SelectAll" value="">
+                                                        <label for="SelectAll" class="px-1">Select All</label>
+                                                    </div>
+                                                </div>
+                                                <div class="nav-item d-flex justify-content-center">
+                                                    <button 
+                                                    v-bind:class="{active: toggleView.listview}"
+                                                    v-on:click="onTabClick('toggleView','listview')"
+                                                    type="button" class="nav-link pb-3 bg-transparent">
+                                                        <i class="fas fa-list"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="nav-item d-flex justify-content-center">
+                                                    <button
+                                                    v-bind:class="{active: toggleView.gridview}"
+                                                    v-on:click="onTabClick('toggleView','gridview')"
+                                                    type="button" class="nav-link pb-3 bg-transparent">
+                                                        <i class="fas fa-th-large"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="nav-itemd-flex justify-content-center">
+                                                    <button 
+                                                    v-bind:class="{active: toggleView.tableview}"
+                                                    v-on:click="onTabClick('toggleView','tableview')"
+                                                    type="button" class="nav-link pb-3 bg-transparent">
+                                                        <i class="fas fa-table"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="mr-4 d-flex justify-content-center">
+                    
+                                                    <div class="d-flex justify-content-end w-100 justify-content-even-400">
+                                                        <sort v-bind:categories="sortCategories"></sort>
+                                                        <filters class="mx-1" v-bind:categories="filterCategories"></filters>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <button 
+                                                    v-on:click="sourceTalentBulk"
+                                                    type="button"
+                                                    :disabled="disableBulkSubmit"
+                                                    class="btn btn-sm">Source Talent ({{selectedTotal}})</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pb-5">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-xl-12">
+                    <div class="row">
+                        <div class="col-xl-3">
+                            <div class="card card-flat card-lg card-top-straight" style="border-top: none;">
+                                <div class="card-body">
+
+                                    <div v-if="infoTabs.overview">
+
+                                        <div class="mb-2">
+                                            <button
+                                            v-on:click="onCollapsibleClick('stats')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i v-if="!collapsible.stats" class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>General</small></span>
+                                            </button>
+                                        </div>
+
+                                        <div v-bind:class="{'d-none': collapsible.stats}"  class="mb-4 ml-4">
+
+                                            
+                                            <div class="d-flex mb-2 pl-1">
+                                                <div>
+                                                    <i class="fad fa-fw fa-piggy-bank"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">{{jobType}}</p>
+                                                    <p class="mb-0"><small>Job Type</small></p>
+                                                </div>                                   
+                                            </div> 
+
+                                            <div class="d-flex mb-2 pl-1">
+                                                <div>
+                                                    <i class="fad fa-fw fa-calendar-day"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <p class="mb-0">{{startDate}}</p>
+                                                    <p class="mb-0"><small>Target Start</small></p>
+                                                </div>                                   
+                                            </div>
+
+                                            <div class="d-flex mb-2 pl-1">
+                                                <div>
+                                                    <i class="fad fa-fw fa-map-marked-alt"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">{{location}}</p>
+                                                    <p class="mb-0"><small>Location</small></p>
+                                                </div>                                   
+                                            </div>
+
+                                            <div class="d-flex mb-2 pl-1">
+                                                <div>
+                                                    <i class="fad fa-fw fa-piggy-bank"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">${{maxAnnualSalary}}</p>
+                                                    <p class="mb-0"><small>Maximum Annual Salary</small></p>
+                                                </div>                                   
+                                            </div>
+                                            <div class="d-flex mb-2 pl-1">
+                                                <div>
+                                                    <i class="fad fa-users fa-fw"></i>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <p class=" mb-0">{{positionTotal}}</p>
+                                                    <p class="mb-0"><small>Total Number of Positions</small></p>
+                                                </div>                                   
+                                            </div>
+
+                                        </div>
+                                
+                                
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('skills')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Required Skills</small></span>
+                                            </button>
+                                        </div>
+                                        <div v-bind:class="{'d-none': collapsible.skills}"  class="mb-4 ml-4 pl-1">
+                                            <span class="tag tag-blue3 mb-1 mr-1" v-for="(skill, i) in skills">{{ skill }}</span>
+                                        </div>
+                    
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('description')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i v-if="!collapsible.description"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Description</small></span>
+                                            </button>
+                                        </div>
+                                        
+                                        <div v-bind:class="{'d-none': collapsible.description}" class="list-style-regular ml-4 pl-1 collapsible-overflow" v-html="description"></div>
+                                    </div>
+                                    <div v-if="infoTabs.details">
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('education')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i  v-if="!collapsible.education"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Education</small></span>
+                                            </button>
+                                        </div>   
+                                        <div v-bind:class="{'d-none': collapsible.education}"  class="mb-3 ml-4">
+                                            <span class="tag tag-blue3 mb-1 mr-1" v-for="(text, i) in educations">{{ text }}</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('certifications')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i  v-if="!collapsible.certifications"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Certifications</small></span>
+                                            </button>
+                                        </div>    
+                                        <div v-bind:class="{'d-none': collapsible.certifications}"  class="mb-3 ml-4">
+                                            <span class="tag tag-blue3 mb-1 mr-1" v-for="(text, i) in certifications">{{ text }}</span>
+                                        </div>  
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('industries')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i  v-if="!collapsible.industries"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Industries</small></span>
+                                            </button>
+                                        </div>     
+                                        <div v-bind:class="{'d-none': collapsible.industries}"  class="mb-3 ml-4">
+                                            <span class="tag tag-blue3 mb-1 mr-1" v-for="(text, i) in industries">{{ text }}</span>
+                                        </div>    
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('workHours')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i  v-if="!collapsible.workHours"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Work Hours</small></span>
+                                            </button>
+                                        </div> 
+                                        <div v-bind:class="{'d-none': collapsible.workHours}"  class="mb-3 ml-4">
+                                            <p>{{workHours}}</p>
+                                        </div>     
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('travel')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i  v-if="!collapsible.travel"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Travel</small></span>
+                                            </button>
+                                        </div>  
+                                        <div v-bind:class="{'d-none': collapsible.travel}"  class="mb-3 ml-4">
+                                            <p>{{travel}}</p>
+                                        </div>    
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('drugTest')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i  v-if="!collapsible.drugTest"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Drug Test</small></span>
+                                            </button>
+                                        </div>  
+                                        <div v-bind:class="{'d-none': collapsible.drugTest}"  class="mb-3 ml-4">
+                                            <span v-if="drugTest" class="tag tag-green2" ><i class="far fa-check mr-2"></i>Yes</span>
+                                            <span v-else >No</span>
+                                        </div>        
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('backgroundCheck')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i  v-if="!collapsible.backgroundCheck"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Background Check</small></span>
+                                            </button>
+                                        </div>  
+                                        <div v-bind:class="{'d-none': collapsible.backgroundCheck}"  class="mb-3 ml-4">
+                                            <span v-if="drugTest" class="tag tag-green2" ><i class="far fa-check mr-2"></i>Yes</span>
+                                            <span v-else >No</span>
+                                        </div>    
+                                        <div class="mb-2">
+                                            <button 
+                                            v-on:click="onCollapsibleClick('securityClearance')"
+                                            type="button" class="btn btn-collapsible">
+                                                <i  v-if="!collapsible.securityClearance"  class="fal fa-angle-down fa-fw"></i>
+                                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                                <span><small>Security Clearance Level</small></span>
+                                            </button>
+                                        </div> 
+                                        <div v-bind:class="{'d-none': collapsible.securityClearance}"  class="mb-3 ml-4">
+                                            <p>{{secruityClearance}}</p>
+                                        </div>                    
+                                    </div>
+                                    <div class="timeline-wrap" v-if="infoTabs.activity">
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>2 Days Ago</small>
+                                                <p>
+                                                    <strong>High5</strong> Automatched 3 new Candidates
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>3 Days Ago</small>
+                                                <p>
+                                                    <button type="button" class="btn btn-text">Jason D.</button> accepted RTR
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>3 Days Ago</small>
+                                                <p>
+                                                    <button type="button" class="btn btn-text">Sarah J.</button> was short listed
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>5 Days Ago</small>
+                                                <p>
+                                                    <button type="button" class="btn btn-text">Sanja R.</button> Completed an interview
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>5 Days Ago</small>
+                                                <p>
+                                                    <strong>High5</strong> Automatched 3 new Candidates
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>1 Week Ago</small>
+                                                <p>
+                                                    <button type="button" class="btn btn-text">Jason D.</button> accepted RTR
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>2 Weeks Ago</small>
+                                                <p>
+                                                    <button type="button" class="btn btn-text">Sarah J.</button> was short listed
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>2 Weeks Ago</small>
+                                                <p>
+                                                    <button type="button" class="btn btn-text">Sanja R.</button> Completed an interview
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>5/5/2021</small>
+                                                <p>
+                                                    <strong>High5</strong> Automatched 3 new Candidates
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>5/3/2021</small>
+                                                <p>
+                                                    <button type="button" class="btn btn-text">Jason D.</button> accepted RTR
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>5/3/2021</small>
+                                                <p>
+                                                    <button type="button" class="btn btn-text">Sarah J.</button> was short listed
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="timeline">
+                                            <i class="fad fa-circle fa-fw icon"></i>
+                                            <div>
+                                                <small>5/1/2021</small>
+                                                <p>
+                                                    <button type="button" class="btn btn-text">Sanja R.</button> Completed an interview
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>                                                           
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-9">
+                            <div class="card card-lg card-flat card-bottom-straight d-none d-block-1200 mt-3">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <p class="px-1 mb-0">Talent ({{totalTalent}})</p>
+                                        <div class="d-flex">
+                                            <div class="mr-4 d-flex justify-content-center justify-content-even-400">                                       
+                                                <sort v-bind:categories="sortCategories"></sort>
+                                                <filters class="mx-1" v-bind:categories="filterCategories"></filters>                                     
+                                            </div>
+                                            <div>
+                                                <button 
+                                                v-on:click="sourceTalentBulk"
+                                                type="button"
+                                                :disabled="disableBulkSubmit"
+                                                class="btn btn-sm">Source Talent ({{selectedTotal}})</button>
+                                            </div>
+                                        </div>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div class="card card-flat card-lg card-top-straight" style="border-top: none;">
+                                <div class="card-body">
+                                    <div class="row d-none d-none-1200" 
+                                    v-bind:class="{ 'd-block-force': toggleView.listview }">
+                                        <div class="col">                      
+                                            <div
+                                            class="card card-hoverable d-flex flex-row align-items-stretch justify-content-between mb-1 p-relative"
+                                            v-for="(candidate,index) in candidates" 
+                                            >
+                                                <div>
+                                                    <div class="form-check-square p-absolute-top-left">
+                                                        <input v-model="candidate.isSelected" class="form-check-input" type="checkbox"value="">
+                                                    </div>   
+                                                </div>
+                                                <div 
+                                                v-if="candidate.vetted == true" 
+                                                class="tag tag-coral tag-vertical-status"></div>
+                                                <a 
+                                                v-on:click.stop.prevent="onProfileClick(candidate, $event)"
+                                                href="/recruiter/talent/123123-2" 
+                                                class="card-body d-flex align-items-center ">  
+                                                    <div class="ml-4 mr-2">                     
+                                                        <span v-if="candidate.avatar.imgPath" class="avatar avatar-bordered">
+                                                            <img v-bind:src="candidate.avatar.imgPath"/>
+                                                            <span v-if="candidate.jewel == true" class="jewel"></span>
+                                                        </span>
+                
+                                                        <span v-else class="avatar avatar-bordered" :class="candidate.avatar.color">
+                                                            {{candidate.avatar.initials}}
+                                                            <span v-if="candidate.jewel == true" class="jewel "></span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="w-100 ml-2">
+                                                        <div class="d-flex align-items-center mb-1">
+                                                            <h6 class="mb-0 me-2 font-primary">{{candidate.candidateName}}</h6> 
+                                                            <span v-if="candidate.vetted == true" class="tag tag-coral d-inline-flex"><img width="16px" src="/images/high5-mark-circle-dark.svg"><span class="mx-2">Vetted</span></span>
+                                                        </div>
+                                                        <div class="font-regular font-primary font-gray1 text-truncate">
+                                                            <span>{{candidate.candidateDesignation}}</span> / {{candidate.location}}
+                                                        </div>
+                                                        <div class="font-regular mt-1 font-primary">
+                                                            <small>
+                                                            <i class="far fa-clock"></i>  
+                                                            Last Updated: 
+                                                            <span>
+                                                                {{candidate.lastUpdated}}
+                                                            </span>
+                                                            <span v-if="candidate.lastUpdated > 1">
+                                                                days
+                                                            </span>
+                                                            <span v-if="candidate.lastUpdated == 1">
+                                                                day
+                                                            </span>
+                                                            ago
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <div class="card-body font-regular d-flex align-items-start justify-content-end">
+                                                    <div class="pr-3">
+                                                        <button type="text" v-on:click="sourceTalent(candidate)" class="btn btn-sm btn-secondary mb-1">Source</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="candidates.length == 0">
+                                                <div class="text-center p-3">
+                                                    <div class="avatar avatar-lg">
+                                                        <i class="fad fa-users-slash"></i>
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        No  Candidates Found
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row d-none d-flex-1200" 
+                                    v-bind:class="{ 'd-flex-force': toggleView.gridview }">
+                
+                                
+                                        <div
+                                        v-for="(candidate,index) in candidates" 
+                                        class="col-xl-3 col-lg-6 col-md-6 col-sm-12 d-flex">
+                                            <div
+                                            class="card card-hoverable col card-tag-bottom mb-4 card-lg card-candidates-grid p-relative">
+                                            
+                                                <div>
+                                                    <div class="form-check-square p-absolute-top-right">
+                                                        <input v-model="candidate.isSelected" class="form-check-input" type="checkbox"value="">
+                                                    </div>   
+                                                </div>             
+                                                <div v-if="candidate.vetted == true" class="tag tag-coral tag-horizontal-status justify-content-start">
+                                                    <img width="16px" class="mr-1" src="/images/high5-mark-circle-dark.svg">Vetted
+                                                </div>
+                                                <a 
+                                                v-on:click.stop.prevent="onProfileClick(candidate, $event)"
+                                                href="/recruiter/talent/123123-1" class="card-body pb-0">
+                                                    <div class="d-flex mb-2 mt-1 align-items-center">
+                                                        <div class="mr-3">
+                                                            <span v-if="candidate.avatar.imgPath" class="avatar avatar-bordered">
+                                                                <img v-bind:src="candidate.avatar.imgPath"/>
+                                                                <span v-if="candidate.jewel == true" class="jewel "></span>
+                                                            </span>
+                    
+                                                            <span v-else class="avatar avatar-bordered" :class="candidate.avatar.color">
+                                                                {{candidate.avatar.initials}}
+                                                                <span v-if="candidate.jewel == true" class="jewel "></span>
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0 font-primary">{{candidate.candidateName}}</h6> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="designation-city-status font-regular font-primary font-gray1 mt-1">
+                                                        <div class="mb-2"><i class="far fa-suitcase me-2"></i> {{candidate.candidateDesignation}}</div>
+                                                        <div class="mb-2"><i class="far fa-map-marker-alt me-2"></i> {{candidate.location}}</div>
+                                                        <div class="mb-2"><i class="far fa-clock me-2"></i> 
+                                                            Updated
+                                                            <span>
+                                                                {{candidate.lastUpdated}}
+                                                            </span>
+                                                            <span v-if="candidate.lastUpdated > 1">
+                                                                days
+                                                            </span>
+                                                            <span v-if="candidate.lastUpdated == 1">
+                                                                day
+                                                            </span>
+                                                            ago
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <div class="card-body pt-0">
+                                                    <hr/>
+                                                    <div>
+                                                        <button type="text" v-on:click="sourceTalent(candidate)" class="btn btn-sm btn-secondary">Source</button>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        <div v-if="candidates.length == 0">
+                                            <div class="text-center p-3">
+                                                <div class="avatar avatar-lg">
+                                                    <i class="fad fa-users-slash"></i>
+                                                </div>
+                                                <div class="mt-2">
+                                                    No  Candidates Found
+                                                </div>
+                                            </div>
+                                        </div>
+                
+                                    </div>
+        
+                                    <div class="row d-none d-none-1200"
+                                    v-bind:class="{ 'd-block-force': toggleView.tableview }">
+                                        <div class="col">
+                                            <table class="table table-sortable  table-hoverable">
+                                                <tbody>
+                
+                               
+                                                    <tr
+                                                    v-bind:class="{'bg-blue4': candidate.isSelected}"
+                                                    v-for="(candidate,index) in candidates" 
+                                                    >
+                                                        <td class="p-relative" style="width: 50px;">
+                                                            <div>
+                                                                <div v-if="candidate.vetted == true" class="tag tag-coral tag-vertical-status"></div>
+                                                                <div class="form-check-square ml-1">
+                                                                    <input v-model="candidate.isSelected" class="form-check-input" type="checkbox"value="">
+                                                                </div>  
+                                                            </div>
+                                                        </td>
+                                                        <td 
+                                                        v-on:click.stop.prevent="onProfileClick(candidate)"
+                                                        class="p-relative">
+                                                            <a href="/hiringmanager/candidate/123123" class="font-primary no-hover">
+                                                                <div class="avatar-name-candidatestableview d-flex align-items-center">
+                                                                    <div>
+                                                                        <span v-if="candidate.avatar.imgPath" class="avatar avatar">
+                                                                            <img v-bind:src="candidate.avatar.imgPath"/>
+                                                                            <span v-if="candidate.jewel == true" class="jewel end-0"></span>
+                                                                        </span>
+                                
+                                                                        <span v-else class="avatar avatar-bordered" :class="candidate.avatar.color">
+                                                                            {{candidate.avatar.initials}}
+                                                                            <span v-if="candidate.jewel == true" class="jewel end-0"></span>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="ml-3">
+                                                                        <h6 class="mb-0 me-2">{{candidate.candidateName}}</h6>
+                                                                        <span v-if="candidate.vetted == true" class="tag tag-coral d-inline-flex mt-1">
+                                                                            <img width="16px" src="/images/high5-mark-circle-dark.svg">
+                                                                            <span class="mx-2">Vetted</span>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </td>
+                                                        <td
+                                                        v-on:click.stop.prevent="onProfileClick(candidate)">
+                                                            <div>
+                                                                <a href="/hiringmanager/candidate/123123" class="font-primary no-hover font-regular">
+                                                                    {{candidate.candidateDesignation}}
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td
+                                                        v-on:click.stop.prevent="onProfileClick(candidate)">
+                                                            <div>
+                                                                <a href="/hiringmanager/candidate/123123" class="font-primary no-hover font-regular">
+                                                                    {{candidate.location}}
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td
+                                                        v-on:click.stop.prevent="onProfileClick(candidate)">
+                                                            <div>
+                                                                <a href="/hiringmanager/candidate/123123" class="font-primary no-hover font-regular">
+                                                                    <span>
+                                                                        {{candidate.lastUpdated}}
+                                                                    </span>
+                                                                    <span v-if="candidate.lastUpdated > 1">
+                                                                        days
+                                                                    </span>
+                                                                    <span v-if="candidate.lastUpdated == 1">
+                                                                        day
+                                                                    </span>
+                                                                    ago
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <button type="text" v-on:click="sourceTalent(candidate)" class="btn btn-sm btn-secondary">Source</button>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- dynamic data -->
+                                                    <tr v-if="candidates.length == 0" class="text-center p-3">
+                                                        <td colspan="6">
+                                                        <div class="avatar avatar-lg">
+                                                            <i class="fad fa-users-slash"></i>
+                                                        </div>
+                                                        <div class="mt-2">
+                                                            No  Candidates Found
+                                                        </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/vue.source.js"></script>

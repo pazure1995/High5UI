@@ -1,0 +1,252 @@
+<% layout('/layouts/layout-recruiter-open') -%>
+<div class="section section-sm pt-0-768" id="AllJobViews">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card card-flat card-borderless p-4 mb-3">
+                    <div class="d-flex d-block-1024 align-items-end mb-3 justify-content-between border-bottom-gray2">
+                        <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                            <h6 class="mr-3 mb-xl-0 d-none-1024">Requests</h6>
+                            <div class="d-none d-xl-flex nav nav-tabs justify-content-between">
+                                <div class="nav-item w-25 d-flex justify-content-center">
+                                    <button 
+                                    v-bind:class="{active: toggleView.listview}"
+                                    v-on:click="onTabClick('toggleView','listview')"
+                                    type="button" class="nav-link pb-3 bg-transparent">
+                                        <i class="fas fa-list"></i>
+                                    </button>
+                                </div>
+                                <div class="nav-item w-25 d-flex justify-content-center">
+                                    <button
+                                    v-bind:class="{active: toggleView.gridview}"
+                                    v-on:click="onTabClick('toggleView','gridview')"
+                                    type="button" class="nav-link pb-3 bg-transparent">
+                                        <i class="fas fa-th-large"></i>
+                                    </button>
+                                </div>
+                                <div class="nav-item w-25 d-flex justify-content-center">
+                                    <button 
+                                    v-bind:class="{active: toggleView.tableview}"
+                                    v-on:click="onTabClick('toggleView','tableview')"
+                                    type="button" class="nav-link pb-3 bg-transparent">
+                                        <i class="fas fa-table"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav nav-tabs nav-tabs-tablet pt-1 justify-content-center justify-content-lg-start">
+                            <li class="nav-item">
+                                <button 
+                                v-bind:class="{active: statusView.all}"
+                                type="button" v-on:click="setStatusView('all')" class="nav-link pb-3 mx-2 bg-transparent">
+                                    <span class="tag mb-1">{{totalRequests}}</span>
+                                    <div>All</div>
+                                </button>
+                            </li> 
+                            <li class="nav-item">
+                                <button type="button"
+                                v-bind:class="{active: statusView.hot}"
+                                v-on:click="setStatusView('hot')" class="nav-link pb-3 mx-2 bg-transparent">
+                                    <span class="tag mb-1">{{getTotalByStatus('hot')}}<span class="jewel"></span></span>
+                                        <div>HOT</div>
+                                </button>
+                            </li> 
+                        </ul>
+                        <div class="my-2 d-none d-block-1024"></div>
+                        <div class="d-flex mb-2 align-items-center justify-content-center justify-content-even-400">
+                            <h6 class="mr-3 mb-0 d-none d-block-1024 d-none-400">Requests</h6>
+                            <div class="d-flex justify-content-end w-100 justify-content-even-400">
+                                <sort v-bind:categories="sortCategories"></sort>
+                                <filters class="mx-1" v-bind:categories="filterCategories"></filters>
+                                <button type="button" class="btn btn-sm w-auto d-sm-block ml-3" data-toggle="modal" data-target="#NewRequestModal">
+                                    <i class="fas fa-plus mr-2"></i>Add 
+                                    <span class="d-none-1024">Job</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+              
+                    <div class="row d-none d-flex-1200" 
+                    v-bind:class="{ 'd-flex-force': toggleView.gridview }">
+
+                        <div v-for="(request,index) in requests"
+                        v-if="request.isVisible"
+                        class="col-xl-3 col-lg-6 col-md-6 col-sm-12 d-flex"
+                        >
+                            <a href="/recruiter/jobs/1123213-2" class="card col card-tag-bottom mb-4 card-lg">                      
+                                <div class="card-body pb-0">
+                                    <h6>{{request.jobTitle}}</h6>
+                                    <div class="mb-2">
+                                        <span class="tag tag-green1 d-none" v-if="request.status == 'open'">{{request.status}}</span>
+                                        <span class="tag tag-coral" v-if="request.status == 'hot'">{{request.status}}</span>
+                                        <small class="font-regular font-primary">{{request.jobType}}</small>
+                                    </div>
+                                    <hr class="mt-0 mb-2"/>
+                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>{{request.location}}</p>
+                                    <p class="mb-1"><i class="fal fa-fw fa-clock mr-3"></i>
+                                        <span v-if="request.isExpiringSoon" class="tag tag-red1">
+                                            <strong>{{request.timeRemaining}}</strong>
+                                        </span>
+                                        <span v-else class="font-regular">
+                                            {{request.timeRemaining}}
+                                        </span>
+                                    </p>
+                                </div>    
+                                <div class="card-body py-2">
+                                    <div class="d-flex flex-row-reverse justify-content-end pl-2">
+                                        <span class="avatar avatar-bordered ml-neg-10">
+                                            2+
+                                        </span>
+                                        <span 
+                                        v-for="(c, ci) in request.candidates" 
+                                        v-if="ci < 3"
+                                        v-html="c.avatar">                  
+                                        </span>
+                                    </div>
+                                </div>                       
+                                <div v-if="request.autoMatchCnt > 0" class="tag tag-footer tag-green3 justify-content-center">
+                                    {{request.autoMatchCnt}} New Automatches
+                                </div>
+                                <div v-else class="tag tag-footer font-regular justify-content-center">
+                                    All Candidates Viewed
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+        
+                    <div class="row d-none d-none-1200" 
+                    v-bind:class="{ 'd-block-force': toggleView.listview }">
+                        <div class="col">
+                            <a 
+                            v-for="(request,index) in requests" 
+                            v-if="request.isVisible"
+                            href="/recruiter/jobs/1212321" class="card p-0 d-flex w-100 align-items-center justify-content-between request-listview flex-row overflow-hidden mb-1">
+                                <div class="card-body">             
+                                    <h6>{{request.jobTitle}}</h6>
+                                    <div class="d-flex align-items-center">
+                                        <span class="tag tag-green1 mr-3 d-none" v-if="request.status == 'open'">{{request.status}}</span>
+                                        <span class="tag tag-coral mr-3" v-if="request.status == 'hot'">{{request.status}}</span>
+                                        <span class="d-flex align-items-center me-3">
+                                            <i class="far fa-suitcase me-2 font-brandBlue"></i>
+                                            <span class="font-regular font-primary font-gray1">{{request.jobType}}</span>
+                                        </span>
+                                        <span class="d-flex align-items-center me-3">
+                                            <i class="far fa-map-marker-alt me-2 font-brandBlue"></i>
+                                            <span class="font-regular font-primary font-gray1">{{request.location}}</span>
+                                        </span>
+                                        <span class="d-flex align-items-center me-3">
+                                            <i class="far fa-clock me-2 font-brandBlue"></i>
+                                            <span v-if="request.isExpiringSoon" class="tag tag-red1">
+                                                <strong>{{request.timeRemaining}}</strong>
+                                            </span>
+                                            <span v-else class="font-regular">
+                                                {{request.timeRemaining}}
+                                            </span>
+                                        </span>
+                                    </div>                          
+                                </div>
+                                <div class="d-flex align-items-center justify-content-end">         
+                                    <div class="d-flex flex-row-reverse justify-content-end mx-2">
+                                        <span class="avatar avatar-bordered ml-neg-10">
+                                            2+
+                                        </span>
+                                        <span 
+                                        v-for="(c, ci) in request.candidates" 
+                                        v-if="ci < 3"
+                                        v-html="c.avatar">                  
+                                        </span>
+                                    </div>
+                                    <div v-if="request.autoMatchCnt > 0" class="w-200   text-center bg-green_primary font-white font-regular py-4 px-2">
+                                        {{request.autoMatchCnt}} New Automatches
+                                    </div>
+                                    <div v-else class="w-200  text-center bg-gray_disabled font-regular py-4 px-2 ">
+                                        All Candidates Viewed
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+   
+                    <div class="row d-none d-none-1200"
+                    v-bind:class="{ 'd-block-force': toggleView.tableview }">
+                        <div class="col">
+                            <table class="table table-sortable  table-hoverable">
+                                <thead>
+                                    <tr>
+                                        <th class="d-flex align-items-center no-hover">
+                                            Job Title
+                                        </th>
+                                        <th class="no-hover">
+                                            Job type 
+                                        </th>
+                                        <th class="no-hover">
+                                            Location 
+                                        </th>
+                                        <th class="no-hover">
+                                            End Date
+                                        </th>
+                                        <th class="no-hover">
+                                            Shortlisted
+                                        </th>
+                                        <th class="no-hover">
+                                            New Automatches</i> 
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr 
+                                    v-for="(request,index) in requests" 
+                                    v-if="request.isVisible"
+                                    onclick="window.location='/recruiter/jobs/1212321';">
+                                        <td>
+                                           <h6 class="mb-0">
+                                            {{request.jobTitle}}
+                                            </h6>
+                                            <span class="tag tag-green1 mt-2 d-none" v-if="request.status == 'open'">{{request.status}}</span>
+                                            <span class="tag tag-coral mt-2" v-if="request.status == 'hot'">{{request.status}}</span>
+                                        </td>
+                                        <td>
+                                            {{request.jobType}}
+                                        </td>
+                                        <td>
+                                            {{request.location}}
+                                        </td>
+                                        <td>
+                                            <span v-if="request.isExpiringSoon" class="tag tag-red1">
+                                                <strong>{{request.timeRemaining}}</strong>
+                                            </span>
+                                            <span v-else class="font-regular">
+                                                {{request.timeRemaining}}
+                                            </span>
+                                        </td>
+                                        <td>                        
+                                            <div class="d-flex flex-row-reverse justify-content-end pl-2">
+                                                <span class="avatar avatar-bordered ml-neg-10">
+                                                    2+
+                                                </span>
+                                                <span 
+                                                v-for="(c, ci) in request.candidates" 
+                                                v-if="ci < 3"
+                                                v-html="c.avatar">                  
+                                                </span>
+                                            </div>                              
+                                        </td>
+                                        <td v-if="request.autoMatchCnt > 0" class="p-0 bg-green_primary font-white text-center">
+                                            {{request.autoMatchCnt}} New Automatches
+                                        </td>
+                                        <td v-else class="p-0 bg-gray3 text-center">
+                                            All Candidates Viewed
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/vue.all-job-views.js"></script>

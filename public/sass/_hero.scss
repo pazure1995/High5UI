@@ -1,0 +1,57 @@
+.hero {
+  position: relative;
+  background: $brand_coral;
+  .hero-card-header{
+    height: 130px;
+  }
+
+  &.hero--white {
+    background-color: $white;
+  }
+
+  &.hero--after {
+    &::after {
+      content: "";
+      position: absolute;
+      z-index: 22;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  &.hero--after--coral {
+    .page-title {
+      margin: 90px 0px;
+    }
+    &::after {
+      background: $brand_coral;
+    }
+  }
+
+  &.hero--after--fixedHeight {
+    &::after {
+      height: 626px;
+    }
+  }
+}
+
+@media (max-width: 1199px) {
+  .hero {
+    &.hero--after--coral {
+      .page-title {
+        margin: 50px 0px;
+      }
+    }
+  }
+}
+@media (max-width: 450px) {
+  .hero {
+    &.hero--after--coral {
+      .page-title {
+        margin: 35px 0px;
+      }
+    }
+  }
+}

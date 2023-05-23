@@ -1,0 +1,266 @@
+<% layout('/layouts/layout-candidate-closed') -%>
+<section id="CandidateInterview" class="section section-sm">
+	<div class="hero">
+		<div class="section pt-5">
+			<div class="container">
+				<div class="row justify-content-center mb-5">
+					<div class="col-lg-7 font-white text-center">
+                        <p>Interview Details</p>
+                        <h3 class="mb-1">Interaction Designer</h3>
+                        <p><strong>Full Time / Jacksonville FL</strong></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div id="CandidateInterviews" class="card card-lg translate-up-100">
+                    <div class="card-body">
+                        <div>
+                
+                            <div class="mb-2">
+                                <button
+                                v-on:click="onCollapsibleClick('interviewdetails')"
+                                type="button" class="btn btn-collapsible">
+                                    <i v-if="!collapsible.interviewdetails" class="fal fa-angle-down fa-fw"></i>
+                                    <i v-else class="fal fa-angle-up fa-fw"></i>
+                                    <span><small>Interview Details</small></span>
+                                </button>
+                            </div>
+            
+                            <div v-bind:class="{'d-none': collapsible.interviewdetails}"  class="mb-4 ml-4">
+            
+                                <div class="d-flex mb-2 pl-1">
+                                    <div>
+                                        <i class="fad fa-fw fa-alarm-clock"></i>
+                                    </div>
+                                    <div class="ml-2">
+                                        <p class=" mb-0">Time</p>
+                                        <p class="mb-0"><small>August 1st 2021 @ 2:00pm</small></p>
+                                    </div>                               
+                                </div>  
+                                
+                                <div class="d-flex mb-2 pl-1">
+                                    <div>
+                                        <i class="fad fa-fw fa-map"></i>
+                                    </div>
+                                    <div class="ml-2">
+                                        <p class=" mb-0">Location</p>
+                                        <p class="mb-0"><small>1450 Duval St. Jacksonville FL. 32323</small></p>
+                                    </div>                                           
+                                </div> 
+                            
+                                <div class="d-flex mb-2 pl-1">
+                                    <div>
+                                        <i class="fad fa-fw fa-feather"></i>
+                                    </div>
+                                    <div class="ml-2">
+                                        <p class=" mb-0">Instructions</p>
+                                        <p class="mb-0"><small>Please be ready to present on your portolio of work</small></p>
+                                    </div>                                         
+                                </div> 
+            
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <button
+                            v-on:click="onCollapsibleClick('stats')"
+                            type="button" class="btn btn-collapsible">
+                                <i v-if="!collapsible.stats" class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Job Details</small></span>
+                            </button>
+                        </div>
+            
+                        <div v-bind:class="{'d-none': collapsible.stats}"  class="mb-4 ml-4">
+            
+                            <div class="d-flex mb-2 pl-1">
+                                <div>
+                                    <i class="fad fa-fw fa-user"></i>
+                                </div>
+                                <div class="ml-2">
+                                    <p class=" mb-0">Chuck Young @eTeam</p>
+                                    <p class="mb-0"><small>Requested By</small></p>
+                                </div>                                   
+                            </div>             
+                            <div class="d-flex mb-2 pl-1">
+                                <div>
+                                    <i class="fad fa-fw fa-piggy-bank"></i>
+                                </div>
+                                <div class="ml-2">
+                                    <p class=" mb-0">Full Time</p>
+                                    <p class="mb-0"><small>Job Type</small></p>
+                                </div>                                   
+                            </div> 
+            
+                            <div class="d-flex mb-2 pl-1">
+                                <div>
+                                    <i class="fad fa-fw fa-calendar-day"></i>
+                                </div>
+                                <div class="ml-2">
+                                    <p class="mb-0">11/01/2021</p>
+                                    <p class="mb-0"><small>Target Start</small></p>
+                                </div>                                   
+                            </div>
+            
+                            <div class="d-flex mb-2 pl-1">
+                                <div>
+                                    <i class="fad fa-fw fa-map-marked-alt"></i>
+                                </div>
+                                <div class="ml-2">
+                                    <p class=" mb-0">Jacksoville Fl.</p>
+                                    <p class="mb-0"><small>Location</small></p>
+                                </div>                                   
+                            </div>
+            
+                            <div class="d-flex mb-2 pl-1">
+                                <div>
+                                    <i class="fad fa-fw fa-piggy-bank"></i>
+                                </div>
+                                <div class="ml-2">
+                                    <p class=" mb-0">$80K - $90K</p>
+                                    <p class="mb-0"><small>Maximum Annual Salary</small></p>
+                                </div>                                   
+                            </div>
+            
+                        </div>
+            
+            
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('skills')"
+                            type="button" class="btn btn-collapsible">
+                                <i  v-if="!collapsible.skills"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Required Skills</small></span>
+                            </button>
+                        </div>
+                        <div v-bind:class="{'d-none': collapsible.skills}"  class="mb-4 ml-4 pl-1">
+                            <span class="tag tag-blue3 mb-1 mr-1" v-for="(skill, i) in skills">{{ skill }}</span>
+                        </div>
+            
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('description')"
+                            type="button" class="btn btn-collapsible">
+                                <i v-if="!collapsible.description"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Description</small></span>
+                            </button>
+                        </div>
+                        
+                        <div v-bind:class="{'d-none': collapsible.description}" class="list-style-regular ml-4 pl-1 collapsible-overflow" v-html="description"></div>   
+            
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('education')"
+                            type="button" class="btn btn-collapsible">
+                                <i  v-if="!collapsible.education"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Education</small></span>
+                            </button>
+                        </div>   
+                        <div v-bind:class="{'d-none': collapsible.education}"  class="mb-3 ml-4">
+                            <span class="tag tag-blue3 mb-1 mr-1" v-for="(text, i) in educations">{{ text }}</span>
+                        </div>
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('certifications')"
+                            type="button" class="btn btn-collapsible">
+                                <i  v-if="!collapsible.certifications"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Certifications</small></span>
+                            </button>
+                        </div>    
+                        <div v-bind:class="{'d-none': collapsible.certifications}"  class="mb-3 ml-4">
+                            <span class="tag tag-blue3 mb-1 mr-1" v-for="(text, i) in certifications">{{ text }}</span>
+                        </div>  
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('industries')"
+                            type="button" class="btn btn-collapsible">
+                                <i  v-if="!collapsible.industries"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Industries</small></span>
+                            </button>
+                        </div>     
+                        <div v-bind:class="{'d-none': collapsible.industries}"  class="mb-3 ml-4">
+                            <span class="tag tag-blue3 mb-1 mr-1" v-for="(text, i) in industries">{{ text }}</span>
+                        </div>    
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('workHours')"
+                            type="button" class="btn btn-collapsible">
+                                <i  v-if="!collapsible.workHours"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Work Hours</small></span>
+                            </button>
+                        </div> 
+                        <div v-bind:class="{'d-none': collapsible.workHours}"  class="mb-3 ml-4">
+                            <p>{{workHours}}</p>
+                        </div>     
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('travel')"
+                            type="button" class="btn btn-collapsible">
+                                <i  v-if="!collapsible.travel"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Travel</small></span>
+                            </button>
+                        </div>  
+                        <div v-bind:class="{'d-none': collapsible.travel}"  class="mb-3 ml-4">
+                            <p>{{travel}}</p>
+                        </div>    
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('drugTest')"
+                            type="button" class="btn btn-collapsible">
+                                <i  v-if="!collapsible.drugTest"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Drug Test</small></span>
+                            </button>
+                        </div>  
+                        <div v-bind:class="{'d-none': collapsible.drugTest}"  class="mb-3 ml-4">
+                            <span v-if="drugTest" class="tag tag-green2" ><i class="far fa-check mr-2"></i>Yes</span>
+                            <span v-else >No</span>
+                        </div>        
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('backgroundCheck')"
+                            type="button" class="btn btn-collapsible">
+                                <i  v-if="!collapsible.backgroundCheck"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Background Check</small></span>
+                            </button>
+                        </div>  
+                        <div v-bind:class="{'d-none': collapsible.backgroundCheck}"  class="mb-3 ml-4">
+                            <span v-if="drugTest" class="tag tag-green2" ><i class="far fa-check mr-2"></i>Yes</span>
+                            <span v-else >No</span>
+                        </div>    
+                        <div class="mb-2">
+                            <button 
+                            v-on:click="onCollapsibleClick('securityClearance')"
+                            type="button" class="btn btn-collapsible">
+                                <i  v-if="!collapsible.securityClearance"  class="fal fa-angle-down fa-fw"></i>
+                                <i v-else class="fal fa-angle-up fa-fw"></i>
+                                <span><small>Security Clearance Level</small></span>
+                            </button>
+                        </div> 
+                        <div v-bind:class="{'d-none': collapsible.securityClearance}"  class="mb-3 ml-4">
+                            <p>{{secruityClearance}}</p>
+                        </div> 
+
+                    </div>
+
+                    </div>
+               </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="/js/vue.candidate-interview.js"></script>

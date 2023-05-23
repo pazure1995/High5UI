@@ -1,0 +1,74 @@
+.card{
+    @include border-radius(6px);
+    @include box-shadow(0px 0px 10px rgba(0,0,0,.1));
+    border-color: rgba(0,0,0,.05);
+
+    &.card-flat{
+        @include box-shadow(none);
+        border-color: rgba(0,0,0,.1);
+    }
+
+    &.card-lg{
+        .card-body{
+            padding: 20px;
+        }
+    }
+    &.card-xl{
+        .card-body{
+            padding: 30px;
+        }
+    }
+
+    .card-body{
+        padding: 10px;
+    }
+    &.card-tag-bottom{
+        .tag-footer{
+            @include border-radius(0px 0px 6px 6px);
+        }
+    }
+    &.card-borderless{
+        border: none;
+    }
+    &.card-bottom-straight{
+        @include border-radius(6px 6px 0 0);       
+    }
+    &.card-top-straight{
+        @include border-radius(0 0 6px 6px);       
+    }
+}
+a.card,
+button.card,
+.card.card-hoverable{
+    color: $font-primary;
+    cursor: pointer;
+    @include transition(transform .3s ease, box-shadow .3s ease);
+    p{
+        font-weight: 400;
+    }
+    &:hover{
+        @include box-shadow(0px 0px 20px rgba(0,0,0,.2));
+        @include transform(translateY(-5px));
+        text-decoration: none;
+    }
+    &.card-hoverable-notransform:hover{
+        @include transform(none);  
+    }
+}
+button.card{
+    display: block;
+    width: 100%;
+    &:hover{
+        background: none;
+        color: $font-primary;
+    }
+}
+
+@media(max-width: 470px){
+    .card.card-xl,
+    .card.card-lg{
+        .card-body{
+            padding: 15px;
+        }
+    }
+}

@@ -1,0 +1,134 @@
+.dropdown-sort{
+    position: relative;
+    .dropdown-sort-menu{
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 500px;
+        padding: 20px;
+        background: white;
+        @include box-shadow(0px 0px 20px rgba(0,0,0,.2));
+        @include border-radius(6px);
+        z-index: 100;
+    }
+}
+.dropdown.dropdown-select{
+    button{
+        border-color: $gray_disabled;
+        color: $font_primary;
+        &:hover,
+        &:focus,
+        &:active{
+            border-color: $gray_disabled;
+            background: white;
+            color: $font_primary;
+        }
+
+    }
+    .dropdown-menu{
+        width: 250px;
+        display: block;
+        button{
+            background: none;
+            border: none;
+            padding: 3px;
+            text-align: left;
+            justify-content: flex-start;
+            width: 100%;
+            overflow: hidden;
+            &.dd-active{
+                background: $gray_btn;
+            }
+            &:hover,
+            &:focus,
+            &:active{
+                outline: none;
+                background: $gray_btn;
+            }
+        }
+
+    }
+}
+.dd-hide{
+    display: none;
+}
+@media(max-width: 1024px){
+    .dropdown-sort{
+        .dropdown-sort-menu{
+            padding: 0;
+            position: fixed;
+            top: 0px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9002;
+        }
+    }
+    .dropdown.dropdown-select{
+        button:first-child{
+            overflow: hidden;
+        }
+    }
+    .dd-sort-header{
+        padding: 20px;
+        border-bottom: 1px solid $gray3;
+    }
+    .dd-sort-body{
+        height: 100%;
+        overflow: auto;
+        padding: 0 20px 150px 20px;
+    }
+    .dd-block-1024{
+        display: block;
+    }
+    .dd-inline-1024{
+        display: inline;
+    }
+    .dd-hide-1024{
+        display: none;
+    }
+}
+@media(max-width: 400px){
+    .dropdown.dropdown-select{
+        button:first-child{
+            max-width: 190px;
+        }
+        .dropdown-menu{
+            button{
+                max-width: 100%;
+            }
+    
+        }
+    }
+    .dd-block-400{
+        display: block;
+    }
+    .dd-inline-400{
+        display: inline;
+    }
+    .dd-hide-400{
+        display: none;
+    }
+}
+@media(max-width: 350px){
+    .dropdown.dropdown-select{
+        button:first-child{
+            max-width: 140px;
+        }
+        .dropdown-menu{
+            button{
+                max-width: 100%;
+            }
+    
+        }
+    }
+    .dd-block-350{
+        display: block;
+    }
+    .dd-inline-350{
+        display: inline;
+    }
+    .dd-hide-350{
+        display: none;
+    }
+}

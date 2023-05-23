@@ -1,0 +1,62 @@
+<% layout('/layouts/layout-superadmin-open') -%>
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="mb-5">
+                    <h1>Hi. 👋 Garrett Welcome Back </h1>
+                    <p>What can we help you work on today?</p>
+                </div>
+            </div>
+        </div>
+        <div  class="row justify-content-center">
+            <div class="col-lg-9">
+                <div id="SuperAdminDashboard" class="row mb-3">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs pt-1">
+                                    <li class="nav-item">
+                                        <button 
+                                        v-bind:class="{active: tabs.approvals}"
+                                        v-on:click="onTabClick('tabs','approvals')"
+                                        type="button" class="nav-link pb-3">
+                                            Approvals
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button 
+                                        v-bind:class="{active: tabs.tenants}"
+                                        v-on:click="onTabClick('tabs','tenants')"
+                                        type="button" class="nav-link pb-3">
+                                            Tenants
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button 
+                                        v-bind:class="{active: tabs.employees}"
+                                        v-on:click="onTabClick('tabs','employees')"
+                                        type="button" class="nav-link pb-3">
+                                            Users
+                                        </button>
+                                    </li>
+                                </ul>  
+                                <hr class="mt-0"/>   
+                                <div v-if="tabs.approvals">
+                                    <pending-approvals></pending-approvals>
+                                </div>   
+                                <div v-if="tabs.tenants">
+                                    <manage-tenants></manage-tenants>
+                                </div> 
+                                <div v-if="tabs.employees">
+                                    <manage-users></manage-users>
+                                </div>                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/vue.superadmin-dashboard.js"></script>

@@ -1,0 +1,169 @@
+<% layout('/layouts/layout-candidate-closed') -%>
+<section id="HMPreferences" class="section section-sm">
+	<div class="hero">
+		<div class="section pt-5">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="d-flex flex-column align-items-center">
+							<div class="d-flex align-items-center mb-3">
+								<avataredit></avataredit>
+								<span class="ms-3 font-white">
+									<h6 class=" mb-0">Garrett McLeod</h6>
+                                    <p class="mb-0">Senior UI Engineer</p>
+                                    <p class="mb-0">
+                                        <small>Jacksonville FL.</small>
+                                    </p>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="translate-up-100">
+		<div class="d-flex justify-content-center">
+			<ul class="nav nav-tabs nav-tabs-white mt-3 flex-wrap flex-nowrap-md justify-content-center">
+				<li class="nav-item">
+					<a href="/candidate/profile" type="button" class="nav-link pb-3"
+					>
+						Account Details
+                    </a>
+				</li>
+				<li class="nav-item">
+					<a href="/candidate/preferences" class="nav-link pb-3 active"
+					>
+						Preferences
+					</a>
+				</li> 
+			</ul>
+		</div>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6">
+                    <div class="card card-lg mb-2">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between pb-3">
+                                <label class="p-0">Show My Profile Pick to Recruiters and Companies</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" checked type="checkbox" >
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex align-items-center justify-content-between py-3">
+                                <label class="p-0">I'm intersted in Full-Time Job Types</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" checked type="checkbox" >
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex align-items-center justify-content-between py-3">
+                                <label class="p-0">I'm intersted in Contract Job Types</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" checked type="checkbox" >
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex align-items-center justify-content-between py-3">
+                                <label class="p-0">I'm intersted in SOW Job Types</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" checked type="checkbox" >
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <label class="p-0">Preferred Methods of Contact</label>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetextinput 
+                                    placeholder="Enter your minimum contract rate"
+                                    type="select-multiple"
+                                    :valuearrayprop="contactMethods"
+                                    ></inlinetextinput>
+                                    <!-- <select2 placeholder="None Selected"  :options="contactMethods">
+                                        <option disabled value="0">Select one</option>
+                                    </select2> -->
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <label class="p-0">Preferred Locations</label>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetagsinput 
+                                    placeholder="Type Location and Hit Enter"
+                                    :truncate="3"
+                                    emptystate="<strong>No Preferences Set</strong>"
+                                    :tagsprop="locations"
+                                    ></inlinetagsinput>
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <label class="p-0">Preferred Industries</label>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetagsinput 
+                                    placeholder="Type Industries and Hit Enter"
+                                    :truncate="3"
+                                    emptystate="<strong>No Industries Set</strong>"
+                                    :tagsprop="industries"
+                                    ></inlinetagsinput>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-lg mb-2">
+                        <div class="card-body">
+                            <h6>Currency and Rates</h6>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <div>
+                                    <p class="p-0 mb-0">Preferred Currency</p>
+                                </div>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetextinput 
+                                    placeholder="Enter your minimum contract rate"
+                                    type="select-single"
+                                    :isplaintext="true"
+                                    :valuearrayprop="[{id:'USD',text:'USD',selected: true},{id:'INR',text: 'INR'}]"
+                                    ></inlinetextinput>
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <div>
+                                    <p class="p-0 mb-0">Minimum Hourly Rate</p>
+                                </div>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetextinput 
+                                    placeholder="Enter your minimum contract rate"
+                                    preunit="$"
+                                    unit="hr"
+                                    :isplaintext="true"
+                                    valueprop="50"
+                                    ></inlinetextinput>
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <div>
+                                    <p class="p-0 mb-0">Minimum Annual Salary</p>
+                                </div>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetextinput 
+                                    placeholder="Enter your minimum annual salary"
+                                    preunit="$"
+                                    unit="annual"
+                                    :isplaintext="true"
+                                    valueprop="150,000"
+                                    ></inlinetextinput>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	 </div>
+
+</section>
+
+<script type="text/javascript" src="/js/vue.preferences.js"></script>

@@ -1,0 +1,336 @@
+<% layout('/layouts/layout-candidate-closed') -%>
+<section id="AssessmentsApp" class="section section-sm">
+	<div class="hero">
+		<div class="section pt-5">
+			<div class="container">
+				<div class="row justify-content-center mb-5">
+					<div class="d-flex justify-content-between align-items-center col-10 font-white">
+                        <h5 class="mb-0">Assessments</h5>
+                        <div>
+                            <button v-on:click="showAssessmentModal" type="button" class="btn btn-sm btn-light">
+                                <i class="fal fa-plus mr-1"></i> Take Self Assessment
+                            </button>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card translate-up-100">
+                    <div class="card-body">
+
+                        <div class="d-flex-column d-block-1200 d-lg-flex flex-lg-row align-items-end mb-3 justify-content-between border-bottom-gray2">
+                            <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                                <div class="d-none d-xl-flex nav nav-tabs justify-content-between">
+                                    <div class="nav-item w-25 d-flex justify-content-center">
+                                        <button 
+                                        v-bind:class="{active: toggleView.listview}"
+                                        v-on:click="onTabClick('toggleView','listview')"
+                                        type="button" class="nav-link pb-3 bg-transparent">
+                                            <i class="fas fa-list"></i>
+                                        </button>
+                                    </div>
+                                    <div class="nav-item w-25 d-flex justify-content-center">
+                                        <button
+                                        v-bind:class="{active: toggleView.gridview}"
+                                        v-on:click="onTabClick('toggleView','gridview')"
+                                        type="button" class="nav-link pb-3 bg-transparent">
+                                            <i class="fas fa-th-large"></i>
+                                        </button>
+                                    </div>
+                                    <div class="nav-item w-25 d-flex justify-content-center">
+                                        <button 
+                                        v-bind:class="{active: toggleView.tableview}"
+                                        v-on:click="onTabClick('toggleView','tableview')"
+                                        type="button" class="nav-link pb-3 bg-transparent">
+                                            <i class="fas fa-table"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="nav nav-tabs nav-tabs-tablet pt-1 justify-content-center justify-content-lg-start">
+                                <li class="nav-item">
+                                    <button 
+                                    v-bind:class="{active: statusView.all}"
+                                    type="button" v-on:click="setStatusView('all')" class="nav-link pb-3 mx-2 bg-transparent">
+                                        <span class="tag mb-1">{{totalItems}}</span>
+                                        <div>All</div>
+                                    </button>
+                                </li> 
+                                <li class="nav-item">
+                                    <button type="button"
+                                    v-bind:class="{active: statusView.notstarted}"
+                                    v-on:click="setStatusView('notstarted')" class="nav-link pb-3 mx-2 bg-transparent">
+                                    <span class="tag mb-1">{{getTotalByStatus('notstarted')}}</span>
+                                        <div>Assigned</div>
+                                    </button>
+                                </li> 
+                                <li class="nav-item">
+                                    <button 
+                                    v-bind:class="{active: statusView.completed}"
+                                    type="button" v-on:click="setStatusView('completed')" class="nav-link bg-transparent pb-3 mx-2">
+                                        <span class="tag mb-1">{{getTotalByStatus('completed')}}</span>
+                                            <div>Completed</div>
+                                    </button>
+                                </li> 
+                            </ul>
+                            <div class="my-2 d-none d-block-1200"></div>
+                            <div class="d-flex mb-2 align-items-center justify-content-center justify-content-even-400">
+                                <div class="d-flex justify-content-end w-100 justify-content-even-400">
+                                    <sort  v-bind:categories="sortCategories"></sort>
+                                    <filters class="ml-1" v-bind:categories="filterCategories"></filters>
+                                </div>
+                            </div>
+                        </div>
+            
+        
+                      
+                        <div class="row d-none d-none-1200" 
+                        v-bind:class="{ 'd-block-force': toggleView.listview }">
+                            <div class="col">
+                                
+                                
+                                <a href="/candidate/assessments/123123"
+                                class="card card-flat d-flex flex-row align-items-stretch justify-content-between mb-1 p-relative"
+                                v-on:click.stop.prevent="onItemClick(module)"
+                                v-for="(module,index) in modules" 
+                                v-if="module.isVisible"
+                                >
+                                    <div class="card-body ">
+                                        <div class="w-100">
+                                            <div class="d-flex align-items-center mb-1 mt-2">
+                                                <h6 class="mb-0 me-2">{{module.title}}</h6> 
+                                            </div>
+                                            <div class="font-regular font-primary font-gray1 text-truncate">
+                                                <small><strong>Description</strong></small>
+                                                <p class="mb-1">{{module.description}}</p>
+                                                <div class="bg-blue4 p-2 mt-2">
+                                                    <span 
+                                                    v-bind:class="{
+                                                        'tag-blue1': module.difficulty === '1 Way Video',
+                                                        'tag-orange1': module.difficulty === '2 Way Video',
+                                                        'tag-red1': module.difficulty === 'MCQ'
+                                                    }"
+                                                    class="mr-2 tag font-bold">{{module.difficulty}}</span>
+                                                    <span class="mr-2"><i class="far fa-fw fa-stopwatch"></i> Duration: {{module.duration}}</span>
+                                                    <span class="mr-2"><i class="fal fa-fw fa-clock"></i> Last Updated: {{module.lastUpdated}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <p class="mb-1"><small>Progress</small></p>
+                                            <div v-if="module.status === 'inprogress'">
+                                                <small>20% Complete</small>
+                                                <div class="alert-progress alert-progress-static bg-gray3">
+                                                    <div style="width: 20%;" class="alert-progress-bar"></div>
+                                                </div>
+                                            </div>
+                                            <div v-if="module.status === 'completed'">
+                                                <small>100% Complete</small>
+                                                <div class="alert-progress alert-progress-static bg-green1">
+        
+                                                </div>
+                                            </div>
+                                            <div v-if="module.status !== 'completed' && module.status !== 'inprogress'">
+                                                <small>Not Started</small>
+                                                <div class="alert-progress alert-progress-static bg-gray3">
+                                                    <div style="width: 0%;" class="alert-progress-bar bg-green1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                
+                        <div class="row d-none d-flex-1200" 
+                        v-bind:class="{ 'd-flex-force': toggleView.gridview }">
+        
+                        
+                            <div 
+                            v-for="(module,index) in modules" 
+                            v-if="module.isVisible"
+                            class="col-lg-4 col-md-6 col-sm-12 d-flex">
+                                <a href="/candidate/assessments/123123"
+                                v-on:click.stop.prevent="onItemClick(module)"
+                                class="card card-flat col card-tag-bottom mb-4 card-lg card-modules-grid p-relative">
+                                    <div class="card-body">
+                                        <span 
+                                        v-bind:class="{
+                                            'tag-blue1': module.difficulty === '1 Way Video',
+                                            'tag-orange1': module.difficulty === '2 Way Video',
+                                            'tag-red1': module.difficulty === 'MCQ'
+                                        }"
+                                        class="mr-2 tag font-bold">{{module.difficulty}}</span>
+                                        <div class="d-flex mt-2 mb-2 align-items-center">
+                                            <h6 class="mb-0">{{module.title}}</h6> 
+                                        </div>
+                                        <div class="p-2 bg-blue4 font-regular font-primary font-gray1 mt-1">
+                                            <div class="mb-2"><i class="far fa-fw fa-stopwatch me-2"></i>Duration {{module.duration}}</div>
+                                            <div><i class="far fa-fw fa-clock me-2"></i> 
+                                                <span>{{module.lastUpdated}}
+                                                </span>
+                                                <span v-if="module.lastUpdated > 1">
+                                                    days
+                                                </span>
+                                                <span v-if="module.lastUpdated == 1">
+                                                    day
+                                                </span>
+                                                ago
+                                            </div>
+                                        </div>
+
+
+                                        <div class="mt-2">
+                                            <p class="mb-1"><small>Progress</small></p>
+                                            <div v-if="module.status === 'inprogress'">
+                                                <small>20% Complete</small>
+                                                <div class="alert-progress alert-progress-static bg-gray3">
+                                                    <div style="width: 20%;" class="alert-progress-bar"></div>
+                                                </div>
+                                            </div>
+                                            <div v-if="module.status === 'completed'">
+                                                <small>100% Complete</small>
+                                                <div class="alert-progress alert-progress-static bg-green1">
+        
+                                                </div>
+                                            </div>
+                                            <div v-if="module.status !== 'completed' && module.status !== 'inprogress'">
+                                                <small>Not Started</small>
+                                                <div class="alert-progress alert-progress-static bg-gray3">
+                                                    <div style="width: 0%;" class="alert-progress-bar bg-green1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </a>
+                            </div>
+                        
+        
+                        </div>
+            
+                        <div class="row d-none d-none-1200"
+                        v-bind:class="{ 'd-block-force': toggleView.tableview }">
+                            <div class="col">
+                                <table class="table table-sortable  table-hoverable">
+                                    <thead>
+                                        <tr>
+                                            <th class="no-hover pt-0">
+                                                <div class="d-flex align-items-center">
+                                                    Title</i> 
+                                                </div>
+                                            </th>
+                                            <th class="no-hover pt-0">
+                                                <div class="d-flex align-items-center">
+                                                    Difficulty
+                                                </div>
+                                            </th>
+                                            <th class="no-hover pt-0">
+                                                <div class="d-flex align-items-center">
+                                                    Duration
+                                                </div>
+                                            </th>
+                                            <th class="no-hover pt-0">
+                                                <div class="d-flex align-items-center">
+                                                    Last Updated
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="d-flex align-items-center">
+                                                    Progress
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+        
+                                
+                                        <tr
+                                        v-on:click.stop.prevent="onItemClick(module)"
+                                        v-for="(module,index) in modules" 
+                                        v-if="module.isVisible"
+                                        >
+                                            <td class="p-relative">
+                                                <a href="/candidate/assessments/123123" class="font-primary no-hover">
+                                                    {{module.title}}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <a href="/candidate/assessments/123123" class="font-primary no-hover font-regular">
+                                                        {{module.difficulty}}
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <a href="/candidate/assessments/123123" class="font-primary no-hover font-regular">
+                                                        <span 
+                                                        v-bind:class="{
+                                                            'tag-blue1': module.difficulty === '1 Way Video',
+                                                            'tag-orange1': module.difficulty === '2 Way Video',
+                                                            'tag-red1': module.difficulty === 'MCQ'
+                                                        }"
+                                                        class="mr-2 tag font-bold">{{module.difficulty}}</span>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td style="width: 150px;">
+                                                <div>
+                                                    <a href="/candidate/assessments/123123" class="font-primary no-hover font-regular">
+                                                        <span>
+                                                            {{module.lastUpdated}}
+                                                        </span>
+                                                        <span v-if="module.lastUpdated > 1">
+                                                            days
+                                                        </span>
+                                                        <span v-if="module.lastUpdated == 1">
+                                                            day
+                                                        </span>
+                                                        ago
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td style="width: 150px;">
+                                                <div>
+                                                    <div v-if="module.status === 'inprogress'">
+                                                        <small>20% Complete</small>
+                                                        <div class="alert-progress alert-progress-static bg-gray3">
+                                                            <div style="width: 20%;" class="alert-progress-bar"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="module.status === 'completed'">
+                                                        <small>100% Complete</small>
+                                                        <div class="alert-progress alert-progress-static bg-green1">
+                
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="module.status !== 'completed' && module.status !== 'inprogress'">
+                                                        <small>Not Started</small>
+                                                        <div class="alert-progress alert-progress-static bg-gray3">
+                                                            <div style="width: 0%;" class="alert-progress-bar bg-green1"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="/js/vue.assessments-view.js"></script>

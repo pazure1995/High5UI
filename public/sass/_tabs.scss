@@ -1,0 +1,90 @@
+.tabs-container{
+    width: 100%;
+    position: relative;
+    padding: 0 20px;
+    .tab-btn-overflow_left,
+    .tab-btn-overflow_right{
+        position: absolute;
+        top: 6px;
+        left: 0;
+        content: "/f053";
+        font-family: FontAwesome;
+        text-align: center;
+        padding: 10px;
+        z-index: 2;
+        @include border-radius(0px !important);
+        background: rgb(255,255,255);
+        background: linear-gradient(270deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+        border: none;
+        color: $font_accent !important;
+        &:hover,
+        &:active,
+        &:focus{
+            @include box-shadow(none);
+            color: $blue5 !important;
+        }
+    }
+    .tab-btn-overflow_right{
+        left: auto;
+        right: 0;
+        background: rgb(255,255,255);
+        background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+    }
+
+}
+.tabs{
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin-bottom: 0;
+    width: 100%;
+    overflow: auto;
+    li{
+        display: block;
+    }
+    button,
+    a{
+        background: none;
+        border: none;
+        @include box-shadow(none);
+        color: $font_accent !important;
+        position: relative;
+        padding-left: 3px;
+        padding-right: 3px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        margin: 0 10px;
+        display: block;
+        white-space:nowrap;
+        @include transition(all .5s ease);
+        &:after{
+            content: "";
+            display: block;
+            width: 100%;
+            height: 4px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: $blue5;
+            @include border-radius(250px 250px 0 0);
+            @include transition(all .5s ease);
+            @include transform(scale(0));
+        }
+        &:focus,
+        &:hover,
+        &.active,
+        &:active{
+            outline: none;
+            color: $blue5 !important;
+            &:after{
+                @include transform(scale(1));
+            }
+        }
+    }
+    &.tabs-floating{
+        button:after,
+        a:after{
+            @include border-radius(250px);
+        }
+    }
+}

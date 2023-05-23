@@ -1,0 +1,255 @@
+<% layout('/layouts/layout-hiringmanager-open') -%>
+<div class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="text-center mb-5">
+                    <h1>Hi. 👋 Garrett Welcome Back </h1>
+                    <p>What can we help you work on today?</p>
+                </div>
+                <div id="HMIntakeForm" class="card p-4 mb-3">
+                    <div class="card-body">
+                        <h6 class="mr-3 mb-0">Intake Forms</h6>
+                        <pending-approvals-intakeforms/>
+                    </div>
+                </div>
+                <div class="card card-flat card-borderless bg-gray4 p-4 mb-3">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="d-md-flex align-items-center">
+                            <h6 class="mr-3 mb-0">Your Open Requests</h6>
+                            <a href="/hiringmanager/requests">Go To Full View</a>
+                        </div>
+                        <div class="ml-auto">
+                            <button type="button" class="btn btn-sm d-sm-block w-100" data-toggle="modal" data-target="#NewRequestModal">
+                                <i class="fas fa-plus mr-2"></i>New 
+                                <span class="d-none d-sm-inline">Request</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3 d-flex">
+                            <a href="/hiringmanager/request/1212321" class="card col p-0 card-tag-bottom mb-2  card-lg">                      
+                                <div class="card-body pb-0">
+                                    <h6>Java Developer<br/><small class="font-regular font-primary">Full Time</small></h6>
+                                    <hr class="mt-0 mb-2"/>
+                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>Jacksonville FL.</p>
+                                    <p class="mb-1"><i class="fal fa-fw fa-clock mr-3"></i>9 Days Left</p>
+                                </div>    
+                                <div class="card-body py-2">
+                                    <div class="d-flex flex-row-reverse justify-content-end">
+                                        <span class="avatar avatar-white avatar-bordered ml-neg-10">
+                                            2+
+                                        </span>
+                                        <span class="avatar avatar-purple1 avatar-bordered ml-neg-10">
+                                            BG
+                                        </span>
+                                        <img class="avatar ml-neg-10 avatar-bordered" src="https://i.imgur.com/tl4edXX.jpg"/>
+                                        <img class="avatar avatar-bordered" src="https://uifaces.co/our-content/donated/oT06seM-.png"/>
+                                    </div>
+                                </div>                       
+                                <span class="tag tag-footer tag-green3 justify-content-center">
+                                    2 New Candidates
+                                </span>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 d-flex">
+                            <a href="/hiringmanager/request/1212321" class="card col p-0 card-tag-bottom mb-2   card-lg">
+                                
+                                <div class="card-body pb-0">
+                                    <h6>Sr. Software Cloud Engi..<br/><small class="font-regular font-primary">Contract To Hire</small></h6>
+                                    <hr class="mt-0 mb-2"/>
+                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>Jacksonville FL.</p>
+                                    <p class="mb-1"><i class="fal fa-fw fa-clock mr-3"></i>9 Days Left</p>
+                                </div>
+                                <div class="card-body py-2">
+                                    <div class="d-flex flex-row-reverse justify-content-end">
+                                        <img class="avatar avatar-bordered" src="https://randomuser.me/api/portraits/men/86.jpg"/>
+                                    </div>
+                                </div>   
+                                <span class="tag tag-footer tag-green3 justify-content-center">1 New Candidate</span>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 d-flex">
+                            <a href="/hiringmanager/request/1212321" class="card col p-0 card-tag-bottom mb-2   card-lg">
+                                <div class="card-body">
+                                    <h6>Sr. Hadoop Architect<br/><small class="font-regular font-primary">SOW</small></h6>
+                                    <hr class="mt-0 mb-2"/>
+                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>Jacksonville FL.</p>
+                                    <p class="mb-1"><i class="fal fa-fw fa-clock mr-3"></i><strong class="tag tag-red1">1 Day Left</strong></p>
+                                </div>
+                                <span class="tag tag-footer justify-content-center">All Candidates Viewed</span>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 d-flex">
+                            <a href="/hiringmanager/request/1212321" class="card col p-0 card-tag-bottom mb-2  card-lg">
+                                <div class="card-body">
+                                    <h6>UI/UX Designer<br/><small class="font-regular font-primary">Full Time</small></h6>
+                                    <hr class="mt-0 mb-2"/>
+                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>Jacksonville FL.</p>
+                                    <p class="mb-1"><i class="fal fa-fw fa-clock mr-3"></i>2 Days Left</p>
+                                </div>
+                                <span class="tag tag-footer justify-content-center">All Candidates Viewed</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-xl-12 d-flex align-items-center">
+                            <div>
+                                Showing 4 of 6
+                            </div>
+                            <div class="ml-auto d-flex align-items-center">
+                                <button type="button" disabled class="btn btn-icon px-2"><i class="fal fa-chevron-circle-left"></i></button>
+                                <button type="button" disabled class="btn btn-text px-2">1</button>
+                                <button type="button" class="btn btn-text px-2">2</button>
+                                <button type="button" class="btn btn-icon px-2"><i class="fal fa-chevron-circle-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-flat card-borderless bg-gray4 p-4 mb-3">
+                    <div class="d-flex align-items-centermb-3 mb-3">
+                        <div class="d-md-flex align-items-center">
+                            <h6 class="mr-3 mb-0">Candidate Submissions</h6>
+                            <a href="/hiringmanager/candidates">Go To Full View</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3 d-flex">
+                            <a href="#" class="card card-tag-bottom col p-0 mb-2   card-lg">                      
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar mr-3">JD</div>
+                                        <h6>Jason D.<br/><small class="font-regular font-primary">Lead Cloud Architect</small></h6>
+                                    </div>
+                                    <hr class="mt-2 mb-2"/>
+                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>Jacksonville FL.</p>
+                                    <p class="mb-1"><i class="fal fa-fw fa-sack mr-3"></i>$25/hr</p>
+                                    <p class="mb-0 mt-3">Submitted For</p>
+                                    <strong>Sr. Software Cloud Engineer</strong>
+                                </div>
+                                <span class="tag tag-footer tag-green3 justify-content-center">New!</span>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 d-flex">
+                            <a href="#" class="card card-tag-bottom col p-0 mb-2   card-lg">                      
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img class="avatar avatar-bordered mr-2" src="https://uifaces.co/our-content/donated/oT06seM-.png"/>
+                                        <h6>Andy Y.<br/><small class="font-regular font-primary">Java Developer II</small></h6>
+                                    </div>
+                                    <hr class="mt-2 mb-2"/>
+                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>Jacksonville FL.</p>
+                                    <p class="mb-1"><i class="fal fa-fw fa-sack mr-3"></i>$90K/yr</p>
+                                    <p class="mb-0 mt-3">Submitted For</p>
+                                    <strong>Java Developer</strong>
+                                </div>
+                                <span class="tag tag-footer tag-green3 justify-content-center">New!</span>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 d-flex">
+                            <a href="#" class="card card-tag-bottom col p-0 mb-2   card-lg">                      
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img class="avatar avatar-bordered mr-2" src="https://i.imgur.com/tl4edXX.jpg"/>
+                                        <h6>Sally S.<br/><small class="font-regular font-primary">Sr. Java Architect</small></h6>
+                                    </div>
+                                    <hr class="mt-2 mb-2"/>
+                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>Jacksonville FL.</p>
+                                    <p class="mb-1"><i class="fal fa-fw fa-sack mr-3"></i>$85K/yr</p>
+                                    <p class="mb-0 mt-3">Submitted For</p>
+                                    <strong>Java Developer</strong>
+                                </div>
+                                <span class="tag tag-footer tag-green3 justify-content-center">New!</span>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 d-flex">
+                            <a href="#" class="card card-tag-bottom col p-0 mb-2   card-lg">                      
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img class="avatar avatar-bordered mr-2" src="https://uifaces.co/our-content/donated/t33XAm04.jpg"/>
+                                        <h6>Garrett M.<br/><small class="font-regular font-primary">UX Engineer</small></h6>
+                                    </div>
+                                    <hr class="mt-2 mb-2"/>
+                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>Jacksonville FL.</p>
+                                    <p class="mb-1"><i class="fal fa-fw fa-sack mr-3"></i>$15/hr</p>
+                                    <p class="mb-0 mt-3">Submitted For</p>
+                                    <strong>UI/UX Designer</strong>
+                                </div>
+                                <span class="tag tag-footer justify-content-center">Viewed 2 Days Ago</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-xl-12 d-flex align-items-center">
+                            <div>
+                                Showing 4 of 24
+                            </div>
+                            <div class="ml-auto d-flex align-items-center">
+                                <button type="button" disabled class="btn btn-icon px-2"><i class="fal fa-chevron-circle-left"></i></button>
+                                <button type="button" disabled class="btn btn-text px-2">1</button>
+                                <button type="button" class="btn btn-text px-2">2</button>
+                                <button type="button" class="btn btn-text px-2">3</button>
+                                <button type="button" class="btn btn-text px-2">4</button>
+                                <button type="button" class="btn btn-text px-2">...</button>
+                                <button type="button" class="btn btn-icon px-2"><i class="fal fa-chevron-circle-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-flat card-borderless bg-gray4 p-4  mb-3">
+                    <div class="d-flex align-items-centermb-3 mb-3">
+                        <div class="d-md-flex align-items-center">
+                            <h6 class="mr-3 mb-0">Active Assignments</h6>
+                            <a href="/hiringmanager/requests">Go To Full View</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-3 d-flex">
+                            <a href="#" class="card card-tag-bottom  col p-0 mb-2  card-lg">
+                                
+                                <div class="card-body">
+                                    <h6>.Net Developer I<br/><small class="font-regular font-primary">Contract To Hire</small></h6>
+                                    <hr class="mt-0 mb-2"/>
+                                    <div class="my-1 d-flex align-items-center">
+                                        <img class="avatar avatar-sm mr-3" src="https://randomuser.me/api/portraits/women/45.jpg"/>
+                                        <div>
+                                            Anne K.
+                                            <div class="font-regular">
+                                                Jacksonville Fl.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="tag tag-footer tag-red1 justify-content-center">20 days left</span>
+                            </a>
+                        </div>
+                        <div class="col-xl-3 d-flex">
+                            <a href="#" class="card card-tag-bottom col p-0 mb-2   card-lg">
+                                <div class="card-body">
+                                    <h6>React Native Developer<br/><small class="font-regular font-primary">SOW</small></h6>
+                                    <hr class="mt-0 mb-2"/>
+                                    <div class="my-1 d-flex align-items-center">
+                                        <img class="avatar avatar-sm mr-3" src="https://randomuser.me/api/portraits/men/58.jpg"/>
+                                        <div>
+                                            Shatish S.
+                                            <div class="font-regular">
+                                                Jacksonville Fl.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="tag tag-footer justify-content-center">4 months left</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+var app = new Vue({
+  el: '#HMIntakeForm',
+});
+</script>

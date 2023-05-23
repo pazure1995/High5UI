@@ -1,0 +1,586 @@
+<% layout('/layouts/layout-recruiter-closed') -%>
+<section id="HMProfile" class="section section-sm">
+	<div class="hero">
+		<div class="section pt-5">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="d-flex flex-column align-items-center">
+							<div class="d-flex align-items-center mb-3">
+								<avataredit></avataredit>
+								<span class="ms-3">
+									<h6 class="font-white">John D.</h6>
+									<span class="tag tag-brandblue">
+											Recruiter
+									</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="translate-up-100">
+		<div class="d-flex justify-content-center">
+			<ul class="nav nav-tabs nav-tabs-white mt-3 flex-wrap flex-nowrap-md justify-content-center">
+				<li class="nav-item">
+					<button type="button" class="nav-link pb-3 active"
+					>
+						Account Details
+					</button>
+				</li>
+				<li class="nav-item">
+					<a href="/recruiter/preferences" class="nav-link pb-3"
+					>
+						Preferences
+					</a>
+				</li> 
+			</ul>
+		</div>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6">
+					<div >
+						<div class="mb-2" v-bind:class="{'read-only':form.contact.readOnly}">
+							<div class="card card-lg">
+									<div class="card-body">
+									<div class="d-flex align-items-center justify-content-between">
+										<h6 class="mb-0">
+												Contact Info
+										</h6>
+										<button type="button" v-if="form.contact.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('contact')">
+											<i class="fas fa-pencil-alt mr-1"></i> 
+											Edit
+										</button> 
+										<div v-else>
+											<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('contact')">
+												Cancel
+											</button> 		
+											<button type="button" v-on:click="submitForm('contact')"  class="btn btn-sm btn-primary">
+												<span v-if="form.contact.submittingForm == false && form.contact.showSuccessMessage == false">Save Changes</span>
+												<span v-if="form.contact.submittingForm">
+													Saving Changes
+													<img width="20px" src="/images/button-loader.gif"/>
+												</span>
+												<span v-if="form.contact.showSuccessMessage">Changes Saved!</span>
+											</button>								
+										</div>
+									</div>
+									<hr/>
+									<div class="col-lg-12 col-md-12 col-sm-12">
+										<div class="row">
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="firstName" aria-describedby="FirstName" placeholder="First Name" value="John" :disabled="form.contact.readOnly">
+													<label for="firstName">First Name</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="lastName" aria-describedby="LastName" placeholder="Last Name" value="Doe" :disabled="form.contact.readOnly">
+													<label for="lastName">Last Name</label>
+												</div>
+											</div>
+											<div class="col-lg-12">
+												<div class="form-floating mb-2 ">
+													<input type="email"  class="form-control" id="hmEmail" aria-describedby="hiringMangerEmail" placeholder="Email" value="joe.doe@recruit.com" :disabled="form.contact.readOnly">
+													<label for="hmEmail">Email</label>
+												</div>
+											</div>
+											<div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="Work_Contact" aria-describedby="RecruiterWorkContact" placeholder="Work Contact" value="+1 123 456 789" :disabled="form.contact.readOnly">
+													<label for="Work_Contact">Work Phone</label>
+												</div>
+											</div>
+											<div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="Home_Contact" aria-describedby="RecruiterHomeContact" placeholder="Home Contact" value="+1 123 456 789" :disabled="form.contact.readOnly">
+													<label for="Home_Contact">Home Phone</label>
+												</div>
+											</div>
+											<div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="Mobile_Contact" aria-describedby="RecruiterMobileContact" placeholder="Mobile Contact" value="+1 123 456 789" :disabled="form.contact.readOnly">
+													<label for="Mobile_Contact">Mobile Phone</label>
+												</div>
+											</div>
+											<div class="col-lg-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmAddress" aria-describedby="hiringMangerAddress" placeholder="Address" value="4970 Hillhaven Drive" :disabled="form.contact.readOnly">
+													<label for="hmAddress">Address</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmCity" aria-describedby="hiringManagerCity" placeholder="City" value="Los Angeles" :disabled="form.contact.readOnly">
+													<label for="hmCity">City</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmState" aria-describedby="hiringManagerState" placeholder="State" value="California" :disabled="form.contact.readOnly">
+													<label for="hmState">State</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmZipCode" aria-describedby="hiringManagerZipcode" placeholder="Zipcode" value="90071" :disabled="form.contact.readOnly">
+													<label for="hmZipCode">Zipcode</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmCountry" aria-describedby="hiringManagerCountry" placeholder="Country" value="United States" :disabled="form.contact.readOnly">
+													<label for="hmCountry">Country</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="mb-2" v-bind:class="{'read-only':form.social.readOnly}">
+							<div class="card card-lg">
+								<div class="card-body">
+									<div class="d-flex align-items-center justify-content-between">
+										<h6 class="mb-0">
+												Social Media
+										</h6>
+										<button type="button" v-if="form.social.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('social')">
+											<i class="fas fa-pencil-alt mr-1"></i> 
+											Edit
+										</button> 
+										<div v-else>
+											<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('social')">
+												Cancel
+											</button> 		
+											<button type="button" v-on:click="submitForm('social')"  class="btn btn-sm btn-primary">
+												<span v-if="form.social.submittingForm == false && form.social.showSuccessMessage == false">Save Changes</span>
+												<span v-if="form.social.submittingForm">
+													Saving Changes
+													<img width="20px" src="/images/button-loader.gif"/>
+												</span>
+												<span v-if="form.social.showSuccessMessage">Changes Saved!</span>
+											</button>								
+										</div>
+									</div>
+									<hr/>
+									<div class="col-lg-12 col-md-12 col-sm-12">
+											<div class="col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="recruiter_linkedInURL" aria-describedby="RecruiterLinkedInURL" placeholder="Paste URL" value="https://www.linkedin.com/in/firstname-lastname-4564b186/" :disabled="form.social.readOnly">
+													<label for="recruiter_linkedInURL">LinkedIn ID</label>
+												</div>
+											</div>
+											<div class="col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="recruiter_facebookURL" aria-describedby="RecruiterFacebookURL" placeholder="Paste URL" value="https://www.facebook.com/public/firstname-lastname" :disabled="form.social.readOnly">
+													<label for="recruiter_facebookURL">Facebook ID</label>
+												</div>
+											</div>
+											<div class="col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="recruiter_TwitterURL" aria-describedby="RecruiterTwitterInURL" placeholder="Paste URL" value="https://twitter.com/firstname_lastname" :disabled="form.social.readOnly">
+													<label for="recruiter_TwitterURL">Twitter ID</label>
+												</div>
+											</div>										
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="mb-2" v-bind:class="{'read-only':form.story.readOnly}">
+							<div class="card card-lg">
+									<div class="card-body">
+									<div class="d-flex align-items-center justify-content-between">
+										<h6 class="mb-0">
+												Story Info
+										</h6>
+										<button type="button" v-if="form.story.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('story')">
+											<i class="fas fa-pencil-alt mr-1"></i> 
+											Edit
+										</button> 
+										<div v-else>
+											<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('story')">
+												Cancel
+											</button> 		
+											<button type="button" v-on:click="submitForm('story')"  class="btn btn-sm btn-primary">
+												<span v-if="form.story.submittingForm == false && form.story.showSuccessMessage == false">Save Changes</span>
+												<span v-if="form.story.submittingForm">
+													Saving Changes
+													<img width="20px" src="/images/button-loader.gif"/>
+												</span>
+												<span v-if="form.story.showSuccessMessage">Changes Saved!</span>
+											</button>								
+										</div>
+									</div>
+									<hr/>
+									<div class="col-lg-12 col-md-12 col-sm-12">				
+										<div class="col-xl-4 col-lg-12 col-md-12 col-sm-12">
+											<div class="form-floating mb-1 ">
+												<select 
+												 class="form-control"
+												 aria-describedby="RecruiterPosition" 
+												 :disabled="form.story.readOnly">
+													<option value="">Select Position</option>
+													<option value="Contract">Contract</option>
+													<option value="Temp To Hire">Temp To Hire</option>
+													<option value="Full Time">Full Time</option>
+													<option value="Part Time">Part Time</option>
+													<option value="Volunteer">Volunteer</option>
+												</select>
+												<label>Position Type</label>
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div v-if="form.story.readOnly" 
+											class="form-floating mb-4">
+												<label>Skill Set</label>
+												<div class="pt-5 px-2">
+													<span v-for="skill in skills" class="tag tag-blue3 mr-1">{{skill.text}}</span>
+												</div>
+											</div>
+											<div v-else class="w-100 mb-4">
+												<label>Skill Set</label>
+												<vuetagsinput 
+												:tagslist="skills"
+												placeholder="Enter Skill Set and Hit Enter"></vuetagsinput>
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<div class="form-floating">
+												<textarea class="form-control" 
+												name="myStory"
+												v-model="myStory" 
+												aria-describedby="RecruiterStory" 
+												placeholder="Type Here" :disabled="form.story.readOnly">								
+												</textarea>
+												<label>My Story</label>
+											</div>
+										</div>							
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card card-lg mb-2">
+							<div class="card-body">
+								<div class="d-flex align-items-center justify-content-between">
+									<h6 class="mb-0">
+											Education
+									</h6>
+									<button type="button" v-if="form.education.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('education')">
+										<i class="fas fa-pencil-alt mr-1"></i> 
+										Edit
+									</button> 
+									<div v-else>
+										<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('education')">
+											Cancel
+										</button> 		
+										<button type="button" v-on:click="submitForm('education')"  class="btn btn-sm btn-primary">
+											<span v-if="form.education.submittingForm == false && form.education.showSuccessMessage == false">Save Changes</span>
+											<span v-if="form.education.submittingForm">
+												Saving Changes
+												<img width="20px" src="/images/button-loader.gif"/>
+											</span>
+											<span v-if="form.education.showSuccessMessage">Changes Saved!</span>
+										</button>								
+									</div>
+								</div>
+								<hr/>
+
+								<div v-if="form.education.readOnly">
+									<div class="d-flex mb-2">
+										<div class="mr-3 d-flex flex-column align-items-center"><i class="fad fa-graduation-cap fa-fw mt-1" aria-hidden="true"></i></div>
+										<div>
+										<p class="mb-1"><strong>Embry Riddle Aeronautical University</strong></p>
+										<p><small>2005 | BS Aerospace Studies</small></p>
+										</div>
+									</div>
+									<div class="d-flex">
+										<div class="mr-3 d-flex flex-column align-items-center"><i class="fad fa-graduation-cap fa-fw mt-1" aria-hidden="true"></i></div>
+										<div>
+										<p class="mb-1"><strong>Tallahassee Community College</strong></p>
+										<p><small>2003 | AS Engineering Technology</small></p>
+										</div>
+									</div>
+								</div>
+								<education v-else :education="education"></education>
+							</div>
+						</div>
+						<div class="card card-lg mb-2">
+							<div class="card-body">
+								<div class="d-flex align-items-center justify-content-between">
+									<h6 class="mb-0">
+										Work Experience
+									</h6>
+									<button type="button" v-if="form.experience.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('experience')">
+										<i class="fas fa-pencil-alt mr-1"></i> 
+										Edit
+									</button> 
+									<div v-else>
+										<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('experience')">
+											Cancel
+										</button> 		
+										<button type="button" v-on:click="submitForm('experience')"  class="btn btn-sm btn-primary">
+											<span v-if="form.experience.submittingForm == false && form.experience.showSuccessMessage == false">Save Changes</span>
+											<span v-if="form.experience.submittingForm">
+												Saving Changes
+												<img width="20px" src="/images/button-loader.gif"/>
+											</span>
+											<span v-if="form.experience.showSuccessMessage">Changes Saved!</span>
+										</button>								
+									</div>
+								</div>
+								<hr/>
+								<div v-if="form.experience.readOnly">
+									<div class="d-flex">
+									   <div class="mr-3 d-flex flex-column align-items-center">
+										  <i class="fad fa-fw fa-briefcase mt-1" aria-hidden="true"></i> 
+										  <div class="view-panel-spacer mt-1"></div>
+									   </div>
+									   <div class="pb-3">
+										  <p class="mb-1"><strong>Hammock Creative Inc. <span class="font-regular">(Creative Services)</span></strong></p>
+										  <p class="mb-0"><small><strong>Full Stack Engineer</strong></small></p>
+										  <p><small>January 2017 - 2020 (3 Years)</small></p>
+										  <p>
+											 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+										  </p>
+									   </div>
+									</div>
+									<div class="d-flex">
+									   <div class="mr-3 d-flex flex-column align-items-center">
+										  <i class="fad fa-fw fa-briefcase mt-1" aria-hidden="true"></i> 
+										  <div class="view-panel-spacer mt-1"></div>
+									   </div>
+									   <div class="pb-3">
+										  <p class="mb-1"><strong>Eteam <span class="font-regular">(Talent Acquisition)</span></strong></p>
+										  <p class="mb-0"><small><strong>Junior Developer</strong></small></p>
+										  <p><small>January 2016 - 2017 (1 Year)</small></p>
+										  <p>
+											 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+										  </p>
+									   </div>
+									</div>
+								</div>
+								<workexperience v-else :workhistory="experience"></workexperience>
+							</div>
+						</div>
+						<div class="card card-lg mb-2">
+							<div class="card-body">
+								<div class="d-flex align-items-center justify-content-between">
+									<h6 class="mb-0">
+										Certifications
+									</h6>
+									<button type="button" v-if="form.certifications.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('certifications')">
+										<i class="fas fa-pencil-alt mr-1"></i> 
+										Edit
+									</button> 
+									<div v-else>
+										<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('certifications')">
+											Cancel
+										</button> 		
+										<button type="button" v-on:click="submitForm('certifications')"  class="btn btn-sm btn-primary">
+											<span v-if="form.certifications.submittingForm == false && form.certifications.showSuccessMessage == false">Save Changes</span>
+											<span v-if="form.certifications.submittingForm">
+												Saving Changes
+												<img width="20px" src="/images/button-loader.gif"/>
+											</span>
+											<span v-if="form.certifications.showSuccessMessage">Changes Saved!</span>
+										</button>								
+									</div>
+								</div>
+								<hr/>
+								<div v-if="form.certifications.readOnly">
+									<div class="d-flex">
+										<div class="mr-3 d-flex flex-column align-items-center"><i class="fad fa-award fa-fw mt-1" aria-hidden="true"></i></div>
+										<div>
+										<p class="mb-1"><strong>AWS</strong></p>
+										<p><small>January 2020</small></p>
+										</div>
+									</div>
+								 </div>
+								<certification v-else></certification>
+							</div>
+						</div>
+						<div class="card card-lg mb-2">
+							<div class="card-body">
+								<div class="d-flex align-items-center justify-content-between">
+									<h6 class="mb-0">
+										Licenses
+									</h6>
+									<button type="button" v-if="form.licenses.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('licenses')">
+										<i class="fas fa-pencil-alt mr-1"></i> 
+										Edit
+									</button> 
+									<div v-else>
+										<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('licenses')">
+											Cancel
+										</button> 		
+										<button type="button" v-on:click="submitForm('licenses')"  class="btn btn-sm btn-primary">
+											<span v-if="form.licenses.submittingForm == false && form.licenses.showSuccessMessage == false">Save Changes</span>
+											<span v-if="form.licenses.submittingForm">
+												Saving Changes
+												<img width="20px" src="/images/button-loader.gif"/>
+											</span>
+											<span v-if="form.licenses.showSuccessMessage">Changes Saved!</span>
+										</button>								
+									</div>
+								</div>
+								<hr/>
+								<div v-if="form.licenses.readOnly">
+									<div class="d-flex">
+										<div class="mr-3 d-flex flex-column align-items-center"><i class="fad fa-award fa-fw mt-1" aria-hidden="true"></i></div>
+										<div>
+										<p class="mb-1"><strong>Professional Engineering License</strong></p>
+										<p><small>January 2020</small></p>
+										</div>
+									</div>
+								 </div>
+								<license v-else></license>
+							</div>
+						</div>
+						<div class="card card-lg mb-2">
+							<div class="card-body">
+								<div class="d-flex align-items-center justify-content-between">
+									<h6 class="mb-0">
+										Resumes
+									</h6>
+									<div v-if="form.resumes.readOnly">
+										<button type="button" v-if="!form.resumes.upload" class="btn btn-text mr-3" v-on:click.stop.prevent="toggleResumeUploader">
+											<i class="far fa-cloud-upload mr-1"></i>
+											Upload New
+										</button>
+										<button v-else type="button" class="btn btn-text mr-3" v-on:click.stop.prevent="toggleResumeUploader">
+											Close Uploader
+										</button>
+										<button type="button" class="btn btn-text" v-on:click.stop.prevent="toggleForm('resumes')">
+											<i class="fas fa-pencil-alt mr-1"></i> 
+											Edit
+										</button>  
+									</div>
+									<div v-else>
+										<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('resumes')">
+											Close
+										</button> 									
+									</div>
+								</div>
+								<hr/>
+								<div v-if="form.resumes.upload" class="mb-3">
+									<fileuploader
+									@uploaded="handleResumeUpload"
+									></fileuploader>
+									<hr/>
+								</div>
+                                <div v-if="form.resumes.readOnly">
+									<div v-for="resume in resumes" class="mb-1">
+										<a href="#">{{resume.filename}}</a>
+									</div>
+                                </div>
+								<div v-else>
+									<div v-for="resume in resumes" class="hoverable d-flex justify-content-between p-1">
+										<span>
+											{{resume.filename}}
+										</span>
+										<button v-on:click="removeResume(resume)" type="button" class="btn btn-text">
+											<i class="fas fa-trash-alt"></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div v-bind:class="{'read-only':form.security.readOnly}" >
+							<div class="card card-lg">
+								<div class="card-body">
+									<div class="d-flex align-items-center justify-content-between">
+										<h6 class="mb-0">
+												Security
+										</h6>
+										<button type="button" v-if="form.security.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('security')">
+											<i class="fas fa-pencil-alt mr-1"></i> 
+											Change Password
+										</button> 
+										<div v-else>
+											<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('security')">
+												Cancel
+											</button> 		
+											<button type="button" v-on:click="submitForm('security')"  class="btn btn-sm btn-primary">
+												<span v-if="form.security.submittingForm == false && form.security.showSuccessMessage == false">Save Changes</span>
+												<span v-if="form.security.submittingForm">
+													Saving Changes
+													<img width="20px" src="/images/button-loader.gif"/>
+												</span>
+												<span v-if="form.security.showSuccessMessage">Changes Saved!</span>
+											</button>								
+										</div>
+									</div>
+									<hr/>
+		
+									<div v-if="form.security.readOnly">
+										<div class="form-floating form-password mb-2 w-100 ">
+											<input 
+											v-bind:type="[form.security.showPassword ? 'text' : 'password']" 
+											:disabled="form.security.readOnly"
+											class="form-control pe-5" id="hmPassword" aria-describedby="hiringManagerPassword" placeholder="Please Enter Your Password" value="Test@123">
+											<label for="hmPassword">Password</label>
+
+											<button v-on:click="revealPassword('security')" type="button"  class="btn btn-sm btn-text btn-text-accent">
+												<i class="fa" v-bind:class="[form.security.showPassword ? 'fa-eye' : 'fa-eye-slash']" aria-hidden="true"></i>
+											</button>							
+										</div>
+									</div>
+									<div v-else>
+										<div class="mb-3">
+											<p class="mt-2">
+												<small><strong class="mr-2 mb-1 d-block">Password Requirements</strong></small>
+												<span class="tag mr-2" v-bind:class="{ 'tag-green2': form.security.passwordLength }">Min 8 Characters <i v-if="!form.security.passwordLength" class="ml-1 far fa-circle"></i><i v-else class="ml-1 fas fa-check-circle"></i></span>
+												<span class="tag mr-2" v-bind:class="{ 'tag-green2': form.security.passwordCondition }">1 Number Or Special Character <i v-if="!form.security.passwordCondition" class="ml-1 far fa-circle"></i><i v-else class="ml-1 fas fa-check-circle"></i></span>
+											</p>
+										</div>        
+										<div class="form-floating form-password mb-2">
+											<input 
+											v-model="form.security.password" type="password"
+											v-bind:type="[form.security.showPassword ? 'text' : 'password']"
+											v-on:keyup="validatePassword" 
+											:disabled="form.security.disableNewPassword||form.security.submittingForm" 
+											class="form-control" id="newPassword" 
+											aria-describedby="newPasswordSetup" 
+											placeholder="New Password">
+											<label for="newPassword">New Password</label>
+
+											<button v-on:click="revealPassword('security')" type="button"  class="btn btn-sm btn-text btn-text-accent">
+												<i class="fa" v-bind:class="[form.security.showPassword ? 'fa-eye' : 'fa-eye-slash']" aria-hidden="true"></i>
+											</button>	
+
+										</div>
+		
+									
+										<div class="form-floating mb-2">
+											<input 
+											v-model="form.security.passwordConfirmation" 
+											v-bind:type="[form.security.showPassword ? 'text' : 'password']"
+											v-on:keyup="validatePassword" 
+											type="password" 
+											:disabled="!form.security.enableConfirm || form.security.submittingForm" 
+											class="form-control" id="confirmPassword" 
+											aria-describedby="newPasswordConfirmation" 
+											placeholder="Confirm Password">
+											<label for="confirmPassword">Confirm Password</label>
+											<small v-bind:class="{ 'd-none': !form.security.passwordMisMatch }" class="text-danger mb-2">Passwords do not match</small>
+										</div>
+									</div>
+
+								</div>		
+							</div>
+						</div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+	 </div>
+
+</section>
+
+<script type="text/javascript" src="/js/vue.profile.js"></script>

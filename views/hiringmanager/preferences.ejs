@@ -1,0 +1,151 @@
+<% layout('/layouts/layout-hiringmanager-closed') -%>
+<section id="HMPreferences" class="section section-sm">
+	<div class="hero">
+		<div class="section pt-5">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="d-flex flex-column align-items-center">
+							<div class="d-flex align-items-center mb-3">
+								<avataredit></avataredit>
+								<span class="ms-3">
+									<h6 class="font-white">John D.</h6>
+									<span class="tag tag-brandblue">
+											Hiring Manager
+									</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="translate-up-100">
+		<div class="d-flex justify-content-center">
+			<ul class="nav nav-tabs nav-tabs-white mt-3 flex-wrap flex-nowrap-md justify-content-center">
+				<li class="nav-item">
+					<a href="/hiringmanager/profile" type="button" class="nav-link pb-3"
+					>
+							Account Details
+                    </a>
+				</li>
+				<li class="nav-item">
+					<a href="/hiringmanager/preferences" class="nav-link pb-3 active"
+					>
+							Preferences
+					</a>
+				</li> 
+			</ul>
+		</div>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6">
+                    <div class="card card-lg mb-2">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between pb-3">
+                                <label class="p-0">Show Candidate Avatars</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" checked type="checkbox">
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex align-items-center justify-content-between py-3">
+                                <label class="p-0">Enable Full-Time Request Types</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" checked type="checkbox">
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex align-items-center justify-content-between py-3">
+                                <label class="p-0">Enable Contract Request Types</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" checked type="checkbox">
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex align-items-center justify-content-between py-3">
+                                <label class="p-0">Enable SOW Request Types</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" checked type="checkbox" id="flexSwitchCheckDefault">
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <label class="p-0">Preferred Locations</label>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetagsinput 
+                                    placeholder="Type Location and Hit Enter"
+                                    :truncate="3"
+                                    emptystate="<strong>No Preferences Set</strong>"
+                                    :tagsprop="locations"
+                                    ></inlinetagsinput>
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <label class="p-0">Preferred Industries</label>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetagsinput 
+                                    placeholder="Type Industries and Hit Enter"
+                                    :truncate="3"
+                                    emptystate="<strong>No Industries Set</strong>"
+                                    :tagsprop="industries"
+                                    ></inlinetagsinput>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-lg mb-2">
+                        <div class="card-body">
+                            <h6>Term Overrides</h6>
+                            <p>In this section you can override the systems default values for specific industry terms</p>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <div>
+                                    <p class="p-0 mb-0"><strong>Request</strong></p>
+                                    <p class="mb-1">
+                                        Common alternatives "Jobs, Job Post, Work Order"
+                                    </p>
+                                </div>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetextinput 
+                                    placeholder="Enter your preferred term"
+                                    valueprop="Requests"
+                                    ></inlinetextinput>
+                                </div>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="d-flex d-block-768 align-items-center justify-content-between py-3">
+                                <div>
+                                    <p class="p-0 mb-0"><strong>Candidate</strong></p>
+                                    <p class="mb-1">
+                                        Common alternatives "Talent, Workers"
+                                    </p>
+                                </div>
+                                <div class="w-50 w-100-768 text-right">
+                                    <inlinetextinput 
+                                    placeholder="Enter your preferred term"
+                                    valueprop="Candidate"
+                                    ></inlinetextinput>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-lg">
+                        <div class="card-body">
+                            <h6>Preferred Supplier Tiers</h6>
+                            <p>In this section you can manage your preferred supplier settings</p>
+
+                            <suppliertiers :tiers="supplierTiers"></suppliertiers>
+
+
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	 </div>
+
+</section>
+
+<script type="text/javascript" src="/js/vue.preferences.js"></script>

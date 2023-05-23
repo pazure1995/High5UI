@@ -1,0 +1,224 @@
+<% layout('/layouts/layout-hiringmanager-closed') -%>
+<section id="HMProfile" class="section section-sm">
+	<div class="hero">
+		<div class="section pt-5">
+			<div class="container">
+				<div class="row">
+					<div class="col-12">
+						<div class="d-flex flex-column align-items-center">
+							<div class="d-flex align-items-center mb-3">
+								<avataredit></avataredit>
+								<span class="ms-3">
+									<h6 class="font-white">John D.</h6>
+									<span class="tag tag-brandblue">
+											Hiring Manager
+									</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="translate-up-100">
+		<div class="d-flex justify-content-center">
+			<ul class="nav nav-tabs nav-tabs-white mt-3 flex-wrap flex-nowrap-md justify-content-center">
+				<li class="nav-item">
+					<button type="button" class="nav-link pb-3">
+							Account Details
+					</button>
+				</li>
+				<li class="nav-item">
+					<a href="/hiringmanager/preferences" class="nav-link pb-3"
+					>
+							Preferences
+					</a>
+				</li> 
+			</ul>
+		</div>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-6">
+					<div>
+						<form v-bind:class="{'read-only':form.contact.readOnly}"  action="/" method="POST">
+							<div class="card card-lg">
+									<div class="card-body">
+									<div class="d-flex align-items-center justify-content-between">
+										<h6 class="mb-0">
+												Contact Info
+										</h6>
+										<button type="button" v-if="form.contact.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('contact')">
+											<i class="fas fa-pencil-alt mr-1"></i> 
+											Edit
+										</button> 
+										<div v-else>
+											<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('contact')">
+												Cancel
+											</button> 		
+											<button type="button" v-on:click="submitForm('contact')"  class="btn btn-sm btn-primary">
+												<span v-if="form.contact.submittingForm == false && form.contact.showSuccessMessage == false">Save Changes</span>
+												<span v-if="form.contact.submittingForm">
+													Saving Changes
+													<img width="20px" src="/images/button-loader.gif"/>
+												</span>
+												<span v-if="form.contact.showSuccessMessage">Changes Saved!</span>
+											</button>								
+										</div>
+									</div>
+									<hr/>
+									<div class="col-lg-12 col-md-12 col-sm-12">
+										<div class="row">
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="firstName" aria-describedby="FirstName" placeholder="First Name" value="John" :disabled="form.contact.readOnly">
+													<label for="firstName">First Name</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="lastName" aria-describedby="LastName" placeholder="Last Name" value="Doe" :disabled="form.contact.readOnly">
+													<label for="lastName">Last Name</label>
+												</div>
+											</div>
+											<div class="col-lg-12">
+												<div class="form-floating mb-2 ">
+													<input type="email"  class="form-control" id="hmEmail" aria-describedby="hiringMangerEmail" placeholder="Email" value="joe.doe@recruit.com" :disabled="form.contact.readOnly">
+													<label for="hmEmail">Email</label>
+												</div>
+											</div>
+											<div class="col-lg-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmContact" aria-describedby="hiringMangerContact" placeholder="Contact" value="+1 123 456 789" :disabled="form.contact.readOnly">
+													<label for="hmContact">Contact</label>
+												</div>
+											</div>
+											<div class="col-lg-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmAddress" aria-describedby="hiringMangerAddress" placeholder="Address" value="4970 Hillhaven Drive" :disabled="form.contact.readOnly">
+													<label for="hmAddress">Address</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmCity" aria-describedby="hiringManagerCity" placeholder="City" value="Los Angeles" :disabled="form.contact.readOnly">
+													<label for="hmCity">City</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmState" aria-describedby="hiringManagerState" placeholder="State" value="California" :disabled="form.contact.readOnly">
+													<label for="hmState">State</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmZipCode" aria-describedby="hiringManagerZipcode" placeholder="Zipcode" value="90071" :disabled="form.contact.readOnly">
+													<label for="hmZipCode">Zipcode</label>
+												</div>
+											</div>
+											<div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+												<div class="form-floating mb-2 ">
+													<input type="text"  class="form-control" id="hmCountry" aria-describedby="hiringManagerCountry" placeholder="Country" value="United States" :disabled="form.contact.readOnly">
+													<label for="hmCountry">Country</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+						<form v-bind:class="{'read-only':form.security.readOnly}"  action="/" method="POST" >
+							<div class="card card-lg mt-3">
+								<div class="card-body">
+									<div class="d-flex align-items-center justify-content-between">
+										<h6 class="mb-0">
+												Security
+										</h6>
+										<button type="button" v-if="form.security.readOnly" class="btn btn-text" v-on:click.stop.prevent="toggleForm('security')">
+											<i class="fas fa-pencil-alt mr-1"></i> 
+											Change Password
+										</button> 
+										<div v-else>
+											<button type="button" class="btn btn-sm btn-secondary" v-on:click.stop.prevent="toggleForm('security')">
+												Cancel
+											</button> 		
+											<button type="button" v-on:click="submitForm('security')"  class="btn btn-sm btn-primary">
+												<span v-if="form.security.submittingForm == false && form.security.showSuccessMessage == false">Save Changes</span>
+												<span v-if="form.security.submittingForm">
+													Saving Changes
+													<img width="20px" src="/images/button-loader.gif"/>
+												</span>
+												<span v-if="form.security.showSuccessMessage">Changes Saved!</span>
+											</button>								
+										</div>
+									</div>
+									<hr/>
+		
+									<div v-if="form.security.readOnly">
+										<div class="form-floating form-password mb-2 w-100 ">
+											<input 
+											v-bind:type="[form.security.showPassword ? 'text' : 'password']" 
+											:disabled="form.security.readOnly"
+											class="form-control pe-5" id="hmPassword" aria-describedby="hiringManagerPassword" placeholder="Please Enter Your Password" value="Test@123">
+											<label for="hmPassword">Password</label>
+
+											<button v-on:click="revealPassword('security')" type="button"  class="btn btn-sm btn-text btn-text-accent">
+												<i class="fa" v-bind:class="[form.security.showPassword ? 'fa-eye' : 'fa-eye-slash']" aria-hidden="true"></i>
+											</button>							
+										</div>
+									</div>
+									<div v-else>
+										<div class="mb-3">
+											<p class="mt-2">
+												<small><strong class="mr-2 mb-1 d-block">Password Requirements</strong></small>
+												<span class="tag mr-2" v-bind:class="{ 'tag-green2': form.security.passwordLength }">Min 8 Characters <i v-if="!form.security.passwordLength" class="ml-1 far fa-circle"></i><i v-else class="ml-1 fas fa-check-circle"></i></span>
+												<span class="tag mr-2" v-bind:class="{ 'tag-green2': form.security.passwordCondition }">1 Number Or Special Character <i v-if="!form.security.passwordCondition" class="ml-1 far fa-circle"></i><i v-else class="ml-1 fas fa-check-circle"></i></span>
+											</p>
+										</div>        
+										<div class="form-floating form-password mb-2">
+											<input 
+											v-model="form.security.password" type="password"
+											v-bind:type="[form.security.showPassword ? 'text' : 'password']"
+											v-on:keyup="validatePassword" 
+											:disabled="form.security.disableNewPassword||form.security.submittingForm" 
+											class="form-control" id="newPassword" 
+											aria-describedby="newPasswordSetup" 
+											placeholder="New Password">
+											<label for="newPassword">New Password</label>
+
+											<button v-on:click="revealPassword('security')" type="button"  class="btn btn-sm btn-text btn-text-accent">
+												<i class="fa" v-bind:class="[form.security.showPassword ? 'fa-eye' : 'fa-eye-slash']" aria-hidden="true"></i>
+											</button>	
+
+										</div>
+		
+									
+										<div class="form-floating mb-2">
+											<input 
+											v-model="form.security.passwordConfirmation" 
+											v-bind:type="[form.security.showPassword ? 'text' : 'password']"
+											v-on:keyup="validatePassword" 
+											type="password" 
+											:disabled="!form.security.enableConfirm || form.security.submittingForm" 
+											class="form-control" id="confirmPassword" 
+											aria-describedby="newPasswordConfirmation" 
+											placeholder="Confirm Password">
+											<label for="confirmPassword">Confirm Password</label>
+											<small v-bind:class="{ 'd-none': !form.security.passwordMisMatch }" class="text-danger mb-2">Passwords do not match</small>
+										</div>
+									</div>
+
+								</div>		
+							</div>
+						</form>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+	 </div>
+
+</section>
+
+<script type="text/javascript" src="/js/vue.profile.js"></script>

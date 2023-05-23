@@ -1,0 +1,39 @@
+<% layout('layouts/layout') -%>
+<div id="Login" class="login-layout">
+    <div class="col-left d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-6 col-lg-8">
+
+                    <a class="logo" href="/">
+                        <img src="/images/high5-std.svg"/>             
+                    </a>
+                    <div class="section section-sm">
+                        <h1>Sign In.</h1>
+                        <p>
+                            Welcome back! Sign In to get started using High5 
+                        </p>
+                        <form action="/" method="GET">
+                            <div class="form-floating mb-2">
+                                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                                <label for="exampleInputPassword1">Email Address</label>
+                            </div>
+                            <div class="form-floating mb-2">
+                                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                <label for="exampleInputPassword1">Password</label>
+                            </div>
+                            <p class="text-right mb-4">
+                                <a href="/forgot-password">Forgot Password?</a>
+                            </p>        
+                            <button type="submit" class="btn btn-dark w-100">Login</button>   
+                            <p class="text-center mt-5">
+                                New to High5? <a href="/">Create An Account</a>
+                            </p>                                        
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-right"></div>
+</div>

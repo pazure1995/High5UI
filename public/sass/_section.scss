@@ -1,0 +1,20 @@
+.section {
+  padding: 100px 0;
+  &.section-xs {
+    padding: 25px 0;
+  }
+
+  &.section-sm {
+    padding: 50px 0;
+  }
+
+  &.section-lg {
+    padding: 150px 0;
+  }
+}
+
+@media (max-width: 1024px) {
+  .section {
+    padding: 75px 0;
+  }
+}

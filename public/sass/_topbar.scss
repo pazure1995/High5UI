@@ -1,0 +1,62 @@
+#TopBar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: $TopBarHeight;
+    background: white;
+    width: calc(100% - #{$NavWidth});
+    left: $NavWidth;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-right: 15px;
+    @include box-shadow(0px 1px 0px 0px $gray2);
+    z-index: 9000;
+    .nav-toggle{
+        width: $TopBarHeight;
+        height: $TopBarHeight;
+    }
+    .nav-toggle-wrap{
+        display: flex;
+    }
+    .nav-toggle-wrap,
+    .extras{
+        width: 150px;
+    }
+    .divider{
+        width: 1px;
+        height: $TopBarHeight;
+        background: $gray3;
+    }
+    .form-group{
+        position: relative;
+        input{
+            padding-left: 40px;
+            width: 100%;
+        }
+        .icon{
+            position: absolute;
+            top: 14px;
+            left: 15px;
+        }
+    }
+}
+.layout2,
+.layout3{
+    #TopBar{
+        .extras{
+            width: auto;
+        }
+    }
+}
+@media(max-width: 1024px){
+    .layout2,
+    .layout3{
+        #TopBar{
+            .extras{
+                width: auto !important;
+            }
+        }
+    }
+}

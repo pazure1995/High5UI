@@ -1,0 +1,202 @@
+<% layout('/layouts/layout-candidate-closed') -%>
+<section id="AssessmentsApp" class="section section-sm">
+	<div class="hero">
+		<div class="section pt-5">
+			<div class="container">
+				<div class="row justify-content-center mb-5">
+					<div class="d-flex justify-content-between align-items-center col-8 font-white">
+                        <h5 class="mb-0">Jobs</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div 
+                statusstart="matched"
+                viewstart="listview"
+                id="CandidateJobs"
+                class="card translate-up-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                                <div class="d-none d-xl-flex nav nav-tabs">
+                                    <div class="nav-item w-25 d-flex justify-content-center mr-3">
+                                        <button 
+                                        v-bind:class="{active: toggleView.listview}"
+                                        v-on:click="onTabClick('toggleView','listview')"
+                                        type="button" class="nav-link pb-3 bg-transparent">
+                                            <i class="fas fa-list"></i>
+                                        </button>
+                                    </div>
+                                    <div class="nav-item w-25 d-flex justify-content-center">
+                                        <button
+                                        v-bind:class="{active: toggleView.gridview}"
+                                        v-on:click="onTabClick('toggleView','gridview')"
+                                        type="button" class="nav-link pb-3 bg-transparent">
+                                            <i class="fas fa-th-large"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex-column d-block-1200 d-lg-flex flex-lg-row align-items-end">
+                                <ul class="nav nav-tabs nav-tabs-tablet pt-1 w-100 justify-content-center">
+                                    <li class="nav-item">
+                                        <button type="button"
+                                        v-bind:class="{active: statusView.matched}"
+                                        v-on:click="setStatusView('matched')" class="nav-link pb-3 mx-2 bg-transparent">
+                                            <span class="tag mb-1">{{getTotalByStatus('matched')}}<span class="jewel"></span></span>
+                                                <div>Matched</div>
+                                        </button>
+                                    </li> 
+                                    <li class="nav-item">
+                                        <button type="button"
+                                        v-bind:class="{active: statusView.favorited}"
+                                        v-on:click="setStatusView('favorited')" class="nav-link pb-3 mx-2 bg-transparent">
+                                            <span class="tag mb-1">{{getTotalByStatus('favorited')}}</span>
+                                                <div>Favorited</div>
+                                        </button>
+                                    </li> 
+                                    <li class="nav-item">
+                                        <button type="button"
+                                        v-bind:class="{active: statusView.rtr}"
+                                        v-on:click="setStatusView('rtr')" class="nav-link pb-3 mx-2 bg-transparent">
+                                            <span class="tag mb-1">{{getTotalByStatus('rtr')}}</span>
+                                                <div>RTR</div>
+                                        </button>
+                                    </li> 
+                                    <li class="nav-item">
+                                        <button type="button"
+                                        v-bind:class="{active: statusView.applied}"
+                                        v-on:click="setStatusView('applied')" class="nav-link pb-3 mx-2 bg-transparent">
+                                            <span class="tag mb-1">{{getTotalByStatus('applied')}}</span>
+                                                <div>Applied</div>
+                                        </button>
+                                    </li> 
+                                </ul> 
+                            </div>
+
+                            <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                                <div class="mb-2 d-flex align-items-center justify-content-center">
+                            
+                                    <div class="d-flex justify-content-end w-100">
+                                        <sort v-bind:categories="sortCategories"></sort>
+                                        <filters class="mx-1" v-bind:categories="filterCategories"></filters>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        <hr class="mt-0 mb-2"/>
+                        <div>
+                            <div class="row d-none d-flex-1200" 
+                            v-bind:class="{ 'd-flex-force': toggleView.gridview }">
+        
+                                <div v-for="(request,index) in requests"
+                                v-if="request.isVisible"
+                                class="col-lg-4  d-flex"
+                                >
+                                    <a href="/candidate/jobs/1123213-2" class="card card-flat col card-tag-bottom mb-4 card-lg">                      
+                                        <div class="card-body pb-1">
+                                            <h6>{{request.jobTitle}}</h6>
+                                            <div class="mb-2">
+                                                <span class="tag tag-green3 d-none" v-if="request.status == 'open'">{{request.status}}</span>
+                                                <span class="tag tag-coral" v-if="request.status == 'hot'">{{request.status}}</span>
+                                                <span class="tag" v-if="request.status == 'rtr'">{{request.status}}</span>
+                                                <span class="tag tag-coral d-inline-flex" v-if="request.status == 'matched'"><img width="16px" src="/images/high5-mark-circle-dark.svg"><span class="mx-2">Matched</span></span>
+                                                <span class="tag tag-purple1 d-inline-flex" v-if="request.status == 'favorited'"><i class="fad fa-heart-circle"></i><span class="mx-2">Favorited</span></span>
+                                                <small class="font-regular font-primary">{{request.jobType}}</small>
+                                            </div>
+                                            <hr class="mt-0 mb-2"/>
+                                            <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>{{request.location}}</p>
+                                            <p class="mb-1"><i class="fal fa-piggy-bank fa-map-marker-alt mr-3"></i>{{request.priceRange}}</p>
+                                            <p class="mb-1"><i class="fal fa-fw fa-clock mr-3"></i>
+                                                {{request.timeRemaining}}
+                                            </p>
+
+                                            <p v-if="request.rep.length" class="mb-1"><i class="fal fa-fw fa-user mr-3"></i>
+                                                {{request.rep}}
+                                            </p>
+                                        </div>                        
+                                        <div v-if="request.autoMatchCnt > 0" class="tag tag-footer tag-green3 justify-content-center">
+                                            New
+                                        </div>
+                                        <div v-else class="tag tag-footer font-regular justify-content-center">
+                                            Viewed on 1/1/2021 
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                
+                            <div class="row d-none d-none-1200" 
+                            v-bind:class="{ 'd-block-force': toggleView.listview }">
+                                <div class="col">
+                                    <a  
+                                    v-for="(request,index) in requests" 
+                                    v-on:click.stop.prevent="showJob(request)"
+                                    v-if="request.isVisible"
+                                    href="/candidate/jobs/1212321" class="card card-flat p-0 d-flex w-100 align-items-center justify-content-between request-listview flex-row overflow-hidden mb-1">
+                                        <div class="card-body">  
+                                            <div class="d-flex align-items-center">
+                                                <span class="tag tag-green3 mr-3 d-none" v-if="request.status == 'open'">{{request.status}}</span>
+                                                <span class="tag tag-coral" v-if="request.status === 'rtr'">Right To Represent</span>
+                                                <span class="tag tag-green1" v-if="request.status === 'applied'">Applied</span>
+                                                <span class="tag tag-coral d-inline-flex mr-2" v-if="request.status == 'matched'"><img width="16px" src="/images/high5-mark-circle-dark.svg"><span class="mx-2">Matched</span></span>
+                                                <span class="tag tag-purple1 d-inline-flex mr-2" v-if="request.status == 'favorited'"><i class="fad fa-heart-circle"></i><span class="mx-2">Favorited</span></span> 
+                                                <span class="tag tag-orange1" v-if="request.status == 'hot'"><i class="fad fa-flame mr-1"></i>{{request.status}}</span>       
+                                                <span class="tag tag-green3 ml-1" v-if="request.status == 'hot'">New</span>
+                                            </div>         
+                                            <h6 class="mt-1">{{request.jobTitle}}</h6>
+                                            <div class="d-flex flex-wrap align-items-center">
+                                                <span class="d-flex align-items-center">
+                                                    <i class="far fa-suitcase me-2 font-brandBlue"></i>
+                                                    <span class="font-regular font-primary font-gray1">{{request.jobType}}</span>
+                                                </span>
+                                                <span class="d-flex align-items-center ml-3">
+                                                    <i class="far fa-map-marker-alt me-2 font-brandBlue"></i>
+                                                    <span class="font-regular font-primary font-gray1">{{request.location}}</span>
+                                                </span>
+                                                <span class="d-flex align-items-center ml-3">
+                                                    <i class="far fa-piggy-bank me-2 font-brandBlue"></i>
+                                                    <span class="font-regular font-primary font-gray1">{{request.priceRange}}</span>
+                                                </span>
+                                            </div> 
+                                            <div>
+                                                <span class="d-flex align-items-center mt-2">
+                                                    <span class="font-regular">
+                                                        {{request.timeRemaining}} <span>{{request.rep}}</span>
+                                                    </span>
+                                                </span>
+                                            </div>                         
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+            
+
+                            <div v-if="visibleTotal == 0">
+                                <div class="text-center p-3">
+                                    <div class="avatar avatar-lg">
+                                        <i class="fad fa-folder-open"></i>
+                                    </div>
+                                    <div class="mt-2">
+                                        No  Jobs Found
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+       
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="/js/vue.candidate-jobs.js"></script>

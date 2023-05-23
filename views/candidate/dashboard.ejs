@@ -1,0 +1,1159 @@
+<% layout('/layouts/layout-candidate-closed') -%>
+<div class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="mb-5 text-center">
+                    <h3>Hi. 👋 Garrett Welcome Back </h3>
+                    <p>What can we help you work on today?</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-xxl-12 col-lg-8">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-3">
+                        <div id="CandidateProfileWidget" class="card mb-2">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <avataredit></avataredit>
+                                    <div class=" w-100">
+                                        <div class="w-100 d-flex align-items-center justify-content-between">
+                                            <h6 class="mb-0">Garrett McLeod</h6>
+                                            <a href="/candidate/profile" type="button" class="btn btn-icon">
+                                                <i class="fal fa-fw fa-edit"></i>
+                                            </a>
+                                        </div>
+                                        <p class="mb-0">Senior UI Engineer</p>
+                                        <p class="mb-0"><small>Jacksonville FL.</small></p>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="">
+                                    <p class="mb-2">
+                                        <strong>My Resumes</strong>
+                                    </p>
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <div class="d-flex align-items-center justify-content-between w-100" 
+                                        v-if="form.resumes.readOnly">
+                                            <button 
+                                            type="button" 
+                                            v-if="!form.resumes.upload" 
+                                            class="btn btn-text-accent mr-1" 
+                                            v-on:click.stop.prevent="showRecordModal">
+                                                <i class="fal fa-video mr-1 fa-fw"></i>
+                                                Record
+                                            </button>
+                                            <button 
+                                            type="button" 
+                                            v-if="!form.resumes.upload" 
+                                            class="btn btn-text-accent mr-1" 
+                                            v-on:click.stop.prevent="toggleResumeUploader">
+                                                <i class="far fa-cloud-upload mr-1 fa-fw"></i>
+                                                Upload
+                                            </button>
+                                            <button  v-else type="button" class="btn btn-text-accent ml-auto" v-on:click.stop.prevent="toggleResumeUploader">
+                                                <i class="fal fa-times mr-1 fa-fw"></i>
+                                                Close
+                                            </button>
+                                            <button type="button" v-if="!form.resumes.upload" class="btn btn-text-accent" v-on:click.stop.prevent="toggleForm('resumes')">
+                                                <i class="fas fa-pencil-alt mr-1 fa-fw"></i> 
+                                                Edit
+                                            </button>  
+                                        </div>
+                                        <div class="ml-auto" v-else>
+                                            <button type="button" class="btn btn-text-accent" v-on:click.stop.prevent="toggleForm('resumes')">
+                                                <i class="fal fa-times mr-1"></i>
+                                                Close
+                                            </button> 									
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div v-if="form.resumes.upload" class="mb-3">
+                                        <fileuploader
+                                        @uploaded="handleResumeUpload"
+                                        ></fileuploader>
+                                        <hr/>
+                                    </div>
+                                    <div v-if="form.resumes.readOnly">
+                                        <div v-for="resume in resumes" class="mb-1">
+                                            <a href="#">{{resume.filename}}</a>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <div v-for="resume in resumes" class="hoverable d-flex justify-content-between p-1">
+                                            <span>
+                                                {{resume.filename}}
+                                            </span>
+                                            <button v-on:click="removeResume(resume)" type="button" class="btn btn-text">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>     
+                                </div>
+                            </div>
+                        </div>
+                        <div id="CandidateInterviews" class="card mb-2">
+                             <div class="card-body">
+                                 <div class="mb-2 mt-1">
+                                     <label class="pt-0 mb-2"><strong>Upcoming Interviews</strong></label>
+                                     <a href="/candidate/interviews"><i class="fas fa-external-link-square"></i></a>
+                                 </div>  
+         
+                                 <a  
+                                 v-for="(item,index) in list"
+                                 v-on:click.stop.prevent="showItem(item)"
+                                 href="/candidate/interviews/1212321" class="card card-flat w-100 mb-1">
+                                     <div class="card-body"> 
+                                         <div>
+                                             <div class="d-flex justify-content-between align-items-center">     
+                                                 <p class="mb-1"><strong>{{item.title}}</strong></p>
+                                             </div>
+                                             <div>
+                                                 <div class="mb-1">
+                                                     <span class="font-regular font-primary font-gray1">{{item.location}}</span>
+                                                 </div>
+                                                 <div class="mb-1">
+                                                     <span class="font-regular">
+                                                         {{item.date}}
+                                                     </span>
+                                                 </div>
+                                             </div> 
+                                         </div>                     
+                                     </div>
+                                 </a>
+         
+                                 <div v-if="!list.length">
+                                     <div class="text-center p-3">
+                                         <div class="avatar avatar-lg">
+                                             <i class="fad fa-comment-slash"></i>
+                                         </div>
+                                         <div class="mt-2">
+                                             No  Inteviews Scheduled at this time
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+                        <div id="CandidateAssessments" class="card">
+                         <div class="card-body">
+                             <div class="mb-2 mt-1">
+                                 <label class="pt-0 mb-2"><strong>Continue Learning</strong></label>
+                                 <a href="/candidate/learning"><i class="fas fa-external-link-square"></i></a>
+                             </div>  
+         
+                             <a  
+                             v-for="(item,index) in list"
+                             href="/candidate/learning/1212321" class=" card card-flat w-100 mb-1">
+                                 <div class="card-body"> 
+                                     <div>
+                                         <div class="d-flex justify-content-between align-items-center">     
+                                             <p class="mb-1"><strong>{{item.title}}</strong></p>
+                                         </div>
+                                         <p class="mb-1"><small>Progress</small></p>
+                                         {{item.completed}}
+                                         <div class="alert-progress alert-progress-static bg-gray3">
+                                             <div v-bind:style="{ width: item.completed }" class="alert-progress-bar"></div>
+                                         </div>
+                                     </div>                     
+                                 </div>
+                             </a>
+         
+                             <div v-if="!list.length">
+                                 <div class="text-center p-3">
+                                     <div class="avatar avatar-lg">
+                                         <i class="fad fa-comment-slash"></i>
+                                     </div>
+                                     <div class="mt-2">
+                                         No  Assessments at this time
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                     </div>
+                    <div id="CandidateRequests" class="col-xxl-4 mb-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <label class="pt-0 mb-2"><strong>My Todos</strong></label>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                                        <div class="mb-2 d-flex align-items-center justify-content-center">
+                                    
+                                            <div class="d-flex justify-content-end w-100">
+                                                <sort v-bind:categories="sortCategories"></sort>
+                                                <filters class="mx-1" v-bind:categories="filterCategories"></filters>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                </div>
+                                <hr class="m-0"/>
+              
+                                <div class="d-flex-column d-block-1200 d-lg-flex flex-lg-row align-items-end mb-3 border-bottom-gray2">
+                                    <ul class="nav nav-tabs nav-tabs-tablet pt-1 w-100 justify-content-center">
+                                        <li class="nav-item">
+                                            <button type="button"
+                                            v-bind:class="{active: statusView.all}"
+                                            v-on:click="setStatusView('all')" class="nav-link pb-3 mx-2 bg-transparent">
+                                                <span class="tag mb-1">{{getTotalByStatus('all')}}<span class="jewel"></span></span>
+                                                    <div>All</div>
+                                            </button>
+                                        </li> 
+                                        <li class="nav-item">
+                                            <button type="button"
+                                            v-bind:class="{active: statusView.rtr}"
+                                            v-on:click="setStatusView('rtr')" class="nav-link pb-3 mx-2 bg-transparent">
+                                                <span class="tag mb-1">{{getTotalByStatus('rtr')}}<span class="jewel"></span></span>
+                                                    <div>RTR</div>
+                                            </button>
+                                        </li> 
+                                        <li class="nav-item">
+                                            <button type="button"
+                                            v-bind:class="{active: statusView.assessments}"
+                                            v-on:click="setStatusView('assessments')" class="nav-link pb-3 mx-2 bg-transparent">
+                                                <span class="tag mb-1">{{getTotalByStatus('assessments')}}<span class="jewel"></span></span>
+                                                    <div>Assessments</div>
+                                            </button>
+                                        </li> 
+                                        <li class="nav-item">
+                                            <button type="button"
+                                            v-bind:class="{active: statusView.interviews}"
+                                            v-on:click="setStatusView('interviews')" class="nav-link pb-3 mx-2 bg-transparent">
+                                                <span class="tag mb-1">{{getTotalByStatus('interviews')}}</span>
+                                                    <div>Interview Scheduling</div>
+                                            </button>
+                                        </li> 
+                                    </ul> 
+                                </div> 
+                                <div v-bind:class="{ 'd-block-force': toggleView.gridview }" class="d-none d-flex-1200">
+                                    <div 
+                                    v-bind:class="{'d-flex-force': visibleStatus == 'RTR'}"
+                                    class="row d-none w-100">
+                                        <div 
+                                        class="col-lg-6 col-md-6 col-sm-12 d-flex"
+                                        v-for="(item,index) in rtrList" >
+                                            <a  
+                                            v-on:click.stop.prevent="showRTR(item)"
+                                            href="/candidate/jobs/1212321" class="card w-100 card-tag-bottom mb-2">
+                                                <div class="card-body">             
+                                                    <h6>{{item.jobTitle}}</h6>
+                                                    <span class="tag tag-coral">Right To Represent</span>
+                                                    <div class="mt-3">
+                                                        <span class="d-flex align-items-center me-3">
+                                                            <i class="fal fa-fw fa-suitcase me-2 font-brandBlue"></i>
+                                                            <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                        </span>
+                                                        <span class="d-flex align-items-center me-3">
+                                                            <i class="fal fa-fw fa-map-marker-alt me-2 font-brandBlue"></i>
+                                                            <span class="font-regular font-primary font-gray1">{{item.location}}</span>
+                                                        </span>
+                                                        <span class="d-flex align-items-center me-3">
+                                                            <i class="fal fa-fw fa-piggy-bank me-2 font-brandBlue"></i>
+                                                            <span class="font-regular font-primary font-gray1">{{item.rate}}</span>
+                                                        </span>
+                                                        <span class="d-flex align-items-center me-3">
+                                                            <i class="fal fa-fw fa-clock me-2 font-brandBlue"></i>
+                                                            <span class="font-regular">
+                                                                {{item.posted}}
+                                                            </span>
+                                                        </span>
+                                                    </div>    
+                                                    <hr class="my-3"/>
+                                                    <div class="py-2">
+                                                        <span class="font-regular">By John Smith @TekSystems</span>
+                                                        <div v-if="!item.startStatusProgress"  class="mt-2">
+                                                            <button 
+                                                            v-if="item.rejecting === false && item.rejected === false"
+                                                            :disabled="item.approving === true || item.approved === true"
+                                                            v-on:click.stop.prevent="approveRTR(item)" type="button" 
+                                                            class="btn btn-sm btn-blue-disabled mr-1">
+                                                                <span v-if="item.approving === false && item.approved === false">
+                                                                    Accept
+                                                                </span>
+                                                            
+                                                                <img v-if="item.approving" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                                <i v-if="item.approved" class="fas fa-check-circle fa-fw font-18 mt-1"></i>
+                                                            </button>
+                                                            <button 
+                                                                v-if="item.approving === false && item.approved === false"
+                                                                v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                                v-on:click.stop.prevent="rejectRTR(item)" 
+                                                                :disabled="item.rejecting === true || item.rejected === true"
+                                                                type="button" 
+                                                                class="btn btn-secondary btn-sm btn-blue-disabled"
+                                                            >
+                                                                <span v-if="item.rejecting === false && item.rejected === false">
+                                                                    Reject
+                                                                </span>
+                                                                <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                                <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>                          
+                                                </div>
+        
+                                                <hr class="m-0"/>
+                                                <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                        <small> {{item.statusMsg}}</small>
+                                                        <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                            <div class="alert-progress-bar"></div>
+                                                        </div>
+                                                </div>
+                                                <div v-if="item.isNew" class="tag tag-footer tag-green3 justify-content-center">
+                                                    New
+                                                </div>  
+                                                <div v-else class="tag tag-footer justify-content-center">
+                                                    Seen on 1/2/2021 3:00pm
+                                                </div> 
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div 
+                                    v-bind:class="{'d-flex-force': visibleStatus == 'Assessments'}"
+                                    class="row d-none w-100">
+                                        <div 
+                                        class="col-xxl-4 col-lg-6 col-md-6 col-sm-12 d-flex"
+                                        v-for="(item,index) in assessmentsList" >
+                                            <a  
+                                            href="/candidate/jobs/1212321" class="card w-100 mb-2">
+                                                <div class="card-body">             
+                                                    <h6>{{item.title}}</h6>
+                                                    <span class="tag tag-purple1">Skill Assessment</span>
+                                                    <div class="mt-3">
+                                                        <span class="d-flex align-items-center me-3">
+                                                            <i class="fal fa-fw fa-suitcase me-2 font-brandBlue"></i>
+                                                            <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                        </span>
+                                                        <span class="d-flex align-items-center me-3">
+                                                            <i class="fal fa-fw fa-clock me-2 font-brandBlue"></i>
+                                                            <span class="font-regular">
+                                                                {{item.posted}}
+                                                            </span>
+                                                        </span>
+                                                    </div>    
+                                                    <hr class="my-3"/>
+                                                    <div class="py-2">
+                                                        <span class="font-regular">By {{item.requestedBy}} @{{item.company}}</span>
+                                                        <div class="mt-2">
+                                                            <button type="button" class="btn btn-sm mr-1">Start</button>
+                                                            <button type="button" class="btn btn-secondary btn-sm">Reject</button>
+                                                        </div>
+                                                    </div>                      
+                                                </div>
+                                                <div v-if="item.isNew" class="tag tag-footer tag-green3 justify-content-center">
+                                                    New
+                                                </div>  
+                                                <div v-else class="tag tag-footer justify-content-center">
+                                                    Seen on 1/2/2021 3:00pm
+                                                </div> 
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div 
+                                    v-bind:class="{'d-flex-force': visibleStatus == 'Interviews'}"
+                                    class="row d-none w-100">
+                                        <div 
+                                        class="col-lg-6 col-md-6 col-sm-12 d-flex"
+                                        v-for="(item,index) in interviewList" >
+                                            <a  
+                                            v-on:click.stop.prevent="showInterview(item)"
+                                            href="/candidate/jobs/1212321" class="card w-100 mb-2">
+                                                <div class="card-body">             
+                                                    <h6>{{item.title}}</h6>
+                                                    <span class="tag tag-orange1">Job Interview</span>
+                                                    <div class="mt-3">
+                                                        <span class="d-flex align-items-center me-3">
+                                                            <i class="fal fa-fw fa-suitcase me-2 font-brandBlue"></i>
+                                                            <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                        </span>
+                                                        <span class="d-flex align-items-center me-3">
+                                                            <i class="fal fa-fw fa-clock me-2 font-brandBlue"></i>
+                                                            <span class="font-regular">
+                                                                {{item.posted}}
+                                                            </span>
+                                                        </span>
+                                                    </div>    
+                                                    <hr class="my-3"/>
+                                                    <div class="py-2">
+                                                        <span class="font-regular">By {{item.requestedBy}} @{{item.company}}</span>
+                                                        <div class="mt-2">
+                                                            <button v-if="item.rejecting === false && item.rejected === false" type="button" v-on:click.stop.prevent="scheduleInterview(item)" class="btn btn-sm mr-1">Schedule</button>
+                                                            <button 
+                                                                v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                                v-on:click.stop.prevent="rejectInterview(item)" 
+                                                                :disabled="item.rejecting === true || item.rejected === true"
+                                                                type="button" 
+                                                                class="btn btn-secondary btn-sm btn-blue-disabled">
+                                                                <span v-if="item.rejecting === false && item.rejected === false">
+                                                                    Reject
+                                                                </span>
+                                                                <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                                <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                            </button> 
+                                                        </div>
+                                                    </div>                      
+                                                </div>
+                                                <hr class="m-0"/>
+                                                <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                    <small> {{item.statusMsg}}</small>
+                                                    <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                        <div class="alert-progress-bar"></div>
+                                                    </div>
+                                                </div>
+                                                <div v-if="item.isNew" class="tag tag-footer tag-green3 justify-content-center">
+                                                    New
+                                                </div>  
+                                                <div v-else class="tag tag-footer justify-content-center">
+                                                    Seen on 1/2/2021 3:00pm
+                                                </div>
+                                                 
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div 
+                                    v-bind:class="{'d-flex-force': visibleStatus == ''}"
+                                    class="row d-none w-100">                   
+                  
+                                            <div 
+                                            class="col-lg-6 col-md-6 col-sm-12 d-flex"
+                                            v-for="(item,index) in rtrList" >
+                                                <a  
+                                                v-on:click.stop.prevent="showRTR(item)"
+                                                href="/candidate/jobs/1212321" class="card w-100 card-tag-bottom mb-2">
+                                                    <div class="card-body">             
+                                                        <h6>{{item.jobTitle}}</h6>
+                                                        <span class="tag tag-coral">Right To Represent</span>
+                                                        <div class="mt-3">
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="fal fa-fw fa-suitcase me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                            </span>
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="fal fa-fw fa-map-marker-alt me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.location}}</span>
+                                                            </span>
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="fal fa-fw fa-piggy-bank me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.rate}}</span>
+                                                            </span>
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="fal fa-fw fa-clock me-2 font-brandBlue"></i>
+                                                                <span class="font-regular">
+                                                                    {{item.posted}}
+                                                                </span>
+                                                            </span>
+                                                        </div>    
+                                                        <hr class="my-3"/>
+                                                        <div class="py-2">
+                                                            <span class="font-regular">By John Smith @TekSystems</span>
+                                                            <div v-if="!item.startStatusProgress"  class="mt-2">
+                                                                <button 
+                                                                v-if="item.rejecting === false && item.rejected === false"
+                                                                :disabled="item.approving === true || item.approved === true"
+                                                                v-on:click.stop.prevent="approveRTR(item)" type="button" 
+                                                                class="btn btn-sm btn-blue-disabled mr-1">
+                                                                    <span v-if="item.approving === false && item.approved === false">
+                                                                        Accept
+                                                                    </span>
+                                                                
+                                                                    <img v-if="item.approving" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                                    <i v-if="item.approved" class="fas fa-check-circle fa-fw font-18 mt-1"></i>
+                                                                </button>
+                                                                <button 
+                                                                    v-if="item.approving === false && item.approved === false"
+                                                                    v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                                    v-on:click.stop.prevent="rejectRTR(item)" 
+                                                                    :disabled="item.rejecting === true || item.rejected === true"
+                                                                    type="button" 
+                                                                    class="btn btn-secondary btn-sm btn-blue-disabled"
+                                                                >
+                                                                    <span v-if="item.rejecting === false && item.rejected === false">
+                                                                        Reject
+                                                                    </span>
+                                                                    <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                                    <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>                          
+                                                    </div>
+                                                    <hr class="m-0"/>
+                                                    <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                            <small> {{item.statusMsg}}</small>
+                                                            <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                                <div class="alert-progress-bar"></div>
+                                                            </div>
+                                                    </div>
+                                                    <div v-if="item.isNew" class="tag tag-footer tag-green3 justify-content-center">
+                                                        New
+                                                    </div>  
+                                                    <div v-else class="tag tag-footer justify-content-center">
+                                                        Seen on 1/2/2021 3:00pm
+                                                    </div> 
+                                                </a>
+                                            </div>
+                                   
+                     
+                                            <div 
+                                            class="col-lg-6 col-md-6 col-sm-12 d-flex"
+                                            v-for="(item,index) in assessmentsList" >
+                                                <a  
+                                                href="/candidate/assessments/1212321" class="card w-100 mb-2">
+                                                    <div class="card-body">             
+                                                        <h6>{{item.title}}</h6>
+                                                        <span class="tag tag-purple1">Skill Assessment</span>
+                                                        <div class="mt-3">
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="fal fa-fw fa-suitcase me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                            </span>
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="fal fa-fw fa-clock me-2 font-brandBlue"></i>
+                                                                <span class="font-regular">
+                                                                    {{item.posted}}
+                                                                </span>
+                                                            </span>
+                                                        </div>    
+                                                        <hr class="my-3"/>
+                                                        <div class="py-2">
+                                                            <span class="font-regular">By {{item.requestedBy}} @{{item.company}}</span>
+                                                            <div class="mt-2">
+                                                                <button type="button" class="btn btn-sm mr-1">Start</button>
+                                                                <button type="button" class="btn btn-secondary btn-sm">Reject</button>
+                                                            </div>
+                                                        </div>                      
+                                                    </div>
+                                                    <div v-if="item.isNew" class="tag tag-footer tag-green3 justify-content-center">
+                                                        New
+                                                    </div>  
+                                                    <div v-else class="tag tag-footer justify-content-center">
+                                                        Seen on 1/2/2021 3:00pm
+                                                    </div> 
+                                                </a>
+                                            </div>
+                                      
+                                            <div 
+                                            class="col-lg-6 col-md-6 col-sm-12 d-flex"
+                                            v-for="(item,index) in interviewList" >
+                                                <a  
+                                                v-on:click.stop.prevent="showInterview(item)"
+                                                href="/candidate/jobs/1212321" class="card w-100 mb-2">
+                                                    <div class="card-body">             
+                                                        <h6>{{item.title}}</h6>
+                                                        <span class="tag tag-orange1">Job Interview</span>
+                                                        <div class="mt-3">
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="fal fa-fw fa-suitcase me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                            </span>
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="fal fa-fw fa-clock me-2 font-brandBlue"></i>
+                                                                <span class="font-regular">
+                                                                    {{item.posted}}
+                                                                </span>
+                                                            </span>
+                                                        </div>    
+                                                        <hr class="my-3"/>
+                                                        <div class="py-2">
+                                                            <span class="font-regular">By {{item.requestedBy}} @{{item.company}}</span>
+                                                            <div class="mt-2">
+                                                                <button v-if="item.rejecting === false && item.rejected === false" type="button" v-on:click.stop.prevent="scheduleInterview(item)" class="btn btn-sm mr-1">Schedule</button>
+                                                                <button 
+                                                                    v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                                    v-on:click.stop.prevent="rejectInterview(item)" 
+                                                                    :disabled="item.rejecting === true || item.rejected === true"
+                                                                    type="button" 
+                                                                    class="btn btn-secondary btn-sm btn-blue-disabled">
+                                                                    <span v-if="item.rejecting === false && item.rejected === false">
+                                                                        Reject
+                                                                    </span>
+                                                                    <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                                    <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                                </button> 
+                                                            </div>
+                                                        </div>                      
+                                                    </div>
+                                                    <hr class="m-0"/>
+                                                    <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                        <small> {{item.statusMsg}}</small>
+                                                        <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                            <div class="alert-progress-bar"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div v-if="item.isNew" class="tag tag-footer tag-green3 justify-content-center">
+                                                        New
+                                                    </div>  
+                                                    <div v-else class="tag tag-footer justify-content-center">
+                                                        Seen on 1/2/2021 3:00pm
+                                                    </div> 
+                                                </a>
+                                            </div>
+        
+        
+                                    
+                                    </div>
+                                </div>
+                                <div v-bind:class="{ 'd-block-force': toggleView.listview }" class="d-none d-none-1200">
+                                    <div class="col"> 
+                                        <div class="d-none" v-bind:class="{'d-block-force': visibleStatus == ''}">                
+                                            <a  
+                                            v-on:click.stop.prevent="showRTR(item)"
+                                            v-for="(item,index) in rtrList"
+                                            ref="rtrList"
+                                            href="/candidate/jobs/1212321" class=" card card-flat p-0 w-100 mb-1">
+                                                <div class="card-body"> 
+                                                    <div>
+                                                        <div>     
+                                                            <div>
+                                                                <span class="tag tag-coral mr-1">Right To Represent</span><span class="tag tag-green3" v-if="item.isNew">New</span>  
+                                                            </div>  
+                                                            <h6 class="mt-2">{{item.jobTitle}}</h6>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-suitcase me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                            </span>
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-map-marker-alt me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.location}}</span>
+                                                            </span>
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-piggy-bank me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.rate}}</span>
+                                                            </span>
+                                                        </div>  
+                                                        <div class="mt-1">
+                                                            <small class="font-regular">{{item.posted}} By John Smith @TekSystems</small>
+                                                        </div>
+                                                    </div> 
+                                                    <hr class="mb-2" v-if="!item.showStatusProgress"/>
+                                                    <div  v-if="!item.startStatusProgress">
+                                                        <button 
+                                                        v-if="item.rejecting === false && item.rejected === false"
+                                                        :disabled="item.approving === true || item.approved === true"
+                                                        v-on:click.stop.prevent="approveRTR(item)" type="button" 
+                                                        class="btn btn-sm btn-blue-disabled mr-1">
+                                                            <span v-if="item.approving === false && item.approved === false">
+                                                                Accept
+                                                            </span>
+                                                        
+                                                            <img v-if="item.approving" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                            <i v-if="item.approved" class="fas fa-check-circle fa-fw font-18 mt-1"></i>
+                                                        </button>
+                                                        <button 
+                                                            v-if="item.approving === false && item.approved === false"
+                                                            v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                            v-on:click.stop.prevent="rejectRTR(item)" 
+                                                            :disabled="item.rejecting === true || item.rejected === true"
+                                                            type="button" 
+                                                            class="btn btn-secondary btn-sm btn-blue-disabled"
+                                                        >
+                                                            <span v-if="item.rejecting === false && item.rejected === false">
+                                                                Reject
+                                                            </span>
+                                                            <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                            <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                        </button>
+                                                    </div>                       
+                                                </div>
+                                                <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                    <small> {{item.statusMsg}}</small>
+                                                    <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                        <div class="alert-progress-bar"></div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a  
+                                            v-for="(item,index) in assessmentsList"
+                                            href="/candidate/assessments/1212321" class="card card-flat w-100">
+                                                <div class="card-body"> 
+                                                    <div>
+                                                        <div>     
+                                                            <div>
+                                                                <span class="tag tag-orange1 mr-1">Assessment</span><span class="tag tag-green3" v-if="item.isNew">New</span>  
+                                                            </div>  
+                                                            <h6 class="mt-2">{{item.title}}</h6>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-suitcase me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                            </span>
+                                                        </div>  
+                                                        <div class="mt-1">
+                                                            <small class="font-regular">{{item.posted}} By John Smith @TekSystems</small>
+                                                        </div>
+                                                        <div v-if="item.rejecting === false && item.rejected === false">
+                                                            <p class="mb-1"><small>Progress</small></p>
+                                                            {{item.completed}}
+                                                            <div class="alert-progress alert-progress-static bg-gray3">
+                                                                <div v-bind:style="{ width: item.completed }" class="alert-progress-bar"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="mt-2" v-if="!item.startStatusProgress">
+                                                        <button 
+                                                        v-if="item.rejecting === false && item.rejected === false"
+                                                        :disabled="item.approving === true || item.approved === true"                                            
+                                                        type="button" class="btn btn-sm mr-1">
+                                                            <span v-if="item.completed === '0%'">Start</span>
+                                                            <span v-else>Resume</span>
+                                                        </button>
+                                                        <button 
+                                                            v-if="item.approving === false && item.approved === false"
+                                                            v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                            v-on:click.stop.prevent="rejectAssessment(item)" 
+                                                            :disabled="item.rejecting === true || item.rejected === true"
+                                                            type="button" 
+                                                            class="btn btn-secondary btn-sm btn-blue-disabled"
+                                                        >
+                                                            <span v-if="item.rejecting === false && item.rejected === false">
+                                                                Reject
+                                                            </span>
+                                                            <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                            <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                        </button>
+                                                    </div>  
+                                                    <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                        <small> {{item.statusMsg}}</small>
+                                                        <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                            <div class="alert-progress-bar"></div>
+                                                        </div>
+                                                    </div>                       
+                                                </div>
+                                            </a>
+                                            <a  
+                                            v-for="(item,index) in interviewList"
+                                            v-on:click.stop.prevent="showInterview(item)"
+                                            href="/candidate/jobs/1212321" class=" card card-flat w-100">
+                                                <div class="card-body"> 
+                                                    <div>
+                                                        <div>     
+                                                            <div>
+                                                                <span class="tag tag-purple1 mr-1">Schedule Interview</span><span class="tag tag-green3" v-if="item.isNew">New</span>  
+                                                            </div>  
+                                                            <h6 class="mt-2">{{item.title}}</h6>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-suitcase me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                            </span>
+                                                        </div> 
+                                                        <div class="mt-1">
+                                                            <small class="font-regular">{{item.posted}} By {{item.requestedBy}} @{{item.company}}</small>
+                                                        </div> 
+                                                    </div> 
+                                                    <hr class="mb-2" v-if="!item.showStatusProgress"/>
+                                                    <div>                                     
+                                                        <button v-if="item.rejecting === false && item.rejected === false" type="button" v-on:click.stop.prevent="scheduleInterview(item)" class="btn btn-sm mr-1">Schedule</button>
+                                                        <button 
+                                                            v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                            v-on:click.stop.prevent="rejectInterview(item)" 
+                                                            :disabled="item.rejecting === true || item.rejected === true"
+                                                            type="button" 
+                                                            class="btn btn-secondary btn-sm btn-blue-disabled">
+                                                            <span v-if="item.rejecting === false && item.rejected === false">
+                                                                Reject
+                                                            </span>
+                                                            <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                            <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                        </button>                           
+                                                    </div>                       
+                                                </div>
+                                                <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                    <small> {{item.statusMsg}}</small>
+                                                    <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                        <div class="alert-progress-bar"></div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="d-none" v-bind:class="{'d-block-force': visibleStatus == 'RTR'}">                
+                                            <a  
+                                            v-for="(item,index) in rtrList"
+                                            href="/candidate/jobs/1212321" class=" card card-flat  w-100 mb-1">
+                                                <div class="card-body"> 
+                                                    <div>
+                                                        <div>     
+                                                            <div>
+                                                                <span class="tag tag-coral mr-1">Right To Represent</span><span class="tag tag-green3" v-if="item.isNew">New</span>  
+                                                            </div>  
+                                                            <h6 class="mt-2">{{item.jobTitle}}</h6>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-suitcase me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                            </span>
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-map-marker-alt me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.location}}</span>
+                                                            </span>
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-piggy-bank me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.rate}}</span>
+                                                            </span>
+                                                        </div>  
+                                                        <div class="mt-1">
+                                                            <small class="font-regular">{{item.posted}} By John Smith @TekSystems</small>
+                                                        </div>
+                                                    </div> 
+                                                    <hr class="mb-2" v-if="!item.showStatusProgress"/>
+                                                    <div v-if="!item.startStatusProgress" class="ml-auto">
+                                                        <button 
+                                                        v-if="item.rejecting === false && item.rejected === false"
+                                                        :disabled="item.approving === true || item.approved === true"
+                                                        v-on:click.stop.prevent="approveRTR(item)" type="button" 
+                                                        class="btn btn-sm btn-blue-disabled mr-1">
+                                                            <span v-if="item.approving === false && item.approved === false">
+                                                                Accept
+                                                            </span>
+                                                        
+                                                            <img v-if="item.approving" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                            <i v-if="item.approved" class="fas fa-check-circle fa-fw font-18 mt-1"></i>
+                                                        </button>
+                                                        <button 
+                                                            v-if="item.approving === false && item.approved === false"
+                                                            v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                            v-on:click.stop.prevent="rejectRTR(item)" 
+                                                            :disabled="item.rejecting === true || item.rejected === true"
+                                                            type="button" 
+                                                            class="btn btn-secondary btn-sm btn-blue-disabled"
+                                                        >
+                                                            <span v-if="item.rejecting === false && item.rejected === false">
+                                                                Reject
+                                                            </span>
+                                                            <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                            <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                        </button>
+                                                    </div>                       
+                                                </div>
+                                                <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                        <small> {{item.statusMsg}}</small>
+                                                        <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                            <div class="alert-progress-bar"></div>
+                                                        </div>
+                                                </div>
+                                            </a>
+        
+                                            <div v-if="rtrList.length == 0">
+                                                <div class="text-center p-3">
+                                                    <div class="avatar avatar-lg">
+                                                        <i class="fad fa-empty-set"></i>
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        No Right to Represent Requests At This Time
+                                                    </div>
+                                                </div>
+                                            </div>
+        
+                                        </div>
+                                        <div class="d-none" v-bind:class="{'d-block-force': visibleStatus == 'Assessments'}">                
+                                            <a  
+                                            v-for="(item,index) in assessmentsList"
+                                            href="/candidate/jobs/1212321" class=" card card-flat w-100">
+                                                <div class="card-body"> 
+                                                    <div>
+                                                        <div>     
+                                                            <div>
+                                                                <span class="tag tag-orange1 mr-1">Assessment</span><span class="tag tag-green3" v-if="item.isNew">New</span>  
+                                                            </div>  
+                                                            <h6 class="mt-2">{{item.title}}</h6>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-suitcase me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                            </span>
+                                                        </div>  
+                                                        <div class="mt-1">
+                                                            <small class="font-regular">{{item.posted}} By John Smith @TekSystems</small>
+                                                        </div>
+                                                        <div v-if="item.rejecting === false && item.rejected === false">
+                                                            <p class="mb-1"><small>Progress</small></p>
+                                                            {{item.completed}}
+                                                            <div class="alert-progress alert-progress-static bg-gray3">
+                                                                <div v-bind:style="{ width: item.completed }" class="alert-progress-bar"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="mt-2" v-if="!item.startStatusProgress">
+                                                        <button 
+                                                        v-if="item.rejecting === false && item.rejected === false"
+                                                        :disabled="item.approving === true || item.approved === true"                                            
+                                                        type="button" class="btn btn-sm mr-1">
+                                                            <span v-if="item.completed === '0%'">Start</span>
+                                                            <span v-else>Resume</span>
+                                                        </button>
+                                                        <button 
+                                                            v-if="item.approving === false && item.approved === false"
+                                                            v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                            v-on:click.stop.prevent="rejectAssessment(item)" 
+                                                            :disabled="item.rejecting === true || item.rejected === true"
+                                                            type="button" 
+                                                            class="btn btn-secondary btn-sm btn-blue-disabled"
+                                                        >
+                                                            <span v-if="item.rejecting === false && item.rejected === false">
+                                                                Reject
+                                                            </span>
+                                                            <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                            <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                        </button>
+                                                    </div>  
+                                                    <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                        <small> {{item.statusMsg}}</small>
+                                                        <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                            <div class="alert-progress-bar"></div>
+                                                        </div>
+                                                    </div>                   
+                                                </div>
+                                            </a>
+                                            <div v-if="assessmentsList.length == 0">
+                                                <div class="text-center p-3">
+                                                    <div class="avatar avatar-lg">
+                                                        <i class="fad fa-empty-set"></i>
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        No Assessment Requests At This Time
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-none" v-bind:class="{'d-block-force': visibleStatus == 'Interviews'}">                
+                                            <a  
+                                            v-for="(item,index) in interviewList"
+                                            v-on:click.stop.prevent="showInterview(item)"
+                                            href="/candidate/jobs/1212321" class=" card card-flat w-100">
+                                                <div class="card-body"> 
+                                                    <div>
+                                                        <div>     
+                                                            <div>
+                                                                <span class="tag tag-purple1 mr-1">Schedule Interview</span><span class="tag tag-green3" v-if="item.isNew">New</span>  
+                                                            </div>  
+                                                            <h6 class="mt-2">{{item.title}}</h6>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <span class="d-flex align-items-center me-3">
+                                                                <i class="far fa-suitcase me-2 font-brandBlue"></i>
+                                                                <span class="font-regular font-primary font-gray1">{{item.type}}</span>
+                                                            </span>
+                                                        </div>  
+                                                        <div class="mt-1">
+                                                            <small class="font-regular">{{item.posted}} By {{item.requestedBy}} @{{item.company}}</small>
+                                                        </div>
+                                                    </div> 
+                                                    <hr class="mb-2" v-if="!item.showStatusProgress"/>
+                                                    <div class="ml-auto">                                     
+                                                        <button v-if="item.rejecting === false && item.rejected === false" type="button" v-on:click.stop.prevent="scheduleInterview(item)" class="btn btn-sm mr-1">Schedule</button>
+                                                        <button 
+                                                            v-bind:class="{'bg-blue5': item.rejecting === true || item.rejected === true}"
+                                                            v-on:click.stop.prevent="rejectInterview(item)" 
+                                                            :disabled="item.rejecting === true || item.rejected === true"
+                                                            type="button" 
+                                                            class="btn btn-secondary btn-sm btn-blue-disabled">
+                                                            <span v-if="item.rejecting === false && item.rejected === false">
+                                                                Reject
+                                                            </span>
+                                                            <img v-if="item.rejecting" style="width: 18px; height: 18px;" src="/images/button-loader-white.gif"/>
+                                                            <i v-if="item.rejected" class="fas fa-check-circle fa-fw font-18 mt-1 font-white"></i>
+                                                        </button>                               
+                                                    </div>                       
+                                                </div>
+                                                <div v-if="item.showStatusProgress" class="card-body text-center font-regular p-relative">
+                                                    <small> {{item.statusMsg}}</small>
+                                                    <div class="alert-progress" v-bind:class="{start: item.startStatusProgress}">
+                                                        <div class="alert-progress-bar"></div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <div v-if="interviewList.length == 0">
+                                                <div class="text-center p-3">
+                                                    <div class="avatar avatar-lg">
+                                                        <i class="fad fa-empty-set"></i>
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        No Interview To Schedule At This Time
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>               
+                                </div>                          
+        
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-5 mb-3">
+                        <div 
+                        statusstart="matched"
+                        viewstart="listview"
+                        id="CandidateJobs"
+                        class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <label class="pt-0 mb-2"><strong>My Jobs</strong></label>
+                                        <a href="/candidate/jobs"><i class="fas fa-external-link-square"></i></a>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                                        <div class="mb-2 d-flex align-items-center justify-content-center">
+                                    
+                                            <div class="d-flex justify-content-end w-100">
+                                                <sort v-bind:categories="sortCategories"></sort>
+                                                <filters class="mx-1" v-bind:categories="filterCategories"></filters>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <hr class="m-0"/>   
+                                <div>
+                                    <div class="d-flex-column d-block-1200 d-lg-flex flex-lg-row align-items-end mb-3 border-bottom-gray2">
+                                        <ul class="nav nav-tabs nav-tabs-tablet pt-1 w-100 justify-content-center">
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                v-bind:class="{active: statusView.matched}"
+                                                v-on:click="setStatusView('matched')" class="nav-link pb-3 mx-2 bg-transparent">
+                                                    <span class="tag mb-1">{{getTotalByStatus('matched')}}<span class="jewel"></span></span>
+                                                        <div>Matched</div>
+                                                </button>
+                                            </li> 
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                v-bind:class="{active: statusView.favorited}"
+                                                v-on:click="setStatusView('favorited')" class="nav-link pb-3 mx-2 bg-transparent">
+                                                    <span class="tag mb-1">{{getTotalByStatus('favorited')}}</span>
+                                                        <div>Favorited</div>
+                                                </button>
+                                            </li> 
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                v-bind:class="{active: statusView.rtr}"
+                                                v-on:click="setStatusView('rtr')" class="nav-link pb-3 mx-2 bg-transparent">
+                                                    <span class="tag mb-1">{{getTotalByStatus('rtr')}}</span>
+                                                        <div>RTR</div>
+                                                </button>
+                                            </li> 
+                                            <li class="nav-item">
+                                                <button type="button"
+                                                v-bind:class="{active: statusView.applied}"
+                                                v-on:click="setStatusView('applied')" class="nav-link pb-3 mx-2 bg-transparent">
+                                                    <span class="tag mb-1">{{getTotalByStatus('applied')}}</span>
+                                                        <div>Applied</div>
+                                                </button>
+                                            </li> 
+                                        </ul> 
+                                    </div>
+                                    <div class="row d-none d-flex-1200" 
+                                    v-bind:class="{ 'd-flex-force': toggleView.gridview }">
+                
+                                        <div v-for="(request,index) in requests"
+                                        v-if="request.isVisible"
+                                        class="col-lg-6 col-md-6 col-sm-12 d-flex"
+                                        >
+                                            <a href="/candidate/jobs/1123213-2" class="card card-flat col card-tag-bottom mb-4 card-lg">                      
+                                                <div class="card-body pb-1">
+                                                    <h6>{{request.jobTitle}}</h6>
+                                                    <div class="mb-2">
+                                                        <span class="tag tag-green3 d-none" v-if="request.status == 'open'">{{request.status}}</span>
+                                                        <span class="tag tag-coral" v-if="request.status == 'hot'">{{request.status}}</span>
+                                                        <span class="tag" v-if="request.status == 'rtr'">{{request.status}}</span>
+                                                        <span class="tag tag-coral d-inline-flex" v-if="request.status == 'matched'"><img width="16px" src="/images/high5-mark-circle-dark.svg"><span class="mx-2">Matched</span></span>
+                                                        <span class="tag tag-purple1 d-inline-flex" v-if="request.status == 'favorited'"><i class="fad fa-heart-circle"></i><span class="mx-2">Favorited</span></span>
+                                                        <small class="font-regular font-primary">{{request.jobType}}</small>
+                                                    </div>
+                                                    <hr class="mt-0 mb-2"/>
+                                                    <p class="mb-1"><i class="fal fa-fw fa-map-marker-alt mr-3"></i>{{request.location}}</p>
+                                                    <p class="mb-1"><i class="fal fa-piggy-bank fa-map-marker-alt mr-3"></i>{{request.priceRange}}</p>
+                                                    <p class="mb-1"><i class="fal fa-fw fa-clock mr-3"></i>
+                                                        {{request.timeRemaining}}
+                                                    </p>
+        
+                                                    <p v-if="request.rep.length" class="mb-1"><i class="fal fa-fw fa-user mr-3"></i>
+                                                        {{request.rep}}
+                                                    </p>
+                                                </div>                        
+                                                <div v-if="request.autoMatchCnt > 0" class="tag tag-footer tag-green3 justify-content-center">
+                                                    New
+                                                </div>
+                                                <div v-else class="tag tag-footer font-regular justify-content-center">
+                                                    Viewed on 1/1/2021 
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="row d-none d-none-1200" 
+                                    v-bind:class="{ 'd-block-force': toggleView.listview }">
+                                        <div class="col">
+                                            <a  
+                                            v-for="(request,index) in requests" 
+                                            v-on:click.stop.prevent="showJob(request)"
+                                            v-if="request.isVisible"
+                                            href="/candidate/jobs/1212321" class="card card-flat p-0 d-flex w-100 align-items-center justify-content-between request-listview flex-row overflow-hidden mb-1">
+                                                <div class="card-body">  
+                                                    <span class="tag tag-green3 mr-3 d-none" v-if="request.status == 'open'">{{request.status}}</span>
+                                                    <span class="tag tag-coral" v-if="request.status === 'rtr'">Right To Represent</span>
+                                                    <span class="tag tag-green1" v-if="request.status === 'applied'">Applied</span>
+                                                    <span class="tag tag-coral d-inline-flex mr-2" v-if="request.status == 'matched'"><img width="16px" src="/images/high5-mark-circle-dark.svg"><span class="mx-2">Matched</span></span>
+                                                    <span class="tag tag-purple1 d-inline-flex mr-2" v-if="request.status == 'favorited'"><i class="fad fa-heart-circle"></i><span class="mx-2">Favorited</span></span> 
+                                                    <span class="tag tag-orange1" v-if="request.status == 'hot'"><i class="fad fa-flame mr-1"></i>{{request.status}}</span>       
+                                                    <span class="tag tag-green3" v-if="request.status == 'hot'">New</span>         
+                                                    <h6 class="mt-1">{{request.jobTitle}}</h6>
+                                                    <div class="d-flex flex-wrap align-items-center">
+                                                        <span class="d-flex align-items-center">
+                                                            <i class="far fa-suitcase me-2 font-brandBlue"></i>
+                                                            <span class="font-regular font-primary font-gray1">{{request.jobType}}</span>
+                                                        </span>
+                                                        <span class="d-flex align-items-center ml-3">
+                                                            <i class="far fa-map-marker-alt me-2 font-brandBlue"></i>
+                                                            <span class="font-regular font-primary font-gray1">{{request.location}}</span>
+                                                        </span>
+                                                        <span class="d-flex align-items-center ml-3">
+                                                            <i class="far fa-piggy-bank me-2 font-brandBlue"></i>
+                                                            <span class="font-regular font-primary font-gray1">{{request.priceRange}}</span>
+                                                        </span>
+                                                    </div> 
+                                                    <div>
+                                                        <span class="d-flex align-items-center mt-2">
+                                                            <span class="font-regular">
+                                                                {{request.timeRemaining}} <span>{{request.rep}}</span>
+                                                            </span>
+                                                        </span>
+                                                    </div>                         
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                    
+        
+                                    <div v-if="visibleTotal == 0">
+                                        <div class="text-center p-3">
+                                            <div class="avatar avatar-lg">
+                                                <i class="fad fa-folder-open"></i>
+                                            </div>
+                                            <div class="mt-2">
+                                                No  Jobs Found
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                </div>
+        
+                            </div>
+                        </div>
+               
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/vue.candidate-requests.js"></script>
+<script src="/js/vue.candidate-jobs.js"></script>
+<script src="/js/vue.candidate-interviews.js"></script>
+<script src="/js/vue.candidate-assessments.js"></script>
+<script src="/js/vue.candidate-profile-widget.js"></script>
